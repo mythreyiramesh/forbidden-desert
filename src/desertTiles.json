@@ -1,0 +1,157 @@
+[
+  {
+    "id": 1,
+    "type": "tunnel",
+    "name": "Ancient Tunnel",
+    "description": "A hidden passage beneath the sand. Move to any other tunnel tile on your turn."
+  },
+  {
+    "id": 2,
+    "type": "tunnel",
+    "name": "Hidden Passage",
+    "description": "A secret underground route. Travel to any other tunnel tile as a single action."
+  },
+  {
+    "id": 3,
+    "type": "tunnel",
+    "name": "Secret Tunnel",
+    "description": "A concealed subterranean path. Instantly move to another tunnel tile once per turn."
+  },
+  {
+    "id": 4,
+    "type": "clue",
+    "direction": "horizontal",
+    "part": "engine",
+    "description": "Ancient markings point east and west. Reveals the column where the engine part is located."
+  },
+  {
+    "id": 5,
+    "type": "clue",
+    "direction": "vertical",
+    "part": "engine",
+    "description": "Hieroglyphs indicate north and south. Shows the row containing the engine part."
+  },
+  {
+    "id": 6,
+    "type": "clue",
+    "direction": "horizontal",
+    "part": "propeller",
+    "description": "Wind-worn etchings stretch left to right. Indicates the column of the propeller part."
+  },
+  {
+    "id": 7,
+    "type": "clue",
+    "direction": "vertical",
+    "part": "propeller",
+    "description": "Vertical symbols of flight. Reveals the row where the propeller part is hidden."
+  },
+  {
+    "id": 8,
+    "type": "clue",
+    "direction": "horizontal",
+    "part": "crystal",
+    "description": "Shimmering lines across the tile. Shows the column containing the crystal part."
+  },
+  {
+    "id": 9,
+    "type": "clue",
+    "direction": "vertical",
+    "part": "crystal",
+    "description": "Glowing marks from top to bottom. Indicates the row where the crystal part lies."
+  },
+  {
+    "id": 10,
+    "type": "clue",
+    "direction": "horizontal",
+    "part": "navigation",
+    "description": "Compass-like symbols pointing east-west. Reveals the column of the navigation part."
+  },
+  {
+    "id": 11,
+    "type": "clue",
+    "direction": "vertical",
+    "part": "navigation",
+    "description": "Star-chart markings running north-south. Shows the row containing the navigation part."
+  },
+  {
+    "id": 12,
+    "type": "gear",
+    "name": "Ancient Marketplace",
+    "description": "Remnants of a bustling bazaar. Gain a random equipment card when you land here."
+  },
+  {
+    "id": 13,
+    "type": "gear",
+    "name": "Oasis",
+    "description": "A lush haven in the desert. Receive a water carrier or solar shield equipment."
+  },
+  {
+    "id": 14,
+    "type": "gear",
+    "name": "Mirage",
+    "description": "Shimmering illusions in the heat. Gain a dune blaster or time throttle equipment."
+  },
+  {
+    "id": 15,
+    "type": "gear",
+    "name": "Dune",
+    "description": "A massive sand hill. Obtain a secret water reserve or jet pack equipment."
+  },
+  {
+    "id": 16,
+    "type": "gear",
+    "name": "Sandstorm",
+    "description": "Swirling sands reveal hidden treasures. Receive a random advanced equipment card."
+  },
+  {
+    "id": 17,
+    "type": "gear",
+    "name": "Desert Cave",
+    "description": "A cool, shadowy grotto. Gain a terrascope or desert explorer kit equipment."
+  },
+  {
+    "id": 18,
+    "type": "gear",
+    "name": "Forgotten Ruins",
+    "description": "Crumbling structures of an ancient civilization. Obtain an archaeologist's tools or sand goggles equipment."
+  },
+  {
+    "id": 19,
+    "type": "gear",
+    "name": "Shifting Sands",
+    "description": "Ever-changing dunes conceal secrets. Receive a dune skipper or mirage mapper equipment."
+  },
+  {
+    "id": 20,
+    "type": "gear",
+    "name": "Ancient Statue",
+    "description": "A weathered monument to forgotten gods. Gain a sandstorm suppressor or ancient amulet equipment."
+  },
+  {
+    "id": 21,
+    "type": "gear",
+    "name": "Quicksand",
+    "description": "Treacherous sinking sands. Obtain a hover boots or sand anchor equipment to escape."
+  },
+  {
+    "id": 22,
+    "type": "water",
+    "name": "Palm Trees Well",
+    "isFake": false,
+    "description": "A true oasis with fresh water. Each player can collect up to 2 water when here."
+  },
+  {
+    "id": 23,
+    "type": "water",
+    "name": "Stone Well",
+    "isFake": false,
+    "description": "An ancient well still brimming with water. Players may collect up to 2 water each."
+  },
+  {
+    "id": 24,
+    "type": "water",
+    "name": "Mirage Well",
+    "isFake": true,
+    "description": "A deceptive illusion of water. No water can be collected here, beware of wasted actions!"
+  }
+]

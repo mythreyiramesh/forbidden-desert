@@ -1,0 +1,12 @@
+/* src/components/Players.css */
+.players {
+  margin-bottom: 20px;
+}
+
+.player {
+  margin-bottom: 10px;
+}
+
+.player button {
+  margin: 0 5px;
+}

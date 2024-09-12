@@ -1,0 +1,75 @@
+/* src/components/Tile.css */
+.tile {
+  width: 175px;
+  height: 175px;
+  border: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: move;
+  user-select: none; /* Prevent text selection during drag */
+  position: relative;
+  min-height: 175px; /* Adjust as needed */
+}
+
+.sand-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.sand-controls button {
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.remove-sand {
+  font-size: 12px;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+
+.tile.dragging {
+  opacity: 0.5;
+}
+
+.drag-over {
+  background-color: rgba(0, 255, 0, 0.2); /* Green highlight when dragging over */
+}
+
+.sand-level {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px;
+}
+
+/* .sand-level { */
+/*   font-size: 24px; */
+/*   font-weight: bold; */
+/* } */
+
+.tile.storm {
+  background-color: #f0f0f0;
+}
+
+.storm-icon {
+  font-size: 40px;
+  margin-top: 5px;
+}
+
+.player-tokens {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  display: flex;
+  flex-wrap: wrap;
+}

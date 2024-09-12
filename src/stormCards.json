@@ -1,0 +1,55 @@
+{"stormCards": [
+    {
+      "id": 1,
+      "type": "storm_moves",
+      "moves": 2,
+      "direction": "n",
+      "description": "Storm moves 2 spaces north"
+    },
+    {
+      "id": 2,
+      "type": "storm_moves",
+      "moves": 3,
+      "direction": "e",
+      "description": "Storm moves 3 spaces east"
+    },
+    {
+      "id": 4,
+      "type": "storm_moves",
+      "moves": 2,
+      "direction": "s",
+      "description": "Storm moves 2 spaces south"
+    },
+    {
+      "id": 5,
+      "type": "storm_moves",
+      "moves": 3,
+      "direction": "w",
+      "description": "Storm moves 3 spaces west"
+    },
+    {
+      "id": 6,
+      "type": "storm_moves",
+      "moves": 1,
+      "direction": "s",
+      "description": "Storm moves 1 space south"
+    },
+    {
+      "id": 7,
+      "type": "storm_moves",
+      "moves": 2,
+      "direction": "e",
+      "description": "Storm moves 2 spaces east"
+    },
+    {
+      "id": 3,
+      "type": "sun_beats_down",
+      "description": "Sun beats down: Each adventurer loses 1 water"
+    },
+    {
+      "id": 4,
+      "type": "storm_picks_up",
+      "description": "Storm picks up: Increase storm level"
+    }
+  ]
+}
