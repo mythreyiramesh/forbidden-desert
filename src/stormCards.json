@@ -1,55 +1,206 @@
 {"stormCards": [
-    {
-      "id": 1,
-      "type": "storm_moves",
-      "moves": 2,
-      "direction": "n",
-      "description": "Storm moves 2 spaces north"
-    },
-    {
-      "id": 2,
-      "type": "storm_moves",
-      "moves": 3,
-      "direction": "e",
-      "description": "Storm moves 3 spaces east"
-    },
-    {
-      "id": 4,
-      "type": "storm_moves",
-      "moves": 2,
-      "direction": "s",
-      "description": "Storm moves 2 spaces south"
-    },
-    {
-      "id": 5,
-      "type": "storm_moves",
-      "moves": 3,
-      "direction": "w",
-      "description": "Storm moves 3 spaces west"
-    },
-    {
-      "id": 6,
-      "type": "storm_moves",
-      "moves": 1,
-      "direction": "s",
-      "description": "Storm moves 1 space south"
-    },
-    {
-      "id": 7,
-      "type": "storm_moves",
-      "moves": 2,
-      "direction": "e",
-      "description": "Storm moves 2 spaces east"
-    },
-    {
-      "id": 3,
-      "type": "sun_beats_down",
-      "description": "Sun beats down: Each adventurer loses 1 water"
-    },
-    {
-      "id": 4,
-      "type": "storm_picks_up",
-      "description": "Storm picks up: Increase storm level"
-    }
-  ]
+  {
+    "id": 1,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "n",
+    "description": "Storm moves 1 space north"
+  },
+  {
+    "id": 2,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "n",
+    "description": "Storm moves 1 space north"
+  },
+  {
+    "id": 3,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "n",
+    "description": "Storm moves 1 space north"
+  },
+  {
+    "id": 4,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "n",
+    "description": "Storm moves 2 spaces north"
+  },
+  {
+    "id": 5,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "n",
+    "description": "Storm moves 2 spaces north"
+  },
+  {
+    "id": 6,
+    "type": "storm_moves",
+    "moves": 3,
+    "direction": "n",
+    "description": "Storm moves 3 spaces north"
+  },
+  {
+    "id": 7,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "s",
+    "description": "Storm moves 1 space south"
+  },
+  {
+    "id": 8,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "s",
+    "description": "Storm moves 1 space south"
+  },
+  {
+    "id": 9,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "s",
+    "description": "Storm moves 1 space south"
+  },
+  {
+    "id": 10,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "s",
+    "description": "Storm moves 2 spaces south"
+  },
+  {
+    "id": 11,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "s",
+    "description": "Storm moves 2 spaces south"
+  },
+  {
+    "id": 12,
+    "type": "storm_moves",
+    "moves": 3,
+    "direction": "s",
+    "description": "Storm moves 3 spaces south"
+  },
+  {
+    "id": 13,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "e",
+    "description": "Storm moves 1 space east"
+  },
+  {
+    "id": 14,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "e",
+    "description": "Storm moves 1 space east"
+  },
+  {
+    "id": 15,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "e",
+    "description": "Storm moves 1 space east"
+  },
+  {
+    "id": 16,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "e",
+    "description": "Storm moves 2 spaces east"
+  },
+  {
+    "id": 17,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "e",
+    "description": "Storm moves 2 spaces east"
+  },
+  {
+    "id": 18,
+    "type": "storm_moves",
+    "moves": 3,
+    "direction": "e",
+    "description": "Storm moves 3 spaces east"
+  },
+  {
+    "id": 19,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "w",
+    "description": "Storm moves 1 space west"
+  },
+  {
+    "id": 20,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "w",
+    "description": "Storm moves 1 space west"
+  },
+  {
+    "id": 21,
+    "type": "storm_moves",
+    "moves": 1,
+    "direction": "w",
+    "description": "Storm moves 1 space west"
+  },
+  {
+    "id": 22,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "w",
+    "description": "Storm moves 2 spaces west"
+  },
+  {
+    "id": 23,
+    "type": "storm_moves",
+    "moves": 2,
+    "direction": "w",
+    "description": "Storm moves 2 spaces west"
+  },
+  {
+    "id": 24,
+    "type": "storm_moves",
+    "moves": 3,
+    "direction": "w",
+    "description": "Storm moves 3 spaces west"
+  },
+  {
+    "id": 25,
+    "type": "sun_beats_down",
+    "description": "Sun beats down: Each adventurer loses 1 water"
+  },
+  {
+    "id": 26,
+    "type": "sun_beats_down",
+    "description": "Sun beats down: Each adventurer loses 1 water"
+  },
+  {
+    "id": 27,
+    "type": "sun_beats_down",
+    "description": "Sun beats down: Each adventurer loses 1 water"
+  },
+  {
+    "id": 28,
+    "type": "sun_beats_down",
+    "description": "Sun beats down: Each adventurer loses 1 water"
+  },
+  {
+    "id": 29,
+    "type": "storm_picks_up",
+    "description": "Storm picks up: Increase storm level"
+  },
+  {
+    "id": 30,
+    "type": "storm_picks_up",
+    "description": "Storm picks up: Increase storm level"
+  },
+  {
+    "id": 31,
+    "type": "storm_picks_up",
+    "description": "Storm picks up: Increase storm level"
+  }
+]
 }

@@ -28,6 +28,10 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     ? desertTiles.find(tile => tile.id === desertID)?.description
     : null;
 
+  const treasureType = type !== 'storm' && desertID
+    ? desertTiles.find(tile => tile.id === desertID)?.type
+    : null;
+
   // console.log('Descriptions', tileDescription);
 const removeSand = () => {
     if (sandLevel > 0) {
@@ -40,7 +44,7 @@ const removeSand = () => {
   //   }
   // };
 const excavateTile = () => {
-      dispatch({ type: 'EXCAVATE_TILE', payload: { tileId: id } });
+  dispatch({ type: 'EXCAVATE_TILE', payload: { tileId: id, treasure: treasureType } });
   };
 
   const playersOnTile = state.players.filter(player => player.position === id);

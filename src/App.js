@@ -86,6 +86,7 @@ import GameBoard from './components/GameBoard';
 import Players from './components/Players';
 import StormDeck from './components/StormDeck';
 import SandPile from './components/SandPile';
+import EquipmentManager from './components/EquipmentManager';
 import { GameStateProvider } from './contexts/GameStateProvider';
 import './App.css';
 
@@ -99,6 +100,7 @@ function App() {
             <Players />
             <StormDeck />
             <SandPile />
+            <EquipmentManager />
           </div>
         </div>
       </GameStateProvider>

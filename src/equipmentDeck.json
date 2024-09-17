@@ -1,0 +1,50 @@
+[
+    {
+      "id": 1,
+      "type": "Dune Blaster"
+    },
+    {
+      "id": 2,
+      "type": "Dune Blaster"
+    },
+    {
+      "id": 3,
+      "type": "Dune Blaster"
+    },
+    {
+      "id": 4,
+      "type": "Terrascope"
+    },
+    {
+      "id": 5,
+      "type": "Terrascope"
+    },
+    {
+      "id": 6,
+      "type": "Jet Pack"
+    },
+    {
+      "id": 7,
+      "type": "Jet Pack"
+    },
+    {
+      "id": 8,
+      "type": "Jet Pack"
+    },
+    {
+      "id": 9,
+      "type": "Solar Shield"
+    },
+    {
+      "id": 10,
+      "type": "Solar Shield"
+    },
+    {
+      "id": 11,
+      "type": "Extra Water Bottle"
+    },
+    {
+      "id": 12,
+      "type": "Time Throttler"
+    }
+  ]

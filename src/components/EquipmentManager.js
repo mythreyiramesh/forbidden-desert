@@ -2,86 +2,181 @@ import React from 'react';
 import { useGameState } from '../contexts/GameStateProvider';
 import './EquipmentManager.css';
 
-const EquipmentManager = ({ players, onEquipmentChange }) => {
-  const [equipment, setEquipment] = useGameState([]);
+function EquipmentManager() {
+  const { state, dispatch } = useGameState();
 
-  useEffect(() => {
-    // Fetch equipment data from your game state or API
-    // For this example, we'll use the JSON data directly
-    const equipmentData = [
-      { id: 1, type: "Dune Blaster", used: false },
-      { id: 2, type: "Dune Blaster", used: false },
-      { id: 3, type: "Dune Blaster", used: false },
-      { id: 4, type: "Dune Blaster", used: false },
-      { id: 5, type: "Jet Pack", used: false },
-      { id: 6, type: "Jet Pack", used: false },
-      { id: 7, type: "Jet Pack", used: false },
-      { id: 8, type: "Jet Pack", used: false },
-      { id: 9, type: "Solar Shield", used: false },
-      { id: 10, "type": "Solar Shield", used: false },
-      { id: 11, type: "Extra Water Bottle", used: false },
-      { id: 12, type: "Extra Water Bottle", used: false }
-    ];
-    setEquipment(equipmentData);
-  }, []);
-
-  const handlePlayerChange = (equipmentId, newPlayerId) => {
-    setEquipment(prevEquipment =>
-      prevEquipment.map(item =>
-        item.id === equipmentId ? { ...item, playerId: newPlayerId } : item
-      )
-    );
-    onEquipmentChange(equipmentId, newPlayerId);
+  const assignEquipment = (equipmentId, playerId) => {
+    dispatch({ type: 'ASSIGN_EQUIPMENT', payload: { equipmentId, playerId } });
+    // console.log("Assigned equipment", state.equipment.find(eq => eq.id === equipmentId));
   };
 
-  const handleUseEquipment = (equipmentId) => {
-    setEquipment(prevEquipment =>
-      prevEquipment.map(item =>
-        item.id === equipmentId ? { ...item, used: true } : item
-      )
-    );
-    onEquipmentChange(equipmentId, null, true);
+  const tryEquipment = (equipmentId) => {
+    dispatch({ type: 'USE_EQUIPMENT', payload: { equipmentId } });
   };
 
-  return (
-    <div className="equipment-manager">
-      <h2>Equipment</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Carried By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {equipment.filter(item => !item.used).map(item => (
-            <tr key={item.id}>
-              <td>{item.type}</td>
-              <td>
-                <select
-                  value={item.playerId || ''}
-                  onChange={(e) => handlePlayerChange(item.id, e.target.value)}
-                >
-                  <option value="">Unassigned</option>
-                  {players.map(player => (
-                    <option key={player.id} value={player.id}>
-                      {player.name}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td>
-                <button onClick={() => handleUseEquipment(item.id)}>
-                  Use Equipment
-                </button>
-              </td>
+  const availableEquipment = state.equipmentIds
+    .slice(0, state.assignedEquipmentCount)
+    .map(id => state.equipment.find(eq => eq.id === id))
+    .filter(item => !item.used);  // Filter out used equipment
+
+return (
+ <div className="equipment-manager">
+      <h2>Equipment (Available: {availableEquipment.length})</h2>
+      {availableEquipment.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Carried By</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {availableEquipment.map(item => (
+              <tr key={item.id}>
+                <td>{item.type}</td>
+                <td>
+                  <select
+                    value={item.playerId || ''}
+                    onChange={(e) => assignEquipment(item.id, e.target.value)}
+                  >
+                    <option value="">Unassigned</option>
+                    {state.players.map(player => (
+                      <option key={player.id} value={player.id}>
+                        {player.name}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <button
+                    onClick={() => tryEquipment(item.id)}
+                    disabled={!item.playerId}
+                  >
+                    Use Equipment
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No equipment available. Excavate gear tiles to reveal equipment.</p>
+      )}
     </div>
+    // <div className="equipment-manager">
+    //   <h2>Equipment (Available: {state.assignedEquipmentCount})</h2>
+    //   {availableEquipment.length > 0 ? (
+    //     <table>
+    //       <thead>
+    //         <tr>
+    //           <th>Type</th>
+    //           <th>Carried By</th>
+    //           <th>Action</th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {availableEquipment.map(item => (
+    //           <tr key={item.id}>
+    //             <td>{item.type}</td>
+    //             <td>
+    //               <select
+    //                 value={item.playerId || ''}
+    //                 onChange={(e) => assignEquipment(item.id, e.target.value)}
+    //               >
+    //                 <option value="">Unassigned</option>
+    //                 {state.players.map(player => (
+    //                   <option key={player.id} value={player.id}>
+    //                     {player.name}
+    //                   </option>
+    //                 ))}
+    //               </select>
+    //             </td>
+    //             <td>
+    //               <button
+    //                 onClick={() => tryEquipment(item.id)}
+    //                 disabled={!item.playerId || item.used}
+    //               >
+    //                 Use Equipment
+    //               </button>
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   ) : (
+    //     <p>No equipment available yet. Excavate gear tiles to reveal equipment.</p>
+    //   )}
+    // </div>
   );
-};
+  // return (
+  //   <div className="equipment-manager">
+  //     <h2>Equipment</h2>
+  //     <table>
+  //       <thead>
+  //         <tr>
+  //           <th>Type</th>
+  //           <th>Carried By</th>
+  //           <th>Action</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         {state.equipmentIds.slice(0, state.assignedEquipmentCount).map(equipmentId => {
+  //           const item = state.equipment.find(eq => eq.id === equipmentId);
+  //           return (
+  //             <tr key={item.id}>
+  //               <td>{item.type}</td>
+  //               <td>
+  //                 <select
+  //                   value={item.playerId || ''}
+  //                   onChange={(e) => assignEquipment(item.id, e.target.value)}
+  //                 >
+  //                   <option value="">Unassigned</option>
+  //                   {state.players.map(player => (
+  //                     <option key={player.id} value={player.id}>
+  //                       {player.name}
+  //                     </option>
+  //                   ))}
+  //                 </select>
+  //               </td>
+  //               <td>
+  //                 <button
+  //                   onClick={() => tryEquipment(item.id)}
+  //                   disabled={!item.playerId || item.used}
+  //                 >
+  //                   Use Equipment
+  //                 </button>
+  //               </td>
+  //             </tr>
+  //           );
+  //         })}
+  //         {/* {state.equipment.filter(item => !item.used).map(item => ( */}
+  //         {/*   <tr key={item.id}> */}
+  //         {/*     <td>{item.type}</td> */}
+  //         {/*     <td> */}
+  //         {/*       <select */}
+  //         {/*         value={item.playerId || ''} */}
+  //         {/*         onChange={(e) => assignEquipment(item.id, e.target.value)} */}
+  //         {/*       > */}
+  //         {/*         <option value="">Unassigned</option> */}
+  //         {/*         {state.players.map(player => ( */}
+  //         {/*           <option key={player.id} value={player.id}> */}
+  //         {/*             {player.name} */}
+  //         {/*           </option> */}
+  //         {/*         ))} */}
+  //         {/*       </select> */}
+  //         {/*     </td> */}
+  //         {/*     <td> */}
+  //         {/*       <button onClick={() => tryEquipment(item.id)}> */}
+  //         {/*         Use Equipment */}
+  //         {/*       </button> */}
+  //         {/*     </td> */}
+  //         {/*   </tr> */}
+  //         {/* ))} */}
+  //       </tbody>
+  //     </table>
+  //   </div>
+  // );
+}
 
 export default EquipmentManager;

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 2,
+    "type": "explorer",
+    "maxWater": 6,
+    "name": "Explorer"
+  },
+  {
+    "id": 5,
+    "type": "waterCarrier",
+    "maxWater": 7,
+    "name": "Water Carrier"
+  },
+  {
+    "id": 1,
+    "type": "climber",
+    "maxWater": 5,
+    "name": "Climber"
+  },
+  {
+    "id": 0,
+    "type": "archeologist",
+    "maxWater": 5,
+    "name": "Archeologist"
+  },
+  {
+    "id": 3,
+    "type": "meteorologist",
+    "maxWater": 6,
+    "name": "Meteorologist"
+  },
+  {
+    "id": 4,
+    "type": "navigator",
+    "maxWater": 6,
+    "name": "Navigator"
+  }
+]

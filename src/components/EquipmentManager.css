@@ -1,0 +1,53 @@
+.equipment-manager {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.equipment-manager h2 {
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.equipment-manager table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.equipment-manager th,
+.equipment-manager td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.equipment-manager th {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+.equipment-manager select,
+.equipment-manager button {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.equipment-manager button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.equipment-manager button:hover {
+  background-color: #45a049;
+}
+
+.equipment-manager select:focus,
+.equipment-manager button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+}
