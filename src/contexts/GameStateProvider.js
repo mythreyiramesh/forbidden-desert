@@ -189,13 +189,10 @@ function excavateTile(state, { tileId, treasure }) {
       };
     }
   } else if (treasure.type === 'clue') {
-    // console.log("Found a clue");
     updatedParts = state.parts.map(part => {
       if (treasure.direction === 'horizontal' && treasure.part === part.type) {
-        // console.log("Found horizontal clue");
         return { ...part, horizontalClue: true };
       } else if (treasure.direction === 'vertical' && treasure.part === part.type) {
-        // console.log("Found vertical clue");
         return { ...part, verticalClue: true };
       }
       return part;
@@ -204,28 +201,6 @@ function excavateTile(state, { tileId, treasure }) {
 
   return { ...state, tiles: newTiles, parts: updatedParts };
 }
-  // const newTiles = state.tiles.map(tile =>
-  //   tile.id === tileId ? { ...tile, excavated: true } : tile
-  // );
-  // if ((treasure === 'gear' || treasure === 'tunnel') && state.assignedEquipmentCount < state.equipmentIds.length) {
-  //   return {
-  //     ...state,
-  //     tiles: newTiles,
-  //     assignedEquipmentCount: state.assignedEquipmentCount + 1
-  //   };
-  // } else if (treasure === 'clue') {
-  // const excavatedTile = newTiles.find(tile => tile.id === tileId);
-  //   const updatedParts = state.parts.map(part => {
-  //     if (excavatedTile.direction === 'horizontal' && excavatedTile.part === part.type) {
-  //       return { ...part, horizontalClue: true };
-  //     } else if (excavatedTile.direction === 'vertical' && excavatedTile.part === part.type) {
-  //       return { ...part, verticalClue: true };
-  //     }
-  //     return part;
-  //   });
-  // }
-  // return { ...state, tiles: newTiles };
-// }
 
 function peekTile(state, {tileId, terraScopeIndex}) {
   const updatedPeekedTileIds = [...state.peekedTileIds];
@@ -341,9 +316,6 @@ function handleUseEquipment(state, { equipmentId }) {
       ...state,
       peekedTileIds: [...state.peekedTileIds, null],
       terrascopeInUse: equipmentId,
-      // equipment: state.equipment.map(eq =>
-      //   eq.id === equipmentId ? { ...eq, used: true } : eq
-      // )
     };
   }
 

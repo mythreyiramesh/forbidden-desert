@@ -125,3 +125,33 @@
   cursor: pointer;
   margin-left: 0.5rem;
 }
+.water-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em; /* Increased size for visibility */
+  z-index: 10; /* Ensure it's above other elements */
+  color: #00f; /* Blue color for better visibility */
+  text-shadow: 1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white; /* Add a white outline */
+}
+
+/* .water-icon { */
+/*   position: absolute; */
+/*   top: 50%; */
+/*   left: 50%; */
+/*   transform: translate(-50%, -50%); */
+/*   font-size: 1.5em; /\* Adjust size as needed *\/ */
+/*   z-index: 1; /\* Ensure it's above other elements but below players *\/ */
+/* } */
+.tile.excavated {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* /\* Ensure other elements are visible on top of the background image *\/ */
+/* .tile > * { */
+/*   position: relative; */
+/*   z-index: 1; */
+/* } */

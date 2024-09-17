@@ -15,14 +15,14 @@
     "name": "Tunnel 3"
   },
   {
-    "id": 4,
+    "id": 9,
     "type": "clue",
     "direction": "horizontal",
     "part": "engine",
     "name": "Horizontal Clue for Engine"
   },
   {
-    "id": 5,
+    "id": 8,
     "type": "clue",
     "direction": "vertical",
     "part": "engine",
@@ -43,28 +43,28 @@
     "name": "Vertical Clue for Propeller"
   },
   {
-    "id": 8,
+    "id": 10,
     "type": "clue",
     "direction": "horizontal",
     "part": "crystal",
     "name": "Horizontal Clue for Crystal"
   },
   {
-    "id": 9,
+    "id": 11,
     "type": "clue",
     "direction": "vertical",
     "part": "crystal",
     "name": "Vertical Clue for Crystal"
   },
   {
-    "id": 10,
+    "id": 5,
     "type": "clue",
     "direction": "horizontal",
     "part": "steering",
     "name": "Horizontal Clue for Steering"
   },
   {
-    "id": 11,
+    "id": 4,
     "type": "clue",
     "direction": "vertical",
     "part": "steering",

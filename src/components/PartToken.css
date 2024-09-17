@@ -10,6 +10,7 @@
   color: white;
   cursor: move;
   margin: 2px;
+  border: 2px solid #F4A460; /* Added sand-colored border */
 }
 
 .part-token.engine {

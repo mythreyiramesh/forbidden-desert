@@ -13,10 +13,8 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     accept: ['PLAYER', 'PART'],
     drop: (item) => {
       if (item.type === 'PLAYER') {
-        // console.log("Dropping Player");
         dispatch({ type: 'MOVE_PLAYER', payload: { playerId: item.id, newPosition: id } });
       } else if (item.type === 'PART') {
-        // console.log("Dropping Part");
         dispatch({ type: 'PLACE_PART', payload: { partId: item.id, tileId: id } });
       }
     },
@@ -33,8 +31,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
         ? desertTiles.find(tile => tile.id === desertID)
         : null;
 
-  // console.log(treasureFull?.type,"inside full")
-
+  const imagePath = `./tile_images/${desertID}.png`;
   const removeSand = () => {
     if (sandLevel > 0) {
       dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: -1 } });
@@ -56,16 +53,15 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
 
   const playersOnTile = state.players.filter(player => player.position === id);
 
-  console.log(state.peekedTileIds);
-  console.log(state.terrascopeInUse);
-
   return (
     <div
       ref={drop}
       className={`tile ${type} ${excavated ? 'excavated' : ''} ${isOver ? 'drag-over' : ''}
 ${state.terrascopeInUse && excavated && state.peekedTileIds.includes(null) ? 'terrascope-active' : ''}
 ${state.peekedTileIds.includes(id) ? 'peeked' : ''}`}
+      style={excavated ? { backgroundImage: `url(${imagePath})` } : {}}
     >
+      {/* {!excavated && type === 'water' && <div className="water-icon">💧</div>} */}
       {partsOnTile.length > 0 && (
         <div className="parts-on-tile">
           {partsOnTile.map(part => (
@@ -76,7 +72,35 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''}`}
           ))}
         </div>
       )}
-      {type !== 'storm' && (
+      {/* {type !== 'storm' && ( */}
+      {/*   <div> */}
+      {/*     <div className="sand-controls"> */}
+      {/*       <div className="sand-level-container"> */}
+      {/*         <div className="sand-level">{sandLevel}</div> */}
+      {/*         {sandLevel > 0 && ( */}
+      {/*           <button onClick={removeSand} className="remove-sand">-</button> */}
+      {/*         )} */}
+      {/*       </div> */}
+      {/*     </div> */}
+      {/*     {!excavated ? ( */}
+      {/*       state.terrascopeInUse && state.peekedTileIds.includes(null) ? ( */}
+      {/*         <button onClick={peekTile} className="peek-button">Peek</button> */}
+      {/*       ) : state.peekedTileIds.includes(id) ? ( */}
+      {/*         <> */}
+      {/*           <div className="tile-description">{tileDescription}</div> */}
+      {/*           {playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>} */}
+      {/*         </> */}
+      {/*       ) : ( */}
+      {/*         playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
+      {/*       ) */}
+      {/*     ) : tileDescription ? ( */}
+      {/*       <div className="tile-description">{tileDescription}</div> */}
+      {/*     ) : null} */}
+      {/*     {/\* Add this line to show the water icon *\/} */}
+      {/*     {!excavated && type === 'water' && <div className="water-icon">💧</div>} */}
+      {/*   </div> */}
+      {/* )} */}
+{type !== 'storm' && (
         <div>
           <div className="sand-controls">
             <div className="sand-level-container">
@@ -86,63 +110,49 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''}`}
               )}
             </div>
           </div>
- {!excavated ? (
-   state.terrascopeInUse && state.peekedTileIds.includes(null) ? (
-     <button onClick={peekTile} className="peek-button">Peek</button>
-   ) : state.peekedTileIds.includes(id) ? (
-        <>
-          <div className="tile-description">{tileDescription}</div>
-          {playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>}
-        </>
-      ) : (
-        playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>
-      )
-    ) : tileDescription ? (
-      <div className="tile-description">{tileDescription}</div>
-    ) : null}
-          {/* {!excavated && playersOnTile.length > 0 ? ( */}
-          {/*   state.terrascopeInUse && state.peekedTileIds.includes(null) ? ( */}
-          {/*     state.peekedTileIds.includes(id) ? ( */}
-          {/*       <div className="tile-description">{tileDescription}</div> */}
-          {/*     ) : ( */}
-          {/*       <button onClick={peekTile} className="peek-button">Peek</button> */}
-          {/*     ) */}
-          {/*   ) : ( */}
-          {/*     <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
-          {/*   ) */}
-          {/* ) : excavated && tileDescription ? ( */}
-          {/*   <div className="tile-description">{tileDescription}</div> */}
-          {/* ) : null} */}
-          {/* {!excavated && playersOnTile.length > 0 ? ( */}
-          {/*   !state.terrascopeInUse ? ( */}
-          {/*     <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
-          {/*   ) : ( */}
-          {/*     state.peekedTileIds.includes(null) ? ( */}
-          {/*       <button onClick={peekTile} className="peek-button">Peek</button> */}
-          {/*     ) : state.peekedTileIds.includes(id) ? ( */}
-          {/*       <div className="tile-description">{tileDescription}</div> */}
-          {/*     ) : ( */}
-          {/*       <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
-          {/*     ) */}
-          {/*   ) */}
-          {/* ) : excavated && tileDescription ? ( */}
-          {/*   <div className="tile-description">{tileDescription}</div> */}
-          {/* ) : null} */}
-          {/* {!excavated && playersOnTile.length > 0 ? ( */}
-          {/*   state.terrascopeInUse ? ( */}
-          {/*     state.peekedTileIds.includes(null) ? ( */}
-          {/*       <button onClick={peekTile} className="peek-button">Peek</button> */}
-          {/*     ) : state.peekedTileIds.includes(id) ? ( */}
-          {/*       <div className="tile-description">{tileDescription}</div> */}
-          {/*     ) : ( */}
-          {/*       <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
-          {/*     ) */}
-          {/*   ) : null */}
-          {/* ) : excavated && tileDescription ? ( */}
-          {/*   <div className="tile-description">{tileDescription}</div> */}
-          {/* ) : null} */}
+          {!excavated ? (
+            state.terrascopeInUse && state.peekedTileIds.includes(null) ? (
+              <button onClick={peekTile} className="peek-button">Peek</button>
+            ) : state.peekedTileIds.includes(id) ? (
+              <>
+                <div className="tile-description">{tileDescription}</div>
+                {playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>}
+              </>
+            ) : (
+              playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>
+            )
+          ) : null}
+          {!excavated && treasureFull.type === 'water' && <div className="water-icon">💧</div>}
         </div>
       )}
+      {/* {type !== 'storm' && ( */}
+      {/*   <div> */}
+      {/*     <div className="sand-controls"> */}
+      {/*       <div className="sand-level-container"> */}
+      {/*         <div className="sand-level">{sandLevel}</div> */}
+      {/*         {sandLevel > 0 && ( */}
+      {/*           <button onClick={removeSand} className="remove-sand">-</button> */}
+      {/*         )} */}
+      {/*       </div> */}
+      {/*     </div> */}
+
+      {/*     {!excavated ? ( */}
+      {/*       state.terrascopeInUse && state.peekedTileIds.includes(null) ? ( */}
+      {/*         <button onClick={peekTile} className="peek-button">Peek</button> */}
+      {/*       ) : state.peekedTileIds.includes(id) ? ( */}
+      {/*         <> */}
+      {/*           <div className="tile-description">{tileDescription}</div> */}
+      {/*           {playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>} */}
+      {/*         </> */}
+      {/*       ) : ( */}
+      {/*         playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button> */}
+      {/*       ) */}
+      {/*     ) : tileDescription ? ( */}
+      {/*       <div className="tile-description">{tileDescription}</div> */}
+      {/*     ) : null} */}
+      {/*     {!excavated && treasureFull.type === 'water' && <div className="water-icon">💧</div>} */}
+      {/*   </div> */}
+      {/* )} */}
       {type === 'storm' && <div className="storm-icon">🌪️</div>}
       <div className="player-tokens">
         {playersOnTile.map(player => (
