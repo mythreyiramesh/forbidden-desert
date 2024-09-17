@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "type": "engine",
+    "horizontalClue": false,
+    "verticalClue": false,
+    "placed": false,
+    "pickedUp": false,
+    "tileId": null
+  },
+  {
+    "id": 2,
+    "type": "propeller",
+    "horizontalClue": false,
+    "verticalClue": false,
+    "placed": false,
+    "pickedUp": false,
+    "tileId": null
+  },
+  {
+    "id": 3,
+    "type": "crystal",
+    "horizontalClue": false,
+    "verticalClue": false,
+    "placed": false,
+    "pickedUp": false,
+    "tileId": null
+  },
+  {
+    "id": 4,
+    "type": "steering",
+    "horizontalClue": false,
+    "verticalClue": false,
+    "placed": false,
+    "pickedUp": false,
+    "tileId": null
+  }
+]

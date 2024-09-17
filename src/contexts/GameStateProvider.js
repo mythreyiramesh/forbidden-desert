@@ -3,6 +3,7 @@ import React, { createContext, useContext, useReducer } from 'react';
 import stormCardsData from '../stormCards.json';
 import initialEquipment from '../equipmentDeck.json';
 import playerInfo from '../playerInfoData.json';
+import partInfo from '../partInfoData.json';
 
 const GameStateContext = createContext();
 const randomStartPosition = getRandomInt(0, 24);
@@ -46,6 +47,7 @@ const initialState = {
     position: randomStartPosition,
     water: player.maxWater,
   })),
+  parts: partInfo,
   stormLevel: 0,
   sandPile: 40,
   currentPlayer: 0,
@@ -56,6 +58,8 @@ const initialState = {
   equipmentIds: shuffleArray(initialEquipment.map(eq => eq.id)),
   equipment: initialEquipment,
   assignedEquipmentCount: 0,
+  peekedTileIds: [],
+  terrascopeInUse: null,
 };
 
 
@@ -73,6 +77,12 @@ function gameStateReducer(state, action) {
       return adjustSand(state, action.payload);
     case 'EXCAVATE_TILE':
       return excavateTile(state, action.payload);
+    case 'PEEK_TILE':
+      return peekTile(state, action.payload);
+    case 'PLACE_PART':
+      return placePart(state, action.payload);
+    case 'PICK_UP_PART':
+      return pickUpPart(state, action.payload)
     case 'MOVE_STORM':
       return moveStorm(state, action.payload);
     case 'ASSIGN_EQUIPMENT':
@@ -168,17 +178,88 @@ function excavateTile(state, { tileId, treasure }) {
   const newTiles = state.tiles.map(tile =>
     tile.id === tileId ? { ...tile, excavated: true } : tile
   );
-  // const excavatedTile = newTiles.find(tile => tile.id === tileId);
-  // console.log("Tile type: ",excavatedTile.type)
-  // console.log("Treasure type: ", treasure)
-  if ((treasure === 'gear' || treasure === 'tunnel') && state.assignedEquipmentCount < state.equipmentIds.length) {
-        return {
-          ...state,
-          tiles: newTiles,
-          assignedEquipmentCount: state.assignedEquipmentCount + 1
-        };
+
+  let updatedParts = state.parts;
+  if (treasure.type === 'gear' || treasure.type === 'tunnel') {
+    if (state.assignedEquipmentCount < state.equipmentIds.length) {
+      return {
+        ...state,
+        tiles: newTiles,
+        assignedEquipmentCount: state.assignedEquipmentCount + 1,
+      };
+    }
+  } else if (treasure.type === 'clue') {
+    // console.log("Found a clue");
+    updatedParts = state.parts.map(part => {
+      if (treasure.direction === 'horizontal' && treasure.part === part.type) {
+        // console.log("Found horizontal clue");
+        return { ...part, horizontalClue: true };
+      } else if (treasure.direction === 'vertical' && treasure.part === part.type) {
+        // console.log("Found vertical clue");
+        return { ...part, verticalClue: true };
       }
-  return { ...state, tiles: newTiles };
+      return part;
+    });
+  }
+
+  return { ...state, tiles: newTiles, parts: updatedParts };
+}
+  // const newTiles = state.tiles.map(tile =>
+  //   tile.id === tileId ? { ...tile, excavated: true } : tile
+  // );
+  // if ((treasure === 'gear' || treasure === 'tunnel') && state.assignedEquipmentCount < state.equipmentIds.length) {
+  //   return {
+  //     ...state,
+  //     tiles: newTiles,
+  //     assignedEquipmentCount: state.assignedEquipmentCount + 1
+  //   };
+  // } else if (treasure === 'clue') {
+  // const excavatedTile = newTiles.find(tile => tile.id === tileId);
+  //   const updatedParts = state.parts.map(part => {
+  //     if (excavatedTile.direction === 'horizontal' && excavatedTile.part === part.type) {
+  //       return { ...part, horizontalClue: true };
+  //     } else if (excavatedTile.direction === 'vertical' && excavatedTile.part === part.type) {
+  //       return { ...part, verticalClue: true };
+  //     }
+  //     return part;
+  //   });
+  // }
+  // return { ...state, tiles: newTiles };
+// }
+
+function peekTile(state, {tileId, terraScopeIndex}) {
+  const updatedPeekedTileIds = [...state.peekedTileIds];
+  console.log(updatedPeekedTileIds);
+  updatedPeekedTileIds[terraScopeIndex] = tileId;
+  console.log(updatedPeekedTileIds);
+  return {
+    ...state,
+    peekedTileIds: updatedPeekedTileIds,
+    equipment: state.equipment.map(eq =>
+      eq.id === state.terrascopeInUse ? { ...eq, used: true } : eq
+    ),
+    terrascopeInUse: null,
+  };
+}
+
+function placePart(state, { partId, tileId }) {
+  const placedParts = state.parts.map(part => {
+    if (part.id === partId) {
+      return { ...part, tileId, placed: true };
+    }
+    return part;
+  });
+  return { ...state, parts: placedParts };
+}
+
+function pickUpPart(state, { partId }) {
+  const pickedUpParts = state.parts.map(part => {
+    if (part.id === partId) {
+      return { ...part, tileId: null, pickedUp: true };
+    }
+    return part;
+  });
+  return { ...state, parts: pickedUpParts };
 }
 
 function moveStorm(state, moves, direction) {
@@ -253,6 +334,19 @@ function handleAssignEquipment(state, { equipmentId, playerId }) {
 }
 
 function handleUseEquipment(state, { equipmentId }) {
+  const equipment = state.equipment.find(eq => eq.id === equipmentId);
+
+  if (equipment.type === 'Terrascope') {
+    return {
+      ...state,
+      peekedTileIds: [...state.peekedTileIds, null],
+      terrascopeInUse: equipmentId,
+      // equipment: state.equipment.map(eq =>
+      //   eq.id === equipmentId ? { ...eq, used: true } : eq
+      // )
+    };
+  }
+
   return {
         ...state,
         equipment: state.equipment.map(eq =>

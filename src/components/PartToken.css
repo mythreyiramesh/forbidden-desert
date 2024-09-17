@@ -1,0 +1,26 @@
+/* src/components/PlayerToken.css */
+.part-token {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  cursor: move;
+  margin: 2px;
+}
+
+.part-token.engine {
+  background-color: gray;
+}
+.part-token.propeller {
+  background-color: magenta;
+}
+.part-token.crystal {
+  background-color: orange;
+}
+.part-token.steering {
+  background-color: maroon;
+}

@@ -54,7 +54,7 @@ return (
                       display: item.playerId ? 'inline-block' : 'none'
                     }}
                   >
-                    Use Equipment
+                    Use
                   </button>
                 </td>
               </tr>

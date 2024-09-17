@@ -1,0 +1,64 @@
+/* src/components/Players.css */
+.parts table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.parts th,
+.parts td {
+  padding: 0.5rem;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.parts th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.parts td:first-child {
+  font-weight: bold;
+}
+
+.parts td:not(:first-child) {
+  font-size: 1.2rem;
+}
+
+.parts td:nth-child(2),
+.parts td:nth-child(3),
+.parts td:nth-child(4),
+.parts td:nth-child(5) {
+  width: 20%;
+}
+
+.parts td:nth-child(2)::after,
+.parts td:nth-child(3)::after,
+.parts td:nth-child(4)::after,
+.parts td:nth-child(5)::after {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: white;
+}
+
+.parts td:nth-child(2).found::after,
+.parts td:nth-child(3).found::after,
+.parts td:nth-child(4).found::after,
+.parts td:nth-child(5).found::after {
+  content: '✓';
+  background-color: #4caf50;
+}
+
+.parts td:nth-child(2):not(.found)::after,
+.parts td:nth-child(3):not(.found)::after,
+.parts td:nth-child(4):not(.found)::after,
+.parts td:nth-child(5):not(.found)::after {
+  content: '✗';
+  background-color: #f44336;
+}
+

@@ -5,11 +5,10 @@ import { useGameState } from '../contexts/GameStateProvider';
 import './PlayerToken.css';
 
 function PlayerToken({ player }) {
-  const { dispatch } = useGameState();
 
   const [{ isDragging }, drag] = useDrag({
     type: 'PLAYER',
-    item: { id: player.id },
+    item: { id: player.id, type: 'PLAYER' },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

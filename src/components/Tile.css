@@ -15,27 +15,31 @@
 
 .sand-controls {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 5px;
 }
-
-.sand-controls button {
-  width: 24px;
-  height: 24px;
-  font-size: 16px;
+.sand-level-container {
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin: 0 5px;
-  cursor: pointer;
+  gap: 0.5rem;
+}
+.sand-level {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .remove-sand {
-  font-size: 12px;
-  padding: 2px 5px;
+  padding: 0.1rem 0.5rem;
+  background-color: #666666;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.remove-sand:hover {
+  background-color: #484848;
 }
 
 .tile.dragging {
@@ -72,4 +76,52 @@
   left: 5px;
   display: flex;
   flex-wrap: wrap;
+}
+
+
+.tile .parts-on-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.tile .parts-on-tile .part {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.tile .parts-on-tile .pickup-button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.tile .parts-on-tile .pickup-button:hover {
+  background-color: #45a049;
+}
+
+.tile.terrascope-active:not(.peeked) {
+  opacity: 0.25;
+}
+
+.tile.peeked:not(.excavated) {
+  background-color: rgba(220, 160, 160, 0.5); /* Maroon highlight when peeked */
+}
+
+.peek-button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  background-color: pink;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 0.5rem;
 }
