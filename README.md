@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+## About this implementation of Forbidden Desert
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Recently, our board game group has become heavily invested in finding out a way to beat this game. We love the cooperative nature of it, and thank the creator for this incredible game. This React version was created to make our board game nights easier to do over screenshare since we're not in the same city anymore. Having said that, this is literally a stand-in for the actual game, and doesn't do most of the automations that are possible in a digital game. For the real stuff, check out the official game at https://www.forbiddendesert.com.
 
-## Available Scripts
+I put together this "app" with no background of React or even JavaScript with the help of Claude (Sonnet and Haiku). So, the practices will certainly not be optimal and there are a million ways to make this better. I used Ideogram to get some of the artwork and did some fixes myself with Inkscape. I haven't bothered to include a lot of CSS to prettify the app, and there are some quirks with the gameplay as well. Read below to actually try the game out for yourself.
 
-In the project directory, you can run:
+## How to Play
 
-### `npm start`
+The official rules are available somewhere on https://boardgamegeek.com/boardgame/136063/forbidden-desert. I have allowed 1 and 6 player games although that's not recommended in the official game. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Mechanics - what is automated, what isn't
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Assuming you know how to play the actual game, keep these in mind when using this web app:
 
-### `npm test`
+1. Set up the game: no of players, choice of players and the order of play. Freeze the options and Start Game.
+2. The players will all start on a random tile (the back could be a gear, or not. This is different from the actual game).
+3. Players can be dragged and dropped. The web app doesn't keep track of turns or actions or legality of actions. It's up to you. You can use the order of players on the right to keep track of play order.
+4. Adjust water levels near players to share water or gain water from wells. Gaining water isn't automatic, and if you see a lake that's a real well, the fake well is just dunes. All three will have a water emoji when unexcavated.
+5. Draw storm cards equal to what is displayed on the left. The web app doesn't keep track of how many you must draw. The storm effects are applied automatically. If sun beats down, even players in tunnel lose water, so adjust it back manually.
+6. Dune Blaster, Jet Pack, Solar Shield, Water Reserve are all up to you to keep track. Terrascope lets you peek at a tile, and the peeked tile will permanently display the description of what you'll find on excavation.
+7. Once both vertical and horizontal clues have been excavated, the parts become draggable. Once you drop the part on a tile, it can't be moved. Make sure to drop it correctly. A check box appears to pick up the part if rules are met.
+8. Players can not blocked from entering blocked tiles by the app, you must figure out whether you're making legal moves.
+9. Storm Deck has an extra shuffle button, be careful when nearing the end of the deck and don't include shuffle as one of the storm cards.
+10. Meteologist being present in the game will enable "Reveal" action near storm deck. Cards equal to number to draw will be revealed, and one can be optionally sent to the bottom.
+11. If one of the loss conditions or the win condition is met, an animation pops up. Some buttons will still work after animation shows. To reset, refresh the app.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Feedback
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feedback is welcome, and you're free to report issues. I'll try to fix things, but I can't promise. I will only be adding features that we will need in our games online games, and will be skipping those that are minor improvements.
