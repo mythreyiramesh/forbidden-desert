@@ -47,6 +47,7 @@ const initialState = {
       return baseTile;
     });
   })(),
+  crashTilePosition: null,
   players: playerInfo.map(player => ({
     ...player,
     position: randomStartPosition,
@@ -74,8 +75,8 @@ const initialState = {
 
 function gameStateReducer(state, action) {
   // Prevent setup changes if the game is frozen
-  if (state.isFrozen && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
-                        'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX'].includes(action.type)) {
+  if ((state.isFrozen && state.gameStarted) && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
+                        'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX', 'SET_CRASH_TILE'].includes(action.type)) {
     return state;
   }
 
@@ -90,6 +91,8 @@ function gameStateReducer(state, action) {
       return addOrderedPlayerIndex(state, action.payload);
     case 'REMOVE_ORDERED_PLAYER_INDEX':
       return removeOrderedPlayerIndex(state, action.payload);
+    case 'SET_CRASH_TILE':
+      return setCrashTile(state, action.payload);
     case 'MOVE_TILE':
       return moveTile(state, action.payload);
     case 'MOVE_PLAYER':
@@ -120,6 +123,8 @@ function gameStateReducer(state, action) {
       return handleAssignEquipment(state, action.payload);
     case 'USE_EQUIPMENT':
       return handleUseEquipment(state, action.payload);
+    case 'CHECK_WIN_CONDITION':
+      return checkWinCondition(state);
     case 'FREEZE_GAME_SETUP':
       if (state.orderedPlayerIndices.length === state.noOfPlayers) {
         return {
@@ -183,6 +188,14 @@ function removeOrderedPlayerIndex(state, {newIndex}) {
   };
 }
 
+function setCrashTile(state, {crashID}) {
+  // console.log("crashID",crashID);
+  return {
+    ...state,
+    crashTilePosition: crashID,
+  };
+}
+
 function moveTile(state, { from, to }) {
   // Don't allow moving the storm tile
   if (state.tiles[from].type === 'storm' || state.tiles[to].type === 'storm') {
@@ -202,23 +215,25 @@ function movePlayer(state, { playerId, newPosition }) {
 }
 
 function adjustWater(state, { playerId, amount }) {
+  // console.log(state.players);
   const newPlayers = state.players.map(player => {
-    if (player.id === playerId) {
+    if (playerId === undefined || player.id === playerId) {
       const newWater = Math.max(0, Math.min(player.water + amount, player.maxWater));
       return { ...player, water: newWater };
     }
     return player;
   });
-  const anyoneThirsty = newPlayers.some((player) => player.water === 0);
+  const anyoneThirsty = state.orderedPlayerIndices
+                             .map(index => newPlayers[index])
+                             .some((player) => player.water === 0);
+  // console.log(anyoneThirsty);
+  // console.log(newPlayers);
   return { ...state, players: newPlayers, gameOver: anyoneThirsty ? true : false, gameResult: anyoneThirsty ? 'loss' : null };
 }
 
 function drawStormCard(state) {
+  console.log("Crash",state.crashTilePosition);
   if (state.stormDeck.length === 0) {
-    if (state.sandPile === 0) {
-      // Game over condition - storm has overtaken the desert
-      return { ...state, gameOver: true, gameResult: 'loss' };
-    }
     // Reshuffle discard pile into deck
     return {
       ...state,
@@ -240,7 +255,7 @@ function drawStormCard(state) {
       newState = moveStorm(newState, drawnCard.moves, drawnCard.direction);
       break;
     case 'sun_beats_down':
-      newState = sunBeatsDown(newState);
+      newState = adjustWater(newState, { playerId: undefined, amount: -1 });
       break;
     case 'storm_picks_up':
       newState = { ...newState, stormLevel: newState.stormLevel + 1 };
@@ -254,19 +269,20 @@ function drawStormCard(state) {
    default:
      break;
   }
-
+  // console.log(drawnCard);
+  // console.log(remainingDeck);
   return newState;
 }
 
 function revealStormCards(state, {noOfCards}){
-  console.log(noOfCards);
+  // console.log(noOfCards);
   const cardsToReveal = state.stormDeck.slice(0, noOfCards);
-  console.log(cardsToReveal.length);
-      return {
-        ...state,
-        revealedCards: cardsToReveal,
-        stormDeck: state.stormDeck.slice(noOfCards)
-      };
+  // console.log(cardsToReveal.length);
+  return {
+    ...state,
+    revealedCards: cardsToReveal,
+    stormDeck: state.stormDeck.slice(noOfCards)
+  };
 }
 
 function moveCardToBottom(state, {indexToMove}) {
@@ -405,22 +421,32 @@ function moveStorm(state, moves, direction) {
       break;
     }
   }
-return {
-    ...state,
-    stormPosition: newStormPosition,
-    tiles: newTiles,
-    sandPile: Math.max(0, state.sandPile - sandAdded)
-  };
+  if ((state.sandPile - sandAdded) <= 0) {
+    // Game over condition - storm has overtaken the desert
+    return { ...state,
+             gameOver: true,
+             gameResult: 'loss',
+             stormPosition: newStormPosition,
+             tiles: newTiles,
+             sandPile: Math.max(0, state.sandPile - sandAdded)
+           };
+  } else {
+    return {
+      ...state,
+      stormPosition: newStormPosition,
+      tiles: newTiles,
+      sandPile: Math.max(0, state.sandPile - sandAdded)
+    };
+  }
 }
 
-
-function sunBeatsDown(state) {
-  const newPlayers = state.players.map(player => ({
-    ...player,
-    water: Math.max(0, player.water - 1)
-  }));
-  return { ...state, players: newPlayers };
-}
+// function sunBeatsDown(state) {
+//   const newPlayers = state.players.map(player => ({
+//     ...player,
+//     water: Math.max(0, player.water - 1)
+//   }));
+//   return { ...state, players: newPlayers };
+// }
 
 function handleAssignEquipment(state, { equipmentId, playerId }) {
   return {
@@ -500,6 +526,25 @@ function getCardsToDraw(stormLevel, noOfPlayers) {
     return 2;
   }
 }
+
+function checkWinCondition (state) {
+  const { players, orderedPlayerIndices, crashTilePosition } = state;
+  const allPlayersOnCrashTile = orderedPlayerIndices.length > 0 &&
+        orderedPlayerIndices.every(index =>
+          players[index].position === crashTilePosition
+        );
+  const allPartsCollected = state.parts.every(part => part.pickedUp);
+
+  if (allPartsCollected && allPlayersOnCrashTile) {
+    return  {
+      ...state,
+      gameOver: true,
+      gameResult: 'win'
+    };
+  }
+
+  return state;
+};
 
 export function GameStateProvider({ children }) {
   const [state, dispatch] = useReducer(gameStateReducer, initialState);

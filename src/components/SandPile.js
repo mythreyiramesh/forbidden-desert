@@ -8,8 +8,8 @@ function SandPile() {
 
   return (
     <div className="sand-pile">
-      <h2>Sand Pile</h2>
-      <div>Remaining Sand: {state.sandPile}</div>
+      <h3>Sand Pile</h3>
+      <div>Remaining: {state.sandPile}</div>
     </div>
   );
 }

@@ -37,7 +37,7 @@ const skipMoving = () => {
 
   return (
     <div className="storm-deck">
-      <h2>Storm Deck</h2>
+      <h3>Storm Deck</h3>
       {state.revealedCards.length === 0 ? (
         <>
           <button onClick={drawCard} disabled={!state.gameStarted}>
@@ -45,7 +45,7 @@ const skipMoving = () => {
           </button>
           {hasMeteorologistPlayer && (
             <button onClick={revealCards} disabled={state.stormDeck.length === 0 || !state.gameStarted}>
-              Reveal Cards
+              Reveal
             </button>
           )}
         </>
@@ -71,10 +71,11 @@ const skipMoving = () => {
       )}
       {state.revealedCards.length === 0 && (
         <div>
-        <h4>Deck Info:</h4>
-          <p>Cards Remaining: {state.stormDeck.length}</p>
-          <p>Sun Beats Down in discard: {sunBeatsDownCount}</p>
-          <p>Storm Picks Up in discard: {stormPicksUpCount}</p>
+        <h5>Deck Info:</h5>
+          <p>Cards: {state.stormDeck.length}</p>
+          {/* <h4>Discard Info</h4> */}
+          <p>Suns: {4-sunBeatsDownCount}</p>
+          <p>Storms: {3-stormPicksUpCount}</p>
         </div>
       )}
     </div>

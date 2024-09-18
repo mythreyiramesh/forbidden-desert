@@ -3,6 +3,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useGameState } from '../contexts/GameStateProvider';
 import PlayerToken from './PlayerToken';
+import desertTiles from '../desertTiles.json';
 
 const PlayerSlot = ({ index, playerIndex, movePlayer }) => {
   const { state } = useGameState();
@@ -14,10 +15,15 @@ const PlayerSlot = ({ index, playerIndex, movePlayer }) => {
   });
 
   return (
-    <div ref={drop} style={{ width: '100px', height: '50px', border: '1px dashed black', display: 'inline-block', margin: '5px',
+    <div ref={drop} style={{ width: '100px', height: '50px', border: '1px dashed black',
+                             /* display: 'inline-block', */
+                             margin: '5px',
                              opacity: isFrozen ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
                              pointerEvents: isFrozen ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
-                             }}>
+                             display: 'flex',
+                             justifyContent: 'center',
+                             alignItems: 'center',
+                           }}>
       {playerIndex !== undefined && <PlayerToken player={state.players[playerIndex]} />}
     </div>
   );
@@ -28,8 +34,12 @@ const GameSetup = () => {
   const { isFrozen, gameStarted } = state;
 
   const handleStartGame = () => {
+    const crashId = state.tiles.find(tile =>
+      tile.desertID && desertTiles[tile.desertID - 1].type === 'crash'
+    )?.id ?? null;
+    dispatch({ type: 'SET_CRASH_TILE', payload: {crashID: crashId}});
     dispatch({ type: 'START_GAME' });
-  };
+  }
 
   const handleFreeze = () => {
     dispatch({ type: 'FREEZE_GAME_SETUP' });
@@ -69,6 +79,7 @@ const GameSetup = () => {
 
   return (
     <div>
+      <h3>Game Setup </h3>
       <div>
         <label>Number of Players: </label>
         <select value={state.noOfPlayers} onChange={handlePlayerCountChange} disabled={isFrozen}>
@@ -87,7 +98,7 @@ const GameSetup = () => {
         </select>
       </div>
       <div>
-        <h3>Select players:</h3>
+        <h4>Select players:</h4>
         {state.players.map((player, index) => (
           <label key={player.id} style={{ display: 'inline-block', margin: '5px' }}>
             <input
@@ -107,7 +118,7 @@ const GameSetup = () => {
         ))}
       </div>
       <div>
-        <h4>Drag and drop to reorder selected players:</h4>
+        <h5>Drag and drop to reorder selected players:</h5>
         {state.orderedPlayerIndices.map((playerIndex, index) => (
           <PlayerSlot key={index} index={index} playerIndex={playerIndex} movePlayer={movePlayer} />
         ))}

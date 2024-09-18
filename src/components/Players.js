@@ -12,24 +12,35 @@ function Players() {
   };
 
   return (
-    <div className="players">
-      <h2>Players</h2>
-      {state.orderedPlayerIndices.map((index) => {
-        const player = state.players[index];
-        return (
-          <div style={{opacity: !state.gameStarted ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
-                       pointerEvents: !state.gameStarted ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
-                        }}>
-          <div key={player.id} className="player">
+<div className="players">
+  {/* <h2>Players</h2> */}
+  <div className="player-container">
+    {state.orderedPlayerIndices.map((index) => {
+      const player = state.players[index];
+      return (
+        <div
+          key={player.id}
+          className="player"
+          style={{
+            opacity: !state.gameStarted ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
+            pointerEvents: !state.gameStarted ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
+          }}
+        >
+          <div className="player-icon-container">
             <PlayerToken player={player} />
-            <span>  {player.water}/{player.maxWater}</span>
-            <button onClick={() => adjustWater(player.id, -1)}>-</button>
-            <button onClick={() => adjustWater(player.id, 1)}>+</button>
           </div>
+          <div className="player-controls">
+            <span>{player.water}/{player.maxWater}</span>
+            <div className="buttons">
+              <button onClick={() => adjustWater(player.id, -1)}>-</button>
+              <button onClick={() => adjustWater(player.id, 1)}>+</button>
+            </div>
           </div>
-        );
-      })}
-    </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
   );
 }
 

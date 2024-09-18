@@ -9,9 +9,9 @@ const SandMeter = () => {
 
   return (
     <div className="sand-meter">
-      <h2>Sand Meter</h2>
+      <h3>Storm Meter</h3>
       <p>Storm Level: {stormLevel}</p>
-      <p>Cards to Draw: {cardsToDraw}</p>
+      <p>Draw {cardsToDraw} cards.</p>
     </div>
   );
 };

@@ -1,0 +1,21 @@
+.game-over-animation {
+  position: fixed;
+  top: 40%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.game-over-animation h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.game-over-animation p {
+  font-size: 1.5rem;
+}

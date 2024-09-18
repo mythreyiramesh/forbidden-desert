@@ -20,7 +20,7 @@ function EquipmentManager() {
 
 return (
  <div className="equipment-manager">
-      <h2>Equipment (Available: {availableEquipment.length})</h2>
+      <h3>Equipment (Available: {availableEquipment.length})</h3>
       {availableEquipment.length > 0 ? (
         <table>
           <thead>

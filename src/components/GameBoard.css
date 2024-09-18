@@ -8,7 +8,7 @@
 /* src/components/GameBoard.css */
 .game-board {
   display: grid;
-  grid-template-columns: repeat(5, 175px);
-  grid-template-rows: repeat(5, 175px);
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(5, 150px);
   gap: 5px;
 }

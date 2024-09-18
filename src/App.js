@@ -16,21 +16,29 @@ import './App.css';
 
 // Create a wrapper component to use the game state hook
 const GameContent = () => {
-  const { gameOver, gameResult } = useGameState(); // Assuming these are in your game state
+  const { state } = useGameState(); // Assuming these are in your game state
 
   return (
     <div className="App">
-      <GameSetup />
-      <GameBoard />
-      <div className="sidebar">
-        <Parts/>
-        <Players />
-        <SandMeter />
-        <StormDeck />
-        <SandPile />
-        <EquipmentManager />
+      <div className="grid-container">
+        <div className="setup-column">
+          {!state.gameStarted && <GameSetup />}
+          {state.gameStarted && <SandPile />}
+          {state.gameStarted && <SandMeter />}
+          {state.gameStarted && <StormDeck />}
+        </div>
+        <div className="game-column">
+          <div className="top-row">
+          </div>
+          <GameBoard />
+        </div>
+        <div className="parts-column">
+          <Players />
+          <Parts />
+          <EquipmentManager />
+        </div>
       </div>
-      {gameOver && <GameOverAnimation result={gameResult} />}
+      {state.gameOver && <GameOverAnimation result={state.gameResult} />}
     </div>
   );
 };

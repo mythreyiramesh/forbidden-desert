@@ -18,6 +18,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     drop: (item) => {
       if (item.type === 'PLAYER') {
         dispatch({ type: 'MOVE_PLAYER', payload: { playerId: item.id, newPosition: id } });
+        dispatch({ type: 'CHECK_WIN_CONDITION' });
       } else if (item.type === 'PART') {
         dispatch({ type: 'PLACE_PART', payload: { partId: item.id, tileId: id } });
       }
@@ -53,6 +54,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
 
   const handlePickUp = (partId) => {
     dispatch({ type: 'PICK_UP_PART', payload: { partId } });
+    dispatch({ type: 'CHECK_WIN_CONDITION' });
   };
 
   let playersOnTile;

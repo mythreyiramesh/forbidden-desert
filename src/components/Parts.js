@@ -8,7 +8,7 @@ function Parts() {
 
   return (
     <div className="parts">
-      <h2>Parts</h2>
+      {/* <h2>Parts</h2> */}
       <table>
         <thead>
           <tr>

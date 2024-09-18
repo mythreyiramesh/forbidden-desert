@@ -1,9 +1,30 @@
 /* src/App.css */
 .App {
   display: flex;
-  padding: 20px;
+  padding: 10px;
 }
 
 .sidebar {
-  margin-left: 20px;
+  margin-left: 10px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr;
+  grid-gap: 10px;
+}
+
+.top-row {
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+
+.setup-column,
+.parts-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
