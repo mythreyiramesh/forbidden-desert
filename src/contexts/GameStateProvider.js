@@ -7,9 +7,10 @@ import partInfo from '../partInfoData.json';
 
 const GameStateContext = createContext();
 const randomStartPosition = getRandomInt(0, 24);
+const decidedNoOfPlayers = 6;
 
 const initialState = {
-  noOfPlayers: 6,
+  noOfPlayers: decidedNoOfPlayers,
   gameOver: false,
   gameResult: null,
   tiles: (() => {
@@ -51,6 +52,7 @@ const initialState = {
   })),
   parts: partInfo,
   stormLevel: 1,
+  cardsToDraw: getCardsToDraw(1,decidedNoOfPlayers),
   sandPile: 40,
   currentPlayer: 0,
   // ... other state properties remain the same
@@ -58,6 +60,7 @@ const initialState = {
   stormDeck: shuffleArray([...stormCardsData.stormCards]), // coming from the JSON
   stormDiscard: [],
   lastDrawnCard: null,
+  revealedCards: [],
   equipmentIds: shuffleArray(initialEquipment.map(eq => eq.id)),
   equipment: initialEquipment,
   assignedEquipmentCount: 0,
@@ -76,6 +79,12 @@ function gameStateReducer(state, action) {
       return adjustWater(state, action.payload);
     case 'DRAW_STORM_CARD':
       return drawStormCard(state);
+    case 'REVEAL_STORM_CARDS':
+      return revealStormCards(state, action.payload);
+    case 'MOVE_CARD_TO_BOTTOM':
+      return moveCardToBottom(state, action.payload);
+    case 'FINISH_REVEALING':
+      return finishRevealing(state);
     case 'ADJUST_SAND':
       return adjustSand(state, action.payload);
     case 'EXCAVATE_TILE':
@@ -157,8 +166,10 @@ function drawStormCard(state) {
       break;
     case 'storm_picks_up':
       newState = { ...newState, stormLevel: newState.stormLevel + 1 };
+      newState = { ...newState, cardsToDraw: getCardsToDraw(newState.stormLevel, newState.noOfPlayers) };
+
       // Check if storm level has reached 6
-      if (newState.stormLevel > 6) {
+      if (newState.cardsToDraw > 6) {
         newState = { ...newState, gameOver: true, gameResult: 'loss' };
       }
       break;
@@ -168,6 +179,37 @@ function drawStormCard(state) {
 
   return newState;
 }
+
+function revealStormCards(state, {noOfCards}){
+  console.log(noOfCards);
+  const cardsToReveal = state.stormDeck.slice(0, noOfCards);
+  console.log(cardsToReveal.length);
+      return {
+        ...state,
+        revealedCards: cardsToReveal,
+        stormDeck: state.stormDeck.slice(noOfCards)
+      };
+}
+
+function moveCardToBottom(state, {indexToMove}) {
+  const cardToMove = state.revealedCards[indexToMove];
+  const updatedRevealedCards = state.revealedCards.filter((_, index) => index !== indexToMove);
+  return {
+    ...state,
+    stormDeck: [...state.stormDeck, cardToMove],
+    revealedCards: updatedRevealedCards
+  };
+}
+
+function finishRevealing(state) {
+  console.log([...state.revealedCards, ...state.stormDeck]);
+  return {
+        ...state,
+        stormDeck: [...state.revealedCards, ...state.stormDeck],
+        revealedCards: []
+      };
+}
+
 
 function adjustSand(state, { tileId, amount }) {
   const newTiles = state.tiles.map(tile =>
@@ -348,6 +390,38 @@ export function getRandomInt(min, max) {
     randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
   } while (randomNumber === 12); // since storm starts at position 12
   return randomNumber;
+}
+
+function getCardsToDraw(stormLevel, noOfPlayers) {
+  if (noOfPlayers === 2) {
+    if (stormLevel >= 14) return 7;
+    if (stormLevel >= 12) return 6;
+    if (stormLevel >= 9) return 5;
+    if (stormLevel >= 5) return 4;
+    if (stormLevel >= 2) return 3;
+    return 2;
+  } else if (noOfPlayers === 3) {
+    if (stormLevel >= 15) return 7;
+    if (stormLevel >= 13) return 6;
+    if (stormLevel >= 10) return 5;
+    if (stormLevel >= 6) return 4;
+    if (stormLevel >= 2) return 3;
+    return 2;
+  } else if (noOfPlayers === 4) {
+    if (stormLevel >= 15) return 7;
+    if (stormLevel >= 13) return 6;
+    if (stormLevel >= 10) return 5;
+    if (stormLevel >= 6) return 4;
+    if (stormLevel >= 2) return 3;
+    return 2;
+  } else {
+    if (stormLevel >= 16) return 7;
+    if (stormLevel >= 14) return 6;
+    if (stormLevel >= 11) return 5;
+    if (stormLevel >= 7) return 4;
+    if (stormLevel >= 2) return 3;
+    return 2;
+  }
 }
 
 export function GameStateProvider({ children }) {

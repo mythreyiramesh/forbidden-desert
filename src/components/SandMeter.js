@@ -5,7 +5,7 @@ import './SandMeter.css';
 
 const SandMeter = () => {
   const { state } = useGameState();
-  const { stormLevel, noOfPlayers } = state;
+  const { stormLevel, noOfPlayers, cardsToDraw } = state;
 
   const getCardsToDraw = () => {
     if (noOfPlayers === 2) {
@@ -41,7 +41,7 @@ const SandMeter = () => {
 
   return (
     <div className="sand-meter">
-      <h3>Sand Meter</h3>
+      <h2>Sand Meter</h2>
       <p>Storm Level: {stormLevel}</p>
       <p>Cards to Draw: {getCardsToDraw()}</p>
     </div>
