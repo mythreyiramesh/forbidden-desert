@@ -116,9 +116,6 @@
   z-index: 1;
   pointer-events: none; /* Allow interaction with the tile underneath */
 }
-/* .tile.blocked { */
-/*   opacity: 0.5; */
-/* } */
 
 .tile .parts-on-tile .pickup-button:hover {
   background-color: #45a049;

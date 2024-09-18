@@ -5,6 +5,10 @@ import { useGameState } from '../contexts/GameStateProvider';
 import './PlayerToken.css';
 
 function PlayerToken({ player }) {
+  const { state } = useGameState();
+
+  // Check if the player is in the orderedPlayerIndices
+  const isPlayerInOrder = state.orderedPlayerIndices.includes(state.players.findIndex(p => p.id === player.id));
 
   const [{ isDragging }, drag] = useDrag({
     type: 'PLAYER',
@@ -12,13 +16,17 @@ function PlayerToken({ player }) {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    canDrag: () => isPlayerInOrder, // Only allow dragging if the player is in order
   });
 
   return (
     <div
-      ref={drag}
-      className={`player-token ${player.type}`}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      ref={isPlayerInOrder ? drag : null} // Only apply the drag ref if the player is in order
+      className={`player-token ${player.type} ${isPlayerInOrder ? 'draggable' : 'non-draggable'}`}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: isPlayerInOrder ? 'move' : 'not-allowed'
+      }}
     >
       {player.type.charAt(0).toUpperCase()}
     </div>

@@ -10,6 +10,8 @@ const randomStartPosition = getRandomInt(0, 24);
 const decidedNoOfPlayers = 6;
 
 const initialState = {
+  isFrozen: false,
+  gameStarted: false,
   noOfPlayers: decidedNoOfPlayers,
   gameOver: false,
   gameResult: null,
@@ -50,6 +52,7 @@ const initialState = {
     position: randomStartPosition,
     water: player.maxWater,
   })),
+  orderedPlayerIndices: [],
   parts: partInfo,
   stormLevel: 1,
   cardsToDraw: getCardsToDraw(1,decidedNoOfPlayers),
@@ -70,7 +73,23 @@ const initialState = {
 
 
 function gameStateReducer(state, action) {
+  // Prevent setup changes if the game is frozen
+  if (state.isFrozen && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
+                        'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX'].includes(action.type)) {
+    return state;
+  }
+
   switch (action.type) {
+    case 'SET_PLAYER_COUNT':
+      return setPlayerCount(state, action.payload);
+    case 'SET_STORM_LEVEL':
+      return setStormLevel(state, action.payload);
+    case 'SET_ORDERED_PLAYER_INDICES':
+      return setOrderedPlayerIndices(state, action.payload);
+    case 'ADD_ORDERED_PLAYER_INDEX':
+      return addOrderedPlayerIndex(state, action.payload);
+    case 'REMOVE_ORDERED_PLAYER_INDEX':
+      return removeOrderedPlayerIndex(state, action.payload);
     case 'MOVE_TILE':
       return moveTile(state, action.payload);
     case 'MOVE_PLAYER':
@@ -101,9 +120,67 @@ function gameStateReducer(state, action) {
       return handleAssignEquipment(state, action.payload);
     case 'USE_EQUIPMENT':
       return handleUseEquipment(state, action.payload);
+    case 'FREEZE_GAME_SETUP':
+      if (state.orderedPlayerIndices.length === state.noOfPlayers) {
+        return {
+          ...state,
+          isFrozen: true,
+        };
+      }
+      return state; // Don't freeze if not enough players
+    case 'UNFREEZE_GAME_SETUP':
+      return {
+        ...state,
+        isFrozen: false,
+      };
+    case 'START_GAME':
+      if (state.isFrozen && !state.gameStarted) {
+        return {
+          ...state,
+          gameStarted: true,
+        };
+      }
+      return state;
     default:
       return state;
   }
+}
+
+function setPlayerCount(state, {count}) {
+  return {
+    ...state,
+    noOfPlayers: count,
+    orderedPlayerIndices: state.orderedPlayerIndices.slice(0, count),
+  };
+}
+
+function setStormLevel(state, {level, count}) {
+  return {
+    ...state,
+    stormLevel: level,
+    cardsToDraw: getCardsToDraw(level,count),
+  };
+}
+
+function setOrderedPlayerIndices(state, {newOrder}) {
+  return {
+    ...state,
+    orderedPlayerIndices: newOrder,
+  };
+}
+
+function addOrderedPlayerIndex(state, {newIndex}) {
+  return {
+    ...state,
+    orderedPlayerIndices: [...state.orderedPlayerIndices, newIndex],
+  };
+}
+
+function removeOrderedPlayerIndex(state, {newIndex}) {
+  return {
+    ...state,
+    orderedPlayerIndices: state.orderedPlayerIndices.filter(index => index !== newIndex),
+  };
 }
 
 function moveTile(state, { from, to }) {
@@ -132,7 +209,8 @@ function adjustWater(state, { playerId, amount }) {
     }
     return player;
   });
-  return { ...state, players: newPlayers };
+  const anyoneThirsty = newPlayers.some((player) => player.water === 0);
+  return { ...state, players: newPlayers, gameOver: anyoneThirsty ? true : false, gameResult: anyoneThirsty ? 'loss' : null };
 }
 
 function drawStormCard(state) {
@@ -333,7 +411,6 @@ return {
     tiles: newTiles,
     sandPile: Math.max(0, state.sandPile - sandAdded)
   };
-  // return { ...state, stormPosition: newStormPosition, tiles: newTiles };
 }
 
 
@@ -393,7 +470,7 @@ export function getRandomInt(min, max) {
 }
 
 function getCardsToDraw(stormLevel, noOfPlayers) {
-  if (noOfPlayers === 2) {
+  if (noOfPlayers <= 2) {
     if (stormLevel >= 14) return 7;
     if (stormLevel >= 12) return 6;
     if (stormLevel >= 9) return 5;

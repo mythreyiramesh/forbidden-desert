@@ -17,9 +17,12 @@ function PartToken({ part, onDrop }) {
 
   return (
     <div
-      ref={drag}
-      className={`part-token ${part.type}`}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      ref={canPlacePart ? drag : null} // Only apply the drag ref if the player is in order
+      className={`part-token ${part.type} ${canPlacePart ? 'draggable' : 'non-draggable'}`}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: canPlacePart ? 'move' : 'not-allowed'
+      }}
     >
       {part.type.charAt(0).toUpperCase()}
     </div>

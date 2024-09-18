@@ -40,11 +40,14 @@ return (
                     onChange={(e) => assignEquipment(item.id, e.target.value)}
                   >
                     <option value="">Unassigned</option>
-                    {state.players.map(player => (
-                      <option key={player.id} value={player.id}>
-                        {player.name}
-                      </option>
-                    ))}
+                    {state.orderedPlayerIndices.map(index => {
+                      const player = state.players[index];
+                      return (
+                        <option key={player.id} value={player.id}>
+                          {player.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </td>
                 <td>

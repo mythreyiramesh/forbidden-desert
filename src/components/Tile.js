@@ -55,7 +55,29 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     dispatch({ type: 'PICK_UP_PART', payload: { partId } });
   };
 
-  const playersOnTile = state.players.filter(player => player.position === id);
+  let playersOnTile;
+  if (state.gameStarted) {
+    playersOnTile = state.orderedPlayerIndices
+                         .map(index => state.players[index])
+                         .filter(player => player.position === id);
+  } else {
+    playersOnTile = [];
+  }
+  // const playersOnTile = state.orderedPlayerIndices
+  //                            .map(index => state.players[index])
+  //                            .filter(player => player.position === id);
+
+  // console.log("All players:", state.players);
+  // console.log("Ordered player indices:", state.orderedPlayerIndices);
+  // console.log("Current tile ID:", id);
+
+  // const playersOnTilePosition = state.players.filter(player => player.position === id);
+  // console.log("Players on this tile (by position):", playersOnTilePosition);
+
+  // const playersInOrder = state.players.filter(player => state.orderedPlayerIndices.includes(player.id));
+  // console.log("Players in order:", playersInOrder);
+
+  // console.log("Final players on tile:", playersOnTile);
 
   return (
     <div
@@ -80,12 +102,12 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
           <div className="sand-controls">
             <div className="sand-level-container">
               {sandLevel > 0 && (
-                <button onClick={removeSand} className="remove-sand"> {sandLevel}</button>
+                <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}> {sandLevel}</button>
               )}
             </div>
           </div>
           {!excavated ? (
-            state.terrascopeInUse && state.peekedTileIds.includes(null) ? (
+            (state.terrascopeInUse && state.peekedTileIds.includes(null)) && !state.peekedTileIds.includes(id) ? (
               <button onClick={peekTile} className="peek-button">Peek</button>
             ) : state.peekedTileIds.includes(id) ? (
               <>

@@ -14,14 +14,21 @@ function Players() {
   return (
     <div className="players">
       <h2>Players</h2>
-      {state.players.map((player) => (
-        <div key={player.id} className="player">
-          <PlayerToken player={player} />
-          <span>  {player.water}/{player.maxWater}</span>
-          <button onClick={() => adjustWater(player.id, -1)}>-</button>
-          <button onClick={() => adjustWater(player.id, 1)}>+</button>
-        </div>
-      ))}
+      {state.orderedPlayerIndices.map((index) => {
+        const player = state.players[index];
+        return (
+          <div style={{opacity: !state.gameStarted ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
+                       pointerEvents: !state.gameStarted ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
+                        }}>
+          <div key={player.id} className="player">
+            <PlayerToken player={player} />
+            <span>  {player.water}/{player.maxWater}</span>
+            <button onClick={() => adjustWater(player.id, -1)}>-</button>
+            <button onClick={() => adjustWater(player.id, 1)}>+</button>
+          </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
