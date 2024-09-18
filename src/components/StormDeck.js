@@ -5,8 +5,17 @@ import './StormDeck.css';
 
 function StormDeck() {
   const { state, dispatch } = useGameState();
-  const lastDrawnCard = state.stormDiscard[state.stormDiscard.length - 1];
 
+  // if (state.stormDiscard.length === state.stormDeck.length) {
+  //   const lastDrawnCard = state.stormDiscard[state.stormDiscard.length];
+  // } else {
+  //   const lastDrawnCard = state.stormDiscard[state.stormDiscard.length - 1];
+  // }
+  // const drawCard = () => {
+  //   const newState = drawStormCard(state);
+  //   dispatch({ type: 'DRAW_STORM_CARD', newState });
+  //   setLastDrawnCard(newState.stormDiscard[newState.stormDiscard.length - 1]);
+  // };
   const drawCard = () => {
     dispatch({ type: 'DRAW_STORM_CARD' });
   };
@@ -14,12 +23,11 @@ function StormDeck() {
   return (
     <div className="storm-deck">
       <h2>Storm Deck</h2>
-      <div>Storm Level: {state.stormLevel}</div>
       <button onClick={drawCard}>Draw Card</button>
-      {lastDrawnCard ? (
+      {state.lastDrawnCard ? (
         <div>
-          <h3>Last Drawn Card:</h3>
-          <p>{lastDrawnCard.description}</p>
+          {/* <h3>Last Drawn Card:</h3> */}
+          <p>{state.lastDrawnCard.description}</p>
         </div>
       ) : (
         <p>No card drawn yet</p>

@@ -9,7 +9,9 @@ const GameStateContext = createContext();
 const randomStartPosition = getRandomInt(0, 24);
 
 const initialState = {
-
+  noOfPlayers: 6,
+  gameOver: false,
+  gameResult: null,
   tiles: (() => {
     // Create and shuffle desertIDs
     const desertIDs = Array.from({ length: 24 }, (_, i) => i + 1);
@@ -48,13 +50,14 @@ const initialState = {
     water: player.maxWater,
   })),
   parts: partInfo,
-  stormLevel: 0,
+  stormLevel: 1,
   sandPile: 40,
   currentPlayer: 0,
   // ... other state properties remain the same
   stormPosition: 12, // We can keep this for easier tracking
   stormDeck: shuffleArray([...stormCardsData.stormCards]), // coming from the JSON
   stormDiscard: [],
+  lastDrawnCard: null,
   equipmentIds: shuffleArray(initialEquipment.map(eq => eq.id)),
   equipment: initialEquipment,
   assignedEquipmentCount: 0,
@@ -125,7 +128,7 @@ function adjustWater(state, { playerId, amount }) {
 
 function drawStormCard(state) {
   if (state.stormDeck.length === 0) {
-    if (state.stormDiscard.length === 0) {
+    if (state.sandPile === 0) {
       // Game over condition - storm has overtaken the desert
       return { ...state, gameOver: true, gameResult: 'loss' };
     }
@@ -141,7 +144,8 @@ function drawStormCard(state) {
   let newState = {
     ...state,
     stormDeck: remainingDeck,
-    stormDiscard: [...state.stormDiscard, drawnCard]
+    stormDiscard: [...state.stormDiscard, drawnCard],
+    lastDrawnCard: drawnCard,
   };
 
  switch (drawnCard.type) {

@@ -7,6 +7,7 @@ import Players from './components/Players';
 import Parts from './components/Parts';
 import StormDeck from './components/StormDeck';
 import SandPile from './components/SandPile';
+import SandMeter from './components/SandMeter';
 import EquipmentManager from './components/EquipmentManager';
 import { GameStateProvider } from './contexts/GameStateProvider';
 import './App.css';
@@ -20,6 +21,7 @@ function App() {
           <div className="sidebar">
             <Parts/>
             <Players />
+            <SandMeter />
             <StormDeck />
             <SandPile />
             <EquipmentManager />
