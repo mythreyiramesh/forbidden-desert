@@ -46,25 +46,5 @@
     {
       "id": 12,
       "type": "Time Throttler"
-    },
-    {
-      "id": 13,
-      "type": "Solar Shield"
-    },
-    {
-      "id": 14,
-      "type": "Solar Shield"
-    },
-    {
-      "id": 15,
-      "type": "Solar Shield"
-    },
-    {
-      "id": 16,
-      "type": "Solar Shield"
-    },
-    {
-      "id": 17,
-      "type": "Solar Shield"
     }
   ]

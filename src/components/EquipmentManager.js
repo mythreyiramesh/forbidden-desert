@@ -27,7 +27,6 @@ function EquipmentManager() {
 return (
  <div className="equipment-manager">
       <h3>Equipment (Available: {availableEquipment.length})</h3>
-  <p>Solar shield : {state.solarShieldActive? 'true' : 'false'} </p>
       {availableEquipment.length > 0 ? (
         <table>
           <thead>

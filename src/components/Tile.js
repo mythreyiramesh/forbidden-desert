@@ -68,21 +68,6 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
   } else {
     playersOnTile = [];
   }
-  // const playersOnTile = state.orderedPlayerIndices
-  //                            .map(index => state.players[index])
-  //                            .filter(player => player.position === id);
-
-  // console.log("All players:", state.players);
-  // console.log("Ordered player indices:", state.orderedPlayerIndices);
-  // console.log("Current tile ID:", id);
-
-  // const playersOnTilePosition = state.players.filter(player => player.position === id);
-  // console.log("Players on this tile (by position):", playersOnTilePosition);
-
-  // const playersInOrder = state.players.filter(player => state.orderedPlayerIndices.includes(player.id));
-  // console.log("Players in order:", playersInOrder);
-
-  // console.log("Final players on tile:", playersOnTile);
 
   return (
     <div

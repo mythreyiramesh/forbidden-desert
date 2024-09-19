@@ -199,7 +199,6 @@ function removeOrderedPlayerIndex(state, {newIndex}) {
 }
 
 function setTilePositions(state, {crashID, tunnelIDs}) {
-  // console.log("crashID",crashID);
   return {
     ...state,
     crashTilePosition: crashID,
@@ -226,7 +225,6 @@ function movePlayer(state, { playerId, newPosition }) {
 }
 
 function adjustWater(state, { playerId, amount }) {
-  // console.log(state.players);
   const newPlayers = state.players.map(player => {
     if (player.id === playerId) {
       const newWater = Math.max(0, Math.min(player.water + amount, player.maxWater));
@@ -237,13 +235,10 @@ function adjustWater(state, { playerId, amount }) {
   const anyoneThirsty = state.orderedPlayerIndices
                              .map(index => newPlayers[index])
                              .some((player) => player.water === 0);
-  // console.log(anyoneThirsty);
-  // console.log(newPlayers);
   return { ...state, players: newPlayers, gameOver: anyoneThirsty ? true : false, gameResult: anyoneThirsty ? 'loss' : null };
 }
 
 function drawStormCard(state) {
-  // console.log("Crash",state.crashTilePosition);
   if (state.stormDeck.length === 0) {
     // Reshuffle discard pile into deck
     return {
@@ -280,8 +275,6 @@ function drawStormCard(state) {
    default:
      break;
   }
-  // console.log(drawnCard);
-  // console.log(remainingDeck);
   return newState;
 }
 
@@ -366,9 +359,7 @@ function sunBeatsDown(state) {
 }
 
 function revealStormCards(state, {noOfCards}){
-  // console.log(noOfCards);
   const cardsToReveal = state.stormDeck.slice(0, noOfCards);
-  // console.log(cardsToReveal.length);
   return {
     ...state,
     revealedCards: cardsToReveal,
@@ -387,7 +378,6 @@ function moveCardToBottom(state, {indexToMove}) {
 }
 
 function finishRevealing(state) {
-  console.log([...state.revealedCards, ...state.stormDeck]);
   return {
         ...state,
         stormDeck: [...state.revealedCards, ...state.stormDeck],
@@ -406,8 +396,6 @@ function adjustSand(state, { tileId, amount }) {
 }
 
 function excavateTile(state, { tileId, treasure }) {
-  // console.log("Excavating",tileId);
-  // console.log(state.tunnelTilePositions, state.excavatedTunnelTiles);
   const newTiles = state.tiles.map(tile =>
     tile.id === tileId ? { ...tile, excavated: true } : tile
   );
@@ -445,9 +433,7 @@ function excavateTile(state, { tileId, treasure }) {
 
 function peekTile(state, {tileId, terraScopeIndex}) {
   const updatedPeekedTileIds = [...state.peekedTileIds];
-  console.log(updatedPeekedTileIds);
   updatedPeekedTileIds[terraScopeIndex] = tileId;
-  console.log(updatedPeekedTileIds);
   return {
     ...state,
     peekedTileIds: updatedPeekedTileIds,
@@ -499,10 +485,7 @@ function handleUseEquipment(state, { equipmentId }) {
     };
   } else if (equipment.type === 'Solar Shield') {
     const eqPlayer = state.players.find(player => player.id === +equipment.playerId);
-    console.log("Eq player",eqPlayer);
-    console.log("global state",state.solarShieldTiles);
     const activeTile = eqPlayer.position;
-    console.log("activetile",activeTile);
     return {
       ...state,
       solarShieldActive: true,
@@ -521,7 +504,6 @@ function handleUseEquipment(state, { equipmentId }) {
 }
 
 function updateShield(state, { playerId, oldPosition, newPosition }) {
-  console.log("global state now",state.solarShieldTiles);
   const solarShieldWithPlayer = state.equipment.filter(
     (eq) => Number(eq.playerId) === playerId && eq.type === 'Solar Shield' && eq.active
   );
@@ -540,45 +522,14 @@ function updateShield(state, { playerId, oldPosition, newPosition }) {
   return state;
 }
 
-// function updateShield(state, { playerId, oldPosition, newPosition }) {
-//   console.log("global state now",state.solarShieldTiles);
-//   const solarShieldWithPlayer = state.equipment.filter(eq => Number(eq.playerId) === playerId)
-//                                      .filter(eq => eq.type === 'Solar Shield')
-//                                      .filter(eq => eq.active);
-//   console.log("oldShield",state.solarShieldTiles);
-//   const newShieldTiles = state.solarShieldTiles;
-//   if (solarShieldWithPlayer.length > 0) {
-//     // Check if the oldPosition is already in the newShieldTiles array
-//     const oldPositionIndex = newShieldTiles.indexOf(oldPosition);
-//     if (oldPositionIndex !== -1) {
-//     // Replace the old position with the new position
-// return [
-//       ...newShieldTiles.slice(0, oldPositionIndex),
-//       newPosition,
-//       ...newShieldTiles.slice(oldPositionIndex + 1)
-//     ];
-//   } else {
-//     // Add the new position to the newShieldTiles array
-//     return [...tiles, newPosition];
-//   }
-//   }
-//   console.log("newShield",newShieldTiles);
-//   return {
-//     ...state,
-//   };
-// }
-
 function makeTileUnshielded(state, { equipmentId }) {
   const equipment = state.equipment.find(eq => eq.id === equipmentId);
   const playerWithThisEquipment = state.players.find(
     (player) => Number(equipment.playerId) === player.id );
-  console.log("Player with this Equipment",playerWithThisEquipment);
   // Create a new solarShieldTiles array without the player's position
   const newSolarShieldTiles = state.solarShieldTiles.filter(
     (tile) => tile !== playerWithThisEquipment.position
   );
-  console.log("New Tile List",newSolarShieldTiles);
-  console.log("player's current position",playerWithThisEquipment.position);
   return {
     ...state,
     solarShieldTiles: newSolarShieldTiles,
