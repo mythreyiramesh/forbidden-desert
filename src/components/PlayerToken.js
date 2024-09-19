@@ -12,7 +12,7 @@ function PlayerToken({ player }) {
 
   const [{ isDragging }, drag] = useDrag({
     type: 'PLAYER',
-    item: { id: player.id, type: 'PLAYER' },
+    item: { id: player.id, type: 'PLAYER', position: player.position },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

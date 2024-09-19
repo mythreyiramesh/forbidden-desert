@@ -17,6 +17,9 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     },
     drop: (item) => {
       if (item.type === 'PLAYER') {
+        if (state.solarShieldActive) {
+          dispatch({ type: 'UPDATE_SHIELD', payload: { playerId: item.id, oldPosition: item.position, newPosition: id } });
+        }
         dispatch({ type: 'MOVE_PLAYER', payload: { playerId: item.id, newPosition: id } });
         dispatch({ type: 'CHECK_WIN_CONDITION' });
       } else if (item.type === 'PART') {

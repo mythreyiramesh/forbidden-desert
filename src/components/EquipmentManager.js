@@ -11,6 +11,12 @@ function EquipmentManager() {
 
   const tryEquipment = (equipmentId) => {
     dispatch({ type: 'USE_EQUIPMENT', payload: { equipmentId } });
+    console.log(state.solarShieldTiles);
+  };
+
+  const deactivateShield = (equipmentId) => {
+    dispatch( {type: 'MAKE_TILE_UNSHIELDED', payload: {equipmentId}} );
+    dispatch({ type: 'DEACTIVATE_SHIELD', payload: { equipmentId } });
   };
 
   const availableEquipment = state.equipmentIds
@@ -21,6 +27,7 @@ function EquipmentManager() {
 return (
  <div className="equipment-manager">
       <h3>Equipment (Available: {availableEquipment.length})</h3>
+  <p>Solar shield : {state.solarShieldActive? 'true' : 'false'} </p>
       {availableEquipment.length > 0 ? (
         <table>
           <thead>
@@ -54,10 +61,18 @@ return (
                   <button
                     onClick={() => tryEquipment(item.id)}
                     style={{
-                      display: item.playerId ? 'inline-block' : 'none'
+                      display: item.playerId && (!state.terrascopeInUse && !item.active)  ? 'inline-block' : 'none'
                     }}
                   >
                     Use
+                  </button>
+                  <button
+                    onClick={() => deactivateShield(item.id)}
+                    style={{
+                      display: (item.active) ? 'inline-block' : 'none'
+                    }}
+                  >
+                    Stop
                   </button>
                 </td>
               </tr>

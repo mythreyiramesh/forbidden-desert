@@ -72,6 +72,8 @@ const initialState = {
   assignedEquipmentCount: 0,
   peekedTileIds: [],
   terrascopeInUse: null,
+  solarShieldActive: false,
+  solarShieldTiles: [],
 };
 
 
@@ -125,6 +127,12 @@ function gameStateReducer(state, action) {
       return handleAssignEquipment(state, action.payload);
     case 'USE_EQUIPMENT':
       return handleUseEquipment(state, action.payload);
+    case 'UPDATE_SHIELD':
+      return updateShield(state, action.payload);
+    case 'MAKE_TILE_UNSHIELDED':
+      return makeTileUnshielded(state, action.payload);
+    case 'DEACTIVATE_SHIELD':
+      return deactivateShield(state, action.payload);
     case 'CHECK_WIN_CONDITION':
       return checkWinCondition(state);
     case 'FREEZE_GAME_SETUP':
@@ -341,11 +349,18 @@ function moveStorm(state, moves, direction) {
 }
 
 function sunBeatsDown(state) {
-  const playersOutside = state.players
+  const playersOutsideTunnels = state.players
                               .filter((player, index) => state.orderedPlayerIndices.includes(index))
                               .filter(player => !state.excavatedTunnelTiles.includes(player.position))
                               .map(player => player.id);
-  return playersOutside.reduce((updatedState, playerId) => {
+  const playersOutsideShields = state.players
+                              .filter((player, index) => state.orderedPlayerIndices.includes(index))
+                              .filter(player => !state.solarShieldTiles.includes(player.position))
+                              .map(player => player.id);
+  const playersOutsideOfBothTunnelsAndShields = playersOutsideTunnels.filter(
+    playerId => playersOutsideShields.includes(playerId)
+  );
+  return playersOutsideOfBothTunnelsAndShields.reduce((updatedState, playerId) => {
     return adjustWater(updatedState, { playerId, amount: -1 });
   }, state);
 }
@@ -391,8 +406,8 @@ function adjustSand(state, { tileId, amount }) {
 }
 
 function excavateTile(state, { tileId, treasure }) {
-  console.log("Excavating",tileId);
-  console.log(state.tunnelTilePositions, state.excavatedTunnelTiles);
+  // console.log("Excavating",tileId);
+  // console.log(state.tunnelTilePositions, state.excavatedTunnelTiles);
   const newTiles = state.tiles.map(tile =>
     tile.id === tileId ? { ...tile, excavated: true } : tile
   );
@@ -482,16 +497,103 @@ function handleUseEquipment(state, { equipmentId }) {
       peekedTileIds: [...state.peekedTileIds, null],
       terrascopeInUse: equipmentId,
     };
+  } else if (equipment.type === 'Solar Shield') {
+    const eqPlayer = state.players.find(player => player.id === +equipment.playerId);
+    console.log("Eq player",eqPlayer);
+    console.log("global state",state.solarShieldTiles);
+    const activeTile = eqPlayer.position;
+    console.log("activetile",activeTile);
+    return {
+      ...state,
+      solarShieldActive: true,
+      solarShieldTiles: [...state.solarShieldTiles, activeTile],
+      equipment: state.equipment.map(eq =>
+        eq.id === equipmentId ? { ...eq, active: true } : eq
+      )
+    };
   }
-
   return {
-        ...state,
-        equipment: state.equipment.map(eq =>
-          eq.id === equipmentId ? { ...eq, used: true } : eq
-        )
-      };
+    ...state,
+    equipment: state.equipment.map(eq =>
+      eq.id === equipmentId ? { ...eq, used: true } : eq
+    )
+  };
 }
 
+function updateShield(state, { playerId, oldPosition, newPosition }) {
+  console.log("global state now",state.solarShieldTiles);
+  const solarShieldWithPlayer = state.equipment.filter(
+    (eq) => Number(eq.playerId) === playerId && eq.type === 'Solar Shield' && eq.active
+  );
+
+  if (solarShieldWithPlayer.length > 0) {
+    const newSolarShieldTiles = state.solarShieldTiles.map((tile) =>
+      tile === oldPosition ? newPosition : tile
+    );
+
+    return {
+      ...state,
+      solarShieldTiles: newSolarShieldTiles,
+    };
+  }
+
+  return state;
+}
+
+// function updateShield(state, { playerId, oldPosition, newPosition }) {
+//   console.log("global state now",state.solarShieldTiles);
+//   const solarShieldWithPlayer = state.equipment.filter(eq => Number(eq.playerId) === playerId)
+//                                      .filter(eq => eq.type === 'Solar Shield')
+//                                      .filter(eq => eq.active);
+//   console.log("oldShield",state.solarShieldTiles);
+//   const newShieldTiles = state.solarShieldTiles;
+//   if (solarShieldWithPlayer.length > 0) {
+//     // Check if the oldPosition is already in the newShieldTiles array
+//     const oldPositionIndex = newShieldTiles.indexOf(oldPosition);
+//     if (oldPositionIndex !== -1) {
+//     // Replace the old position with the new position
+// return [
+//       ...newShieldTiles.slice(0, oldPositionIndex),
+//       newPosition,
+//       ...newShieldTiles.slice(oldPositionIndex + 1)
+//     ];
+//   } else {
+//     // Add the new position to the newShieldTiles array
+//     return [...tiles, newPosition];
+//   }
+//   }
+//   console.log("newShield",newShieldTiles);
+//   return {
+//     ...state,
+//   };
+// }
+
+function makeTileUnshielded(state, { equipmentId }) {
+  const equipment = state.equipment.find(eq => eq.id === equipmentId);
+  const playerWithThisEquipment = state.players.find(
+    (player) => Number(equipment.playerId) === player.id );
+  console.log("Player with this Equipment",playerWithThisEquipment);
+  // Create a new solarShieldTiles array without the player's position
+  const newSolarShieldTiles = state.solarShieldTiles.filter(
+    (tile) => tile !== playerWithThisEquipment.position
+  );
+  console.log("New Tile List",newSolarShieldTiles);
+  console.log("player's current position",playerWithThisEquipment.position);
+  return {
+    ...state,
+    solarShieldTiles: newSolarShieldTiles,
+  };
+}
+
+function deactivateShield(state, { equipmentId }) {
+  return {
+    ...state,
+    equipment: state.equipment.map(eq =>
+      eq.id === equipmentId ? { ...eq, active: false, used: true } : eq
+    ),
+    solarShieldActive: state.solarShieldTiles.length >= 1 ? true : false,
+  };
+}
 // Utility functions
 
 function shuffleArray(array) {
