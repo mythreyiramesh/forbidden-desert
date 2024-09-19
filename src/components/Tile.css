@@ -51,6 +51,7 @@
 
 .drag-over {
   background-color: rgba(0, 255, 0, 0.2); /* Green highlight when dragging over */
+  z-index: 20;
 }
 
 .sand-level-container {
