@@ -15,14 +15,16 @@ Assuming you know how to play the actual game, keep these in mind when using thi
 1. Set up the game: no of players, choice of players and the order of play. Freeze the options and Start Game.
 2. The players will all start on a random tile (the back could be a gear, or not. This is different from the actual game).
 3. Players can be dragged and dropped. The web app doesn't keep track of turns or actions or legality of actions. It's up to you. You can use the order of players on the right to keep track of play order.
-4. Adjust water levels near players to share water or gain water from wells. Gaining water isn't automatic, and if you see a lake that's a real well, the fake well is just dunes. All three will have a water emoji when unexcavated.
-5. Draw storm cards equal to what is displayed on the left. The web app doesn't keep track of how many you must draw. The storm effects are applied automatically. If sun beats down, even players in tunnel lose water, so adjust it back manually.
-6. Dune Blaster, Jet Pack, Solar Shield, Water Reserve are all up to you to keep track. Terrascope lets you peek at a tile, and the peeked tile will permanently display the description of what you'll find on excavation.
-7. Once both vertical and horizontal clues have been excavated, the parts become draggable. Once you drop the part on a tile, it can't be moved. Make sure to drop it correctly. A check box appears to pick up the part if rules are met.
-8. Players can not blocked from entering blocked tiles by the app, you must figure out whether you're making legal moves.
-9. Storm Deck has an extra shuffle button, be careful when nearing the end of the deck and don't include shuffle as one of the storm cards.
-10. Meteologist being present in the game will enable "Reveal" action near storm deck. Cards equal to number to draw will be revealed, and one can be optionally sent to the bottom.
-11. If one of the loss conditions or the win condition is met, an animation pops up. Some buttons will still work after animation shows. To reset, refresh the app.
+4. Click on sand markers to remove sand one at a time. Sand clearing action cannot be undone.
+5. Adjust water levels near players to share water or gain water from wells. Gaining water isn't automatic, and if you see a lake that's a real well, the fake well is just dunes. All three will have a water emoji when unexcavated.
+6. Draw storm cards equal to what is displayed on the left. The web app doesn't keep track of how many you must draw. The storm effects are applied automatically. If sun beats down, even players in tunnel lose water, so adjust it back manually.
+8. Equipments must be assigned to players manually and can be used once assigned. Dune Blaster, Jet Pack, Solar Shield, Water Reserve are all up to you to keep track. Terrascope lets you peek at a tile, and the peeked tile will permanently display the description of what you'll find on excavation.
+9. Once both vertical and horizontal clues have been excavated, the parts become draggable. Once you drop the part on a tile, it can't be moved. Make sure to drop it correctly. A check box appears to pick up the part if rules are met.
+10. Players can not blocked from entering blocked tiles by the app, you must figure out whether you're making legal moves.
+11. Storm Deck has an extra shuffle button, be careful when nearing the end of the deck and don't include shuffle as one of the storm cards.
+12. Number of Sun and Storm cards left are displayed below the storm deck, so are the number of cards.
+13. Meteologist being present in the game will enable "Reveal" action near storm deck. Cards equal to number to draw will be revealed, and one can be optionally sent to the bottom.
+14. If one of the loss conditions or the win condition is met, an animation pops up. Some buttons will still work after animation shows. To reset, refresh the app.
 
 ## Feedback
 
