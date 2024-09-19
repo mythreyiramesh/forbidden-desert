@@ -37,7 +37,13 @@ const GameSetup = () => {
     const crashId = state.tiles.find(tile =>
       tile.desertID && desertTiles[tile.desertID - 1].type === 'crash'
     )?.id ?? null;
-    dispatch({ type: 'SET_CRASH_TILE', payload: {crashID: crashId}});
+    const tunnelIds = state.tiles.reduce((acc, tile) => {
+      if (tile.desertID && desertTiles[tile.desertID - 1].type === 'tunnel') {
+        acc.push(tile.id);
+      }
+      return acc;
+    }, []);
+    dispatch({ type: 'SET_TILE_POSITIONS', payload: {crashID: crashId, tunnelIDs: tunnelIds}});
     dispatch({ type: 'START_GAME' });
   }
 

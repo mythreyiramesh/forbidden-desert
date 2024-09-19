@@ -48,6 +48,8 @@ const initialState = {
     });
   })(),
   crashTilePosition: null,
+  tunnelTilePositions: [],
+  excavatedTunnelTiles: [],
   players: playerInfo.map(player => ({
     ...player,
     position: randomStartPosition,
@@ -76,7 +78,7 @@ const initialState = {
 function gameStateReducer(state, action) {
   // Prevent setup changes if the game is frozen
   if ((state.isFrozen && state.gameStarted) && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
-                        'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX', 'SET_CRASH_TILE'].includes(action.type)) {
+                        'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX', 'SET_TILE_POSITIONS'].includes(action.type)) {
     return state;
   }
 
@@ -91,8 +93,8 @@ function gameStateReducer(state, action) {
       return addOrderedPlayerIndex(state, action.payload);
     case 'REMOVE_ORDERED_PLAYER_INDEX':
       return removeOrderedPlayerIndex(state, action.payload);
-    case 'SET_CRASH_TILE':
-      return setCrashTile(state, action.payload);
+    case 'SET_TILE_POSITIONS':
+      return setTilePositions(state, action.payload);
     case 'MOVE_TILE':
       return moveTile(state, action.payload);
     case 'MOVE_PLAYER':
@@ -188,11 +190,12 @@ function removeOrderedPlayerIndex(state, {newIndex}) {
   };
 }
 
-function setCrashTile(state, {crashID}) {
+function setTilePositions(state, {crashID, tunnelIDs}) {
   // console.log("crashID",crashID);
   return {
     ...state,
     crashTilePosition: crashID,
+    tunnelTilePositions: tunnelIDs,
   };
 }
 
@@ -217,7 +220,7 @@ function movePlayer(state, { playerId, newPosition }) {
 function adjustWater(state, { playerId, amount }) {
   // console.log(state.players);
   const newPlayers = state.players.map(player => {
-    if (playerId === undefined || player.id === playerId) {
+    if (player.id === playerId) {
       const newWater = Math.max(0, Math.min(player.water + amount, player.maxWater));
       return { ...player, water: newWater };
     }
@@ -232,7 +235,7 @@ function adjustWater(state, { playerId, amount }) {
 }
 
 function drawStormCard(state) {
-  console.log("Crash",state.crashTilePosition);
+  // console.log("Crash",state.crashTilePosition);
   if (state.stormDeck.length === 0) {
     // Reshuffle discard pile into deck
     return {
@@ -255,7 +258,7 @@ function drawStormCard(state) {
       newState = moveStorm(newState, drawnCard.moves, drawnCard.direction);
       break;
     case 'sun_beats_down':
-      newState = adjustWater(newState, { playerId: undefined, amount: -1 });
+     newState = sunBeatsDown(newState);
       break;
     case 'storm_picks_up':
       newState = { ...newState, stormLevel: newState.stormLevel + 1 };
@@ -272,109 +275,6 @@ function drawStormCard(state) {
   // console.log(drawnCard);
   // console.log(remainingDeck);
   return newState;
-}
-
-function revealStormCards(state, {noOfCards}){
-  // console.log(noOfCards);
-  const cardsToReveal = state.stormDeck.slice(0, noOfCards);
-  // console.log(cardsToReveal.length);
-  return {
-    ...state,
-    revealedCards: cardsToReveal,
-    stormDeck: state.stormDeck.slice(noOfCards)
-  };
-}
-
-function moveCardToBottom(state, {indexToMove}) {
-  const cardToMove = state.revealedCards[indexToMove];
-  const updatedRevealedCards = state.revealedCards.filter((_, index) => index !== indexToMove);
-  return {
-    ...state,
-    stormDeck: [...state.stormDeck, cardToMove],
-    revealedCards: updatedRevealedCards
-  };
-}
-
-function finishRevealing(state) {
-  console.log([...state.revealedCards, ...state.stormDeck]);
-  return {
-        ...state,
-        stormDeck: [...state.revealedCards, ...state.stormDeck],
-        revealedCards: []
-      };
-}
-
-
-function adjustSand(state, { tileId, amount }) {
-  const newTiles = state.tiles.map(tile =>
-    tile.id === tileId ? { ...tile, sandLevel: Math.max(0, tile.sandLevel + amount) } : tile
-  );
-  const sandRemoved = amount < 0 ? Math.abs(amount) : 0;
-  const newSandPile = Math.max(0, state.sandPile + sandRemoved);
-  return { ...state, tiles: newTiles, sandPile: newSandPile };
-}
-
-function excavateTile(state, { tileId, treasure }) {
-  const newTiles = state.tiles.map(tile =>
-    tile.id === tileId ? { ...tile, excavated: true } : tile
-  );
-
-  let updatedParts = state.parts;
-  if (treasure.type === 'gear' || treasure.type === 'tunnel') {
-    if (state.assignedEquipmentCount < state.equipmentIds.length) {
-      return {
-        ...state,
-        tiles: newTiles,
-        assignedEquipmentCount: state.assignedEquipmentCount + 1,
-      };
-    }
-  } else if (treasure.type === 'clue') {
-    updatedParts = state.parts.map(part => {
-      if (treasure.direction === 'horizontal' && treasure.part === part.type) {
-        return { ...part, horizontalClue: true };
-      } else if (treasure.direction === 'vertical' && treasure.part === part.type) {
-        return { ...part, verticalClue: true };
-      }
-      return part;
-    });
-  }
-
-  return { ...state, tiles: newTiles, parts: updatedParts };
-}
-
-function peekTile(state, {tileId, terraScopeIndex}) {
-  const updatedPeekedTileIds = [...state.peekedTileIds];
-  console.log(updatedPeekedTileIds);
-  updatedPeekedTileIds[terraScopeIndex] = tileId;
-  console.log(updatedPeekedTileIds);
-  return {
-    ...state,
-    peekedTileIds: updatedPeekedTileIds,
-    equipment: state.equipment.map(eq =>
-      eq.id === state.terrascopeInUse ? { ...eq, used: true } : eq
-    ),
-    terrascopeInUse: null,
-  };
-}
-
-function placePart(state, { partId, tileId }) {
-  const placedParts = state.parts.map(part => {
-    if (part.id === partId) {
-      return { ...part, tileId, placed: true };
-    }
-    return part;
-  });
-  return { ...state, parts: placedParts };
-}
-
-function pickUpPart(state, { partId }) {
-  const pickedUpParts = state.parts.map(part => {
-    if (part.id === partId) {
-      return { ...part, tileId: null, pickedUp: true };
-    }
-    return part;
-  });
-  return { ...state, parts: pickedUpParts };
 }
 
 function moveStorm(state, moves, direction) {
@@ -440,13 +340,129 @@ function moveStorm(state, moves, direction) {
   }
 }
 
-// function sunBeatsDown(state) {
-//   const newPlayers = state.players.map(player => ({
-//     ...player,
-//     water: Math.max(0, player.water - 1)
-//   }));
-//   return { ...state, players: newPlayers };
-// }
+function sunBeatsDown(state) {
+  const playersOutside = state.players
+                              .filter((player, index) => state.orderedPlayerIndices.includes(index))
+                              .filter(player => !state.excavatedTunnelTiles.includes(player.position))
+                              .map(player => player.id);
+  return playersOutside.reduce((updatedState, playerId) => {
+    return adjustWater(updatedState, { playerId, amount: -1 });
+  }, state);
+}
+
+function revealStormCards(state, {noOfCards}){
+  // console.log(noOfCards);
+  const cardsToReveal = state.stormDeck.slice(0, noOfCards);
+  // console.log(cardsToReveal.length);
+  return {
+    ...state,
+    revealedCards: cardsToReveal,
+    stormDeck: state.stormDeck.slice(noOfCards)
+  };
+}
+
+function moveCardToBottom(state, {indexToMove}) {
+  const cardToMove = state.revealedCards[indexToMove];
+  const updatedRevealedCards = state.revealedCards.filter((_, index) => index !== indexToMove);
+  return {
+    ...state,
+    stormDeck: [...state.stormDeck, cardToMove],
+    revealedCards: updatedRevealedCards
+  };
+}
+
+function finishRevealing(state) {
+  console.log([...state.revealedCards, ...state.stormDeck]);
+  return {
+        ...state,
+        stormDeck: [...state.revealedCards, ...state.stormDeck],
+        revealedCards: []
+      };
+}
+
+
+function adjustSand(state, { tileId, amount }) {
+  const newTiles = state.tiles.map(tile =>
+    tile.id === tileId ? { ...tile, sandLevel: Math.max(0, tile.sandLevel + amount) } : tile
+  );
+  const sandRemoved = amount < 0 ? Math.abs(amount) : 0;
+  const newSandPile = Math.max(0, state.sandPile + sandRemoved);
+  return { ...state, tiles: newTiles, sandPile: newSandPile };
+}
+
+function excavateTile(state, { tileId, treasure }) {
+  console.log("Excavating",tileId);
+  console.log(state.tunnelTilePositions, state.excavatedTunnelTiles);
+  const newTiles = state.tiles.map(tile =>
+    tile.id === tileId ? { ...tile, excavated: true } : tile
+  );
+  let updatedParts = state.parts;
+  let updatedExcavatedTunnelTiles = state.excavatedTunnelTiles;
+  if (treasure.type === 'gear' || treasure.type === 'tunnel') {
+    if (state.assignedEquipmentCount < state.equipmentIds.length) {
+      if (treasure.type === 'tunnel') {
+        updatedExcavatedTunnelTiles = [...state.excavatedTunnelTiles, tileId];
+      }
+      return {
+        ...state,
+        tiles: newTiles,
+        assignedEquipmentCount: state.assignedEquipmentCount + 1,
+        excavatedTunnelTiles: updatedExcavatedTunnelTiles,
+      };
+    }
+  } else if (treasure.type === 'clue') {
+    updatedParts = state.parts.map(part => {
+      if (treasure.direction === 'horizontal' && treasure.part === part.type) {
+        return { ...part, horizontalClue: true };
+      } else if (treasure.direction === 'vertical' && treasure.part === part.type) {
+        return { ...part, verticalClue: true };
+      }
+      return part;
+    });
+  }
+  return {
+    ...state,
+    tiles: newTiles,
+    parts: updatedParts,
+    excavatedTunnelTiles: updatedExcavatedTunnelTiles,
+  };
+}
+
+function peekTile(state, {tileId, terraScopeIndex}) {
+  const updatedPeekedTileIds = [...state.peekedTileIds];
+  console.log(updatedPeekedTileIds);
+  updatedPeekedTileIds[terraScopeIndex] = tileId;
+  console.log(updatedPeekedTileIds);
+  return {
+    ...state,
+    peekedTileIds: updatedPeekedTileIds,
+    equipment: state.equipment.map(eq =>
+      eq.id === state.terrascopeInUse ? { ...eq, used: true } : eq
+    ),
+    terrascopeInUse: null,
+  };
+}
+
+function placePart(state, { partId, tileId }) {
+  const placedParts = state.parts.map(part => {
+    if (part.id === partId) {
+      return { ...part, tileId, placed: true };
+    }
+    return part;
+  });
+  return { ...state, parts: placedParts };
+}
+
+function pickUpPart(state, { partId }) {
+  const pickedUpParts = state.parts.map(part => {
+    if (part.id === partId) {
+      return { ...part, tileId: null, pickedUp: true };
+    }
+    return part;
+  });
+  return { ...state, parts: pickedUpParts };
+}
+
 
 function handleAssignEquipment(state, { equipmentId, playerId }) {
   return {

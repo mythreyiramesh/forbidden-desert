@@ -121,6 +121,10 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
             )
           ) : null}
           {!excavated && treasureFull.type === 'water' && <div className="water-icon">💧</div>}
+          {/*for testing purposes since image directory is incorrect*/}
+          { excavated && tileDescription ? (
+            <div className="tile-description">{tileDescription}</div>
+          ) : null}
         </div>
       )}
       {type === 'storm' && <div className="storm-icon">🌪️</div>}
