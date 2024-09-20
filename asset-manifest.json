@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/forbidden-desert/static/css/main.25581ff2.css",
-    "main.js": "/forbidden-desert/static/js/main.4dc364ad.js",
+    "main.css": "/forbidden-desert/static/css/main.031e52dd.css",
+    "main.js": "/forbidden-desert/static/js/main.1e954725.js",
     "static/js/453.f7ed0664.chunk.js": "/forbidden-desert/static/js/453.f7ed0664.chunk.js",
     "index.html": "/forbidden-desert/index.html",
-    "main.25581ff2.css.map": "/forbidden-desert/static/css/main.25581ff2.css.map",
-    "main.4dc364ad.js.map": "/forbidden-desert/static/js/main.4dc364ad.js.map",
+    "main.031e52dd.css.map": "/forbidden-desert/static/css/main.031e52dd.css.map",
+    "main.1e954725.js.map": "/forbidden-desert/static/js/main.1e954725.js.map",
     "453.f7ed0664.chunk.js.map": "/forbidden-desert/static/js/453.f7ed0664.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.25581ff2.css",
-    "static/js/main.4dc364ad.js"
+    "static/css/main.031e52dd.css",
+    "static/js/main.1e954725.js"
   ]
 }
