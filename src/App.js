@@ -9,6 +9,7 @@ import Parts from './components/Parts';
 import StormDeck from './components/StormDeck';
 import SandPile from './components/SandPile';
 import SandMeter from './components/SandMeter';
+import TurnTracker from './components/TurnTracker';
 import GameOverAnimation from './components/GameOverAnimation';
 import EquipmentManager from './components/EquipmentManager';
 import { GameStateProvider, useGameState } from './contexts/GameStateProvider';
@@ -25,6 +26,7 @@ const GameContent = () => {
           {!state.gameStarted && <GameSetup />}
           {state.gameStarted && <SandPile />}
           {state.gameStarted && <SandMeter />}
+          {state.gameStarted && <TurnTracker />}
           {state.gameStarted && <StormDeck />}
         </div>
         <div className="game-column">

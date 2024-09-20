@@ -56,12 +56,12 @@ const initialState = {
     water: player.maxWater,
   })),
   orderedPlayerIndices: [],
+  currentPlayer: null,
+  cardsDrawnInTurn: null,
   parts: partInfo,
   stormLevel: 1,
   cardsToDraw: getCardsToDraw(1,decidedNoOfPlayers),
   sandPile: 40,
-  currentPlayer: 0,
-  // ... other state properties remain the same
   stormPosition: 12, // We can keep this for easier tracking
   stormDeck: shuffleArray([...stormCardsData.stormCards]), // coming from the JSON
   stormDiscard: [],
@@ -135,31 +135,59 @@ function gameStateReducer(state, action) {
       return deactivateShield(state, action.payload);
     case 'CHECK_WIN_CONDITION':
       return checkWinCondition(state);
+    case 'NEXT_TURN':
+      return resetTurnParameters(state);
     case 'FREEZE_GAME_SETUP':
-      if (state.orderedPlayerIndices.length === state.noOfPlayers) {
-        return {
-          ...state,
-          isFrozen: true,
-        };
-      }
-      return state; // Don't freeze if not enough players
+      return freezeGameSetup(state);
     case 'UNFREEZE_GAME_SETUP':
-      return {
-        ...state,
-        isFrozen: false,
-      };
+      return unfreezeGameSetup(state);
     case 'START_GAME':
-      if (state.isFrozen && !state.gameStarted) {
-        return {
-          ...state,
-          gameStarted: true,
-        };
-      }
-      return state;
+      return startGame(state);
     default:
       return state;
   }
 }
+
+function freezeGameSetup(state) {
+  if (state.orderedPlayerIndices.length === state.noOfPlayers) {
+    return {
+      ...state,
+      isFrozen: true,
+    };
+  }
+  return state; // Don't freeze if not enough players
+}
+
+function unfreezeGameSetup(state) {
+        return {
+        ...state,
+        isFrozen: false,
+      };
+
+}
+
+function startGame(state) {
+  if (state.isFrozen && !state.gameStarted) {
+    return {
+      ...state,
+      gameStarted: true,
+      currentPlayer: 0,
+      cardsDrawnInTurn: 0,
+    };
+  }
+  return state;
+
+}
+
+function resetTurnParameters(state) {
+  return {
+    ...state,
+    currentPlayer: (state.currentPlayer + 1) % state.noOfPlayers,
+    cardsDrawnInTurn: 0,
+  };
+
+}
+
 
 function setPlayerCount(state, {count}) {
   return {
@@ -254,6 +282,7 @@ function drawStormCard(state) {
     stormDeck: remainingDeck,
     stormDiscard: [...state.stormDiscard, drawnCard],
     lastDrawnCard: drawnCard,
+    cardsDrawnInTurn: state.cardsDrawnInTurn + 1,
   };
 
  switch (drawnCard.type) {
