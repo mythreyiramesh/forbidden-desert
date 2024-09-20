@@ -14,22 +14,28 @@
 }
 
 .player-token.waterCarrier {
-  background-color: blue;
+  background-color: darkblue;
+  color:lightblue;
 }
 .player-token.meteorologist {
-  background-color: red;
+  background-color: firebrick;
+  color:gold;
 }
 .player-token.climber {
   background-color: black;
+  color:yellow;
 }
 .player-token.archeologist {
-  background-color: brown;
+  background-color: blueviolet;
+  color: cornsilk;
 }
 .player-token.navigator {
-  background-color: orange;
+  background-color: greenyellow;
+  color: seagreen;
 }
 .player-token.explorer {
-  background-color: green;
+  background-color: seagreen;
+  color:greenyellow;
 }
 
 /* Add more player types as needed */
