@@ -11,7 +11,17 @@ const OUTLINES = {
   crystal: <polygon points="16,2 29,16 16,30 3,16" />,
   steering: <circle cx="16" cy="16" r="13" />,
 };
-const PART_NAMES = { engine: 'Engine', propeller: 'Propeller', crystal: 'Crystal', steering: 'Steering' };
+export const PART_NAMES = { engine: 'Engine', propeller: 'Propeller', crystal: 'Crystal', steering: 'Steering' };
+
+export function PartGlyph({ type }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <g className="token-halo">{OUTLINES[type] ?? OUTLINES.engine}</g>
+      <g className="token-shape">{OUTLINES[type] ?? OUTLINES.engine}</g>
+      {type === 'steering' && <circle className="token-hole" cx="16" cy="16" r="5" />}
+    </svg>
+  );
+}
 
 function PartToken({ part }) {
   const canPlacePart = part.horizontalClue && part.verticalClue && !part.placed;
@@ -36,11 +46,7 @@ function PartToken({ part }) {
         cursor: canPlacePart ? 'move' : 'not-allowed'
       }}
     >
-      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-        <g className="token-halo">{OUTLINES[part.type] ?? OUTLINES.engine}</g>
-        <g className="token-shape">{OUTLINES[part.type] ?? OUTLINES.engine}</g>
-        {part.type === 'steering' && <circle className="token-hole" cx="16" cy="16" r="5" />}
-      </svg>
+      <PartGlyph type={part.type} />
     </div>
   );
 }

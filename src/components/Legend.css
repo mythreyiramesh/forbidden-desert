@@ -1,0 +1,125 @@
+/* Legend: a sheet pinned to the bottom of the window. */
+.legend {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  max-height: min(60dvh, 30rem);
+  overflow-y: auto;
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  background: var(--color-paper);
+  border-top: var(--rule-bar) solid var(--color-ink);
+  box-shadow: 0 -4px 0 var(--color-ink);
+}
+
+.legend:focus-visible {
+  outline-offset: calc(var(--rule-bar) * -1);
+}
+
+.legend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--container);
+  margin: 0 auto var(--space-md);
+}
+
+.legend h2 {
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+}
+
+.legend h3 {
+  max-width: none;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-lg);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.legend ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-md);
+  padding: 0;
+  list-style: none;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--text-sm);
+  line-height: 1.3;
+}
+
+.legend-specimen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 48px;
+}
+
+/* Specimens reuse the real tile, token and badge styles at a fixed size. */
+.legend .tile.legend-box {
+  width: 40px;
+  height: 40px;
+}
+
+.legend-tile {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  border: var(--rule-bar) solid var(--color-ink-2);
+  border-radius: var(--radius-card);
+}
+
+.legend-pair {
+  display: flex;
+  gap: var(--space-2xs);
+}
+
+.legend .player-token,
+.legend .part-token {
+  margin: 0;
+}
+
+.sand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  background: var(--color-sand);
+  border: var(--rule-bar) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  box-shadow: 2px 2px 0 var(--color-ink);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.legend-dash svg {
+  width: var(--space-md);
+  height: var(--space-md);
+  color: var(--color-muted);
+}
+
+.legend .water-pips {
+  flex-wrap: nowrap;
+}

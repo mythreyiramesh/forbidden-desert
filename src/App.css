@@ -120,6 +120,17 @@ button.primary:disabled {
   background: var(--color-paper-3);
 }
 
+button.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+button.with-icon svg {
+  width: var(--space-md);
+  height: var(--space-md);
+}
+
 select {
   min-height: 32px;
   padding: var(--space-2xs) var(--space-xs);

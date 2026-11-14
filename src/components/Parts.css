@@ -32,7 +32,7 @@
   color: var(--color-muted);
 }
 
-.parts td.found .found-mark {
+.found-mark {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +46,7 @@
   box-shadow: 2px 2px 0 var(--color-ink);
 }
 
-.parts td.found .found-mark svg {
+.found-mark svg {
   width: var(--space-md);
   height: var(--space-md);
   color: inherit;

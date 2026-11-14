@@ -17,3 +17,11 @@ export const CheckIcon = (props) => (
 export const DashIcon = (props) => (
   <svg aria-hidden="true" focusable="false" {...base} {...props}><path d="M7 12h10" /></svg>
 );
+
+export const InfoIcon = (props) => (
+  <svg aria-hidden="true" focusable="false" {...base} {...props}>
+    <circle cx="12" cy="12" r="9.500" />
+    <path d="M12 11v6" />
+    <circle cx="12" cy="7.500" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);

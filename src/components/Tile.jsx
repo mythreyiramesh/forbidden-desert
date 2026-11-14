@@ -89,16 +89,14 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
           ))}
         </div>
       )}
+      {type !== 'storm' && sandLevel > 0 && (
+        <div className="sand-controls">
+          <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}
+            aria-label={`Remove sand (level ${sandLevel})`} title="Remove sand">{sandLevel}</button>
+        </div>
+      )}
       {type !== 'storm' && (
-        <div>
-          <div className="sand-controls">
-            <div className="sand-level-container">
-              {sandLevel > 0 && (
-                <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}
-                  aria-label={`Remove sand (level ${sandLevel})`} title="Remove sand">{sandLevel}</button>
-              )}
-            </div>
-          </div>
+        <div className="tile-actions">
           {!excavated ? (
             (state.terrascopeInUse && state.peekedTileIds.includes(null)) && !state.peekedTileIds.includes(id) ? (
               <button onClick={peekTile} className="peek-button">Peek</button>
@@ -112,10 +110,6 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
             )
           ) : null}
           {!excavated && treasureFull.type === 'water' && <span className="visually-hidden">Water</span>}
-          {/* {/\*for testing purposes since image directory is incorrect*\/} */}
-          {/* { excavated && tileDescription ? ( */}
-          {/*   <div className="tile-description">{tileDescription}</div> */}
-          {/* ) : null} */}
         </div>
       )}
       {type === 'storm' && <div className="storm-icon" role="img" aria-label="The storm"><StormIcon /></div>}

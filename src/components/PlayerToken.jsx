@@ -16,6 +16,18 @@ const SHAPES = {
 // Letters sit a little lower in the shapes that narrow towards the top.
 const LETTER_Y = { waterCarrier: 20, climber: 22 };
 
+export function PlayerGlyph({ type }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <g className="token-halo">{SHAPES[type] ?? SHAPES.explorer}</g>
+      <g className="token-shape">{SHAPES[type] ?? SHAPES.explorer}</g>
+      <text x="16" y={LETTER_Y[type] ?? 16} textAnchor="middle" dominantBaseline="central">
+        {type.charAt(0).toUpperCase()}
+      </text>
+    </svg>
+  );
+}
+
 function PlayerToken({ player }) {
   const { state } = useGameState();
 
@@ -42,13 +54,7 @@ function PlayerToken({ player }) {
         cursor: isPlayerInOrder ? 'move' : 'not-allowed'
       }}
     >
-      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-        <g className="token-halo">{SHAPES[player.type] ?? SHAPES.explorer}</g>
-        <g className="token-shape">{SHAPES[player.type] ?? SHAPES.explorer}</g>
-        <text x="16" y={LETTER_Y[player.type] ?? 16} textAnchor="middle" dominantBaseline="central">
-          {player.type.charAt(0).toUpperCase()}
-        </text>
-      </svg>
+      <PlayerGlyph type={player.type} />
     </div>
   );
 }

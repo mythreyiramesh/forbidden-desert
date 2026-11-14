@@ -77,14 +77,19 @@
   pointer-events: none;
 }
 
-.tile > div:not(.sand-controls):not(.parts-on-tile):not(.player-tokens):not(.storm-icon) {
+/* Buttons sit below the sand marker, or straight under any part standing on the tile. */
+.tile-actions {
+  position: relative;
+  z-index: var(--z-raised);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-2xs);
   margin-top: var(--space-xl);
-  position: relative;
-  z-index: var(--z-raised);
+}
+
+.parts-on-tile + .tile-actions {
+  margin-top: var(--space-2xs);
 }
 
 .tile-description {
@@ -114,9 +119,11 @@
   position: relative;
   z-index: var(--z-raised);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-top: var(--space-xs);
+  max-width: 100%;
+  margin-top: var(--space-2xs);
 }
 
 .tile .parts-on-tile .part {
