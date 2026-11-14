@@ -7,7 +7,7 @@ import './PartToken.css';
 // The same marks that sit at the centre of the clue tiles.
 const OUTLINES = {
   engine: <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" />,
-  propeller: <path d="M13 3h6v10h10v6H19v10h-6V19H3v-6h10z" />,
+  propeller: <polygon points="23.97,12.70 30.50,12.70 30.50,19.30 23.97,19.30 28.59,23.92 23.92,28.59 19.30,23.97 19.30,30.50 12.70,30.50 12.70,23.97 8.08,28.59 3.41,23.92 8.03,19.30 1.50,19.30 1.50,12.70 8.03,12.70 3.41,8.08 8.08,3.41 12.70,8.03 12.70,1.50 19.30,1.50 19.30,8.03 23.92,3.41 28.59,8.08" />,
   crystal: <polygon points="16,2 29,16 16,30 3,16" />,
   steering: <circle cx="16" cy="16" r="13" />,
 };

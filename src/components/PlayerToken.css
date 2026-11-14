@@ -49,7 +49,8 @@
 
 /* Tokens standing on a tile are smaller so a full table still leaves room for the tile's actions. */
 .tile .player-token {
-  width: 28px;
-  height: 28px;
+  width: var(--token-size);
+  height: var(--token-size);
+  margin: 0;
   filter: drop-shadow(1px 1px 0 var(--color-ink));
 }

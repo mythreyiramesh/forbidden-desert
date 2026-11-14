@@ -113,7 +113,12 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
         </div>
       )}
       {type === 'storm' && <div className="storm-icon" role="img" aria-label="The storm"><StormIcon /></div>}
-      <div className="player-tokens">
+      <div
+        className="player-tokens"
+        style={playersOnTile.length > 1
+          ? { gridTemplateColumns: `repeat(${playersOnTile.length - 1}, minmax(0, var(--token-size))) var(--token-size)` }
+          : undefined}
+      >
         {playersOnTile.map(player => (
           <PlayerToken key={player.id} player={player} />
         ))}

@@ -10,13 +10,8 @@ function PartMark({ part }) {
   switch (part) {
     case 'engine': // hexagon
       return <polygon className="tf-fg" points="50,34 64,42 64,58 50,66 36,58 36,42" />;
-    case 'propeller': // four blades
-      return (
-        <g className="tf-fg">
-          <rect x="46" y="32" width="8" height="36" />
-          <rect x="32" y="46" width="36" height="8" />
-        </g>
-      );
+    case 'propeller': // eight spokes
+      return <polygon className="tf-fg" points="60.62,45.60 70.00,45.60 70.00,54.40 60.62,54.40 67.25,61.03 61.03,67.25 54.40,60.62 54.40,70.00 45.60,70.00 45.60,60.62 38.97,67.25 32.75,61.03 39.38,54.40 30.00,54.40 30.00,45.60 39.38,45.60 32.75,38.97 38.97,32.75 45.60,39.38 45.60,30.00 54.40,30.00 54.40,39.38 61.03,32.75 67.25,38.97" />;
     case 'crystal': // diamond
       return <polygon className="tf-fg" points="50,32 66,50 50,68 34,50" />;
     default: // steering: a ring

@@ -14,14 +14,16 @@ const SHAPES = {
   meteorologist: <polygon points="11,3 21,3 29,11 29,21 21,29 11,29 3,21 3,11" />,
 };
 // Letters sit a little lower in the shapes that narrow towards the top.
-const LETTER_Y = { waterCarrier: 20, climber: 22 };
+const LETTER_Y = { waterCarrier: 20, climber: 20 };
+const LETTER_SIZE = { climber: 12.5 };
 
 export function PlayerGlyph({ type }) {
   return (
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
       <g className="token-halo">{SHAPES[type] ?? SHAPES.explorer}</g>
       <g className="token-shape">{SHAPES[type] ?? SHAPES.explorer}</g>
-      <text x="16" y={LETTER_Y[type] ?? 16} textAnchor="middle" dominantBaseline="central">
+      <text x="16" y={LETTER_Y[type] ?? 16} textAnchor="middle" dominantBaseline="central"
+        style={LETTER_SIZE[type] ? { fontSize: LETTER_SIZE[type] } : undefined}>
         {type.charAt(0).toUpperCase()}
       </text>
     </svg>

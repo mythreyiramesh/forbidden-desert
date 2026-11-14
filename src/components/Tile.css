@@ -1,4 +1,5 @@
 .tile {
+  --token-size: 28px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -80,7 +81,7 @@
 /* Buttons sit below the sand marker, or straight under any part standing on the tile. */
 .tile-actions {
   position: relative;
-  z-index: var(--z-raised);
+  z-index: calc(var(--z-raised) + 1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,14 +111,22 @@
   bottom: var(--space-2xs);
   left: var(--space-2xs);
   right: var(--space-2xs);
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--token-size);
+  align-items: end;
   z-index: var(--z-raised);
+  pointer-events: none;
+}
+
+/* A crowd fans out in a single row, each token overlapping the next, so the buttons above stay clear. */
+.tile .player-token {
+  pointer-events: auto;
 }
 
 .tile .parts-on-tile {
   position: relative;
-  z-index: var(--z-raised);
+  z-index: calc(var(--z-raised) + 1);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
