@@ -4,6 +4,7 @@ import initialEquipment from '../equipmentDeck.json';
 import playerInfo from '../playerInfoData.json';
 import partInfo from '../partInfoData.json';
 import { shuffleArray, getRandomInt, getCardsToDraw } from './rules';
+import { ACTIONS_PER_TURN } from './tracking';
 
 export const DEFAULT_NO_OF_PLAYERS = 6;
 
@@ -59,6 +60,9 @@ export function createInitialState(noOfPlayers = DEFAULT_NO_OF_PLAYERS) {
     orderedPlayerIndices: [],
     currentPlayer: null,
     cardsDrawnInTurn: null,
+    turnNumber: 1,
+    actionsLeft: ACTIONS_PER_TURN,
+    log: [],
     parts: partInfo,
     stormLevel: 1,
     cardsToDraw: getCardsToDraw(1, noOfPlayers),

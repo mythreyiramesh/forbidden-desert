@@ -48,6 +48,7 @@ function Legend({ onClose }) {
             <Item specimen={<span className="tile storm legend-box" />}>The storm. Tiles it leaves behind gain sand.</Item>
             <Item specimen={<span className="sand-badge">1</span>}>Sand. Click to remove one level.</Item>
             <Item specimen={<span className="tile blocked legend-box" />}>Tinted: two or more sand, the tile is blocked.</Item>
+            <Item specimen={<span className="sand-badge">+</span>}>Corrections mode: adds a level of sand.</Item>
           </ul>
         </div>
 

@@ -10,7 +10,7 @@ import './Tile.css';
 import desertTiles from '../desertTiles.json';
 
 function Tile({ id, type, sandLevel, excavated, desertID }) {
-  const { dispatch, state } = useGameState();
+  const { dispatch, state, fixMode } = useGameState();
   const [{ isOver }, drop] = useDrop({
     accept: ['PLAYER', 'PART'],
     canDrop: () => {
@@ -41,6 +41,9 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
     if (sandLevel > 0) {
       dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: -1 } });
     }
+  };
+  const addSand = () => {
+    dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: 1 } });
   };
   const excavateTile = () => {
     dispatch({ type: 'EXCAVATE_TILE', payload: { tileId: id, treasure: treasureFull } });
@@ -94,6 +97,10 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
           <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}
             aria-label={`Remove sand (level ${sandLevel})`} title="Remove sand">{sandLevel}</button>
         </div>
+      )}
+      {fixMode && type !== 'storm' && (
+        <button className="add-sand" onClick={addSand} disabled={state.sandPile <= 0}
+          aria-label="Add sand" title="Add sand (correction)">+</button>
       )}
       {type !== 'storm' && (
         <div className="tile-actions">

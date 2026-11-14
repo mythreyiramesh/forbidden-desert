@@ -153,3 +153,16 @@
   background-color: color-mix(in oklab, var(--color-accent-2) 22%, var(--color-paper-2));
   border-color: var(--color-accent-2);
 }
+
+/* Corrections mode: a plus in the top right corner adds a level of sand. */
+.add-sand {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  z-index: calc(var(--z-raised) + 2);
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  font-size: var(--text-lg);
+  line-height: 1;
+}

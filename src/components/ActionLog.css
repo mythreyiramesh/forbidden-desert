@@ -1,0 +1,29 @@
+.log-scroll {
+  max-height: 16rem;
+  overflow-y: auto;
+  padding-right: var(--space-2xs);
+}
+
+.log-scroll section + section {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-xs);
+  border-top: var(--rule-hair) solid var(--color-muted);
+}
+
+.log-scroll h4 {
+  margin-bottom: var(--space-3xs);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.log-scroll ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.log-scroll li {
+  padding: var(--space-3xs) 0;
+  font-size: var(--text-sm);
+  line-height: 1.35;
+}

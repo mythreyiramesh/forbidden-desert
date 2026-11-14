@@ -120,6 +120,15 @@ button.primary:disabled {
   background: var(--color-paper-3);
 }
 
+button.is-on {
+  background: var(--color-accent-2);
+  color: var(--color-paper);
+}
+
+button.is-on:hover:not(:disabled) {
+  background: var(--color-ink-2);
+}
+
 button.with-icon {
   display: inline-flex;
   align-items: center;

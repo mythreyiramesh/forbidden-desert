@@ -4,7 +4,7 @@ import EquipmentToken from './EquipmentToken';
 import './EquipmentManager.css';
 
 function EquipmentManager() {
-  const { state, dispatch } = useGameState();
+  const { state, dispatch, fixMode } = useGameState();
 
   const assignEquipment = (equipmentId, playerId) => {
     dispatch({ type: 'ASSIGN_EQUIPMENT', payload: { equipmentId, playerId } });
@@ -18,6 +18,11 @@ function EquipmentManager() {
     dispatch( {type: 'MAKE_TILE_UNSHIELDED', payload: {equipmentId}} );
     dispatch({ type: 'DEACTIVATE_SHIELD', payload: { equipmentId } });
   };
+
+  const usedEquipment = state.equipmentIds
+    .slice(0, state.assignedEquipmentCount)
+    .map(id => state.equipment.find(eq => eq.id === id))
+    .filter(item => item.used);
 
   const availableEquipment = state.equipmentIds
     .slice(0, state.assignedEquipmentCount)
@@ -84,6 +89,22 @@ return (
         </table>
       ) : (
         <p className="stat-note">No equipment yet. Excavate gear tiles to find some.</p>
+      )}
+      {fixMode && usedEquipment.length > 0 && (
+        <div className="used-equipment">
+          <h4>Used equipment</h4>
+          <ul>
+            {usedEquipment.map(item => (
+              <li key={item.id}>
+                <EquipmentToken type={item.type} />
+                <span>{item.type}</span>
+                <button onClick={() => dispatch({ type: 'RESTORE_EQUIPMENT', payload: { equipmentId: item.id } })}>
+                  Restore
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

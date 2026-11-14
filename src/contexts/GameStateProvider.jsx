@@ -5,19 +5,22 @@ import { createInitialState } from '../game/createInitialState';
 
 const GameStateContext = createContext();
 
-const STORAGE_KEY = 'forbidden-desert-save-v1';
+const STORAGE_KEY = 'forbidden-desert-save-v2';
 const MAX_HISTORY = 100;
 
 // Wraps the game reducer with undo history and "new game".
-// Shape: { game, history } where history is a stack of earlier `game` states.
+// Shape: { game, history, fixMode } where history is a stack of earlier `game` states and
+// fixMode (corrections tools on view) is interface state that is not part of the game or its undo.
 export function sessionReducer(session, action) {
   switch (action.type) {
     case 'NEW_GAME':
-      return { game: createInitialState(), history: [] };
+      return { game: createInitialState(), history: [], fixMode: false };
+    case 'TOGGLE_FIX_MODE':
+      return { ...session, fixMode: !session.fixMode };
     case 'UNDO': {
       if (session.history.length === 0) return session;
       const history = session.history.slice(0, -1);
-      return { game: session.history[session.history.length - 1], history };
+      return { ...session, game: session.history[session.history.length - 1], history };
     }
     default: {
       const game = gameStateReducer(session.game, action);
@@ -26,7 +29,7 @@ export function sessionReducer(session, action) {
       const history = session.game.gameStarted
         ? [...session.history, session.game].slice(-MAX_HISTORY)
         : [];
-      return { game, history };
+      return { ...session, game, history };
     }
   }
 }
@@ -34,11 +37,11 @@ export function sessionReducer(session, action) {
 function loadSession() {
   try {
     const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
-    if (saved && saved.game && Array.isArray(saved.history)) return saved;
+    if (saved && saved.game && Array.isArray(saved.history)) return { ...saved, fixMode: false };
   } catch (e) {
     // ignore: unavailable or corrupt storage falls back to a new game
   }
-  return { game: createInitialState(), history: [] };
+  return { game: createInitialState(), history: [], fixMode: false };
 }
 
 export function GameStateProvider({ children }) {
@@ -56,6 +59,7 @@ export function GameStateProvider({ children }) {
     state: session.game,
     dispatch,
     canUndo: session.history.length > 0,
+    fixMode: session.fixMode,
   };
 
   return <GameStateContext.Provider value={value}>{children}</GameStateContext.Provider>;

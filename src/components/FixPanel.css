@@ -1,0 +1,22 @@
+.fix-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.fix-panel > h3 {
+  margin-bottom: 0;
+}
+
+.fix-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.fix-value {
+  min-width: 2ch;
+  text-align: center;
+  font-weight: 500;
+}

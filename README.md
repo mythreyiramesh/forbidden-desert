@@ -14,18 +14,29 @@ Assuming you know how to play the actual game, keep these in mind when using thi
 
 1. Set up the game: no of players, choice of players and the order of play. Freeze the options and Start Game.
 2. The players will all start on a random tile (the back could be a gear, or not. This is different from the actual game).
-3. Players can be dragged and dropped. The web app doesn't keep track of turns or actions or legality of actions. It's up to you. You can use the order of players on the right to keep track of play order.
+3. Players can be dragged and dropped. The web app doesn't check that your actions are legal; that's up to you. It does keep count for you: the turn panel shows whose turn it is, how many actions are left (4 a turn) and how many storm cards have been drawn out of how many you must draw, and it tells you when to draw and when to pass the turn. It counts moving the current player, removing sand, excavating and picking up a part. Moving another player (for example the Climber carrying someone), sharing water and using most equipment are free. The Time Throttler adds 2 actions automatically. If the count is off (a Dune Blaster that removed sand for free, say), use the − and + beside the action count.
 4. Click on sand markers to remove sand one at a time. Sand clearing action cannot be undone.
 5. Adjust water levels near players to share water or gain water from wells. Gaining water isn't automatic, and if you see a lake that's a real well, the fake well is just dunes. All three will have a water emoji when unexcavated.
 8. Equipments must be assigned to players manually and can be used once assigned. Dune Blaster, Jet Pack, Water Reserve are all up to you to keep track. Terrascope lets you peek at a tile, and the peeked tile will permanently display the description of what you'll find on excavation. Solar Shield will activate shielding from the sun, but you must make sure to turn it off once it's active period is done.
-6. Draw storm cards equal to what is displayed on the left. The web app doesn't keep track of how many you must draw. The storm effects are applied automatically. If sun beats down, even players in tunnel and those protected by active solar shields don't lost water. If you've made a mistake by not turning off Solar Shield, turn it off, and adjust water back manually.
+6. Draw storm cards equal to what is displayed on the left; the turn panel counts them for you but won't stop you drawing more. The storm effects are applied automatically. If sun beats down, even players in tunnel and those protected by active solar shields don't lost water. If you've made a mistake by not turning off Solar Shield, turn it off, and adjust water back manually.
 7. Solar Shielding logic assumes that the same player will not use two Solar Shields at once. You may see undefined behaviour if you try enough.
 9. Once both vertical and horizontal clues have been excavated, the parts become draggable. Once you drop the part on a tile, it can't be moved. Make sure to drop it correctly. A check box appears to pick up the part if rules are met.
 10. Players can not blocked from entering blocked tiles by the app, you must figure out whether you're making legal moves.
 11. Storm Deck has an extra shuffle button, be careful when nearing the end of the deck and don't include shuffle as one of the storm cards.
 12. Number of Sun and Storm cards left are displayed below the storm deck, so are the number of cards.
 13. Meteologist being present in the game will enable "Reveal" action near storm deck. Cards equal to number to draw will be revealed, and one can be optionally sent to the bottom.
-14. If one of the loss conditions or the win condition is met, an animation pops up. Some buttons will still work after animation shows. To reset, refresh the app.
+14. If one of the loss conditions or the win condition is met, a message pops up and the board stops accepting changes. Press Undo to take back the last move, or New Game to start again.
+15. The game saves itself in your browser, so a refresh keeps your game. Undo steps back through your moves, including storm draws.
+16. The log on the left lists what happened, turn by turn, newest first.
+17. The Corrections button shows tools for when the app and your real board disagree: a + on every tile to add sand, the storm level and the sand pile (− and +), and a Restore button for used equipment. Undo takes back any correction.
+18. The Legend button explains every tile face, token and icon.
+
+## Roadmap
+
+Not built yet, in the order I'd do them:
+
+- **Start everyone on the crash site.** An optional setup rule. Right now all players start together on one random tile, which is deliberate here but differs from the official game.
+- **Multiplayer sync.** Today one person drives a shared screen. Syncing would send the game state (which is already one serialisable object, saved to the browser after every change) to a small realtime service, such as PartyKit, Cloudflare Durable Objects or Supabase Realtime, or go peer to peer with Trystero or PeerJS. GitHub Pages only serves static files, so this needs a backend or a peer-to-peer library, and a hosting choice to go with it.
 
 ## Feedback
 

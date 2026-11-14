@@ -13,13 +13,15 @@ import TurnTracker from './components/TurnTracker';
 import GameOverAnimation from './components/GameOverAnimation';
 import EquipmentManager from './components/EquipmentManager';
 import Legend from './components/Legend';
+import ActionLog from './components/ActionLog';
+import FixPanel from './components/FixPanel';
 import { InfoIcon } from './components/Icons';
 import { GameStateProvider, useGameState } from './contexts/GameStateProvider';
 import './App.css';
 
 // Create a wrapper component to use the game state hook
 const GameContent = () => {
-  const { state, dispatch, canUndo } = useGameState();
+  const { state, dispatch, canUndo, fixMode } = useGameState();
   const [legendOpen, setLegendOpen] = useState(false);
 
   const newGame = () => {
@@ -41,6 +43,15 @@ const GameContent = () => {
           >
             <InfoIcon /> Legend
           </button>
+          {state.gameStarted && (
+            <button
+              className={fixMode ? 'is-on' : ''}
+              onClick={() => dispatch({ type: 'TOGGLE_FIX_MODE' })}
+              aria-pressed={fixMode}
+            >
+              Corrections
+            </button>
+          )}
           <button onClick={() => dispatch({ type: 'UNDO' })} disabled={!canUndo}>Undo</button>
           <button onClick={newGame}>New Game</button>
         </div>
@@ -56,6 +67,8 @@ const GameContent = () => {
           )}
           {state.gameStarted && <TurnTracker />}
           {state.gameStarted && <StormDeck />}
+          {state.gameStarted && fixMode && <FixPanel />}
+          {state.gameStarted && <ActionLog />}
         </aside>
         <main className="game-column">
           <GameBoard />

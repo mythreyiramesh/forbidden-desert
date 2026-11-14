@@ -43,3 +43,28 @@
 .equipment-manager select {
   max-width: 100%;
 }
+
+.used-equipment {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-muted);
+}
+
+.used-equipment ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.used-equipment li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.used-equipment li span {
+  flex: 1;
+}

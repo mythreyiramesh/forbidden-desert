@@ -1,7 +1,13 @@
 // src/game/reducer.js
 import { shuffleArray, getCardsToDraw } from './rules';
+import { ACTIONS_PER_TURN, trackAction } from './tracking';
 
+// The reducer proper, followed by turn bookkeeping (action count and log) on whatever changed.
 export function gameStateReducer(state, action) {
+  return trackAction(state, action, applyAction(state, action));
+}
+
+function applyAction(state, action) {
   // Prevent setup changes if the game is frozen
   if ((state.isFrozen && state.gameStarted) && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
                         'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX', 'SET_TILE_POSITIONS'].includes(action.type)) {
@@ -44,6 +50,14 @@ export function gameStateReducer(state, action) {
       return excavateTile(state, action.payload);
     case 'PEEK_TILE':
       return peekTile(state, action.payload);
+    case 'ADJUST_ACTIONS':
+      return adjustActions(state, action.payload);
+    case 'ADJUST_STORM_LEVEL':
+      return adjustStormLevel(state, action.payload);
+    case 'ADJUST_SAND_PILE':
+      return adjustSandPile(state, action.payload);
+    case 'RESTORE_EQUIPMENT':
+      return restoreEquipment(state, action.payload);
     case 'CANCEL_TERRASCOPE':
       return cancelTerrascope(state);
     case 'PLACE_PART':
@@ -100,6 +114,8 @@ function startGame(state) {
       gameStarted: true,
       currentPlayer: 0,
       cardsDrawnInTurn: 0,
+      turnNumber: 1,
+      actionsLeft: ACTIONS_PER_TURN,
     };
   }
   return state;
@@ -111,6 +127,8 @@ function resetTurnParameters(state) {
     ...state,
     currentPlayer: (state.currentPlayer + 1) % state.noOfPlayers,
     cardsDrawnInTurn: 0,
+    turnNumber: state.turnNumber + 1,
+    actionsLeft: ACTIONS_PER_TURN,
   };
 
 }
@@ -341,13 +359,15 @@ function finishRevealing(state) {
 
 function adjustSand(state, { tileId, amount }) {
   const target = state.tiles.find(tile => tile.id === tileId);
-  if (!target || (amount < 0 && target.sandLevel === 0)) return state;
+  if (!target || target.type === 'storm') return state;
+  if (amount < 0 && target.sandLevel === 0) return state;
+  if (amount > 0 && state.sandPile < amount) return state; // no markers left to add
+  const sandLevel = Math.max(0, target.sandLevel + amount);
   const newTiles = state.tiles.map(tile =>
-    tile.id === tileId ? { ...tile, sandLevel: Math.max(0, tile.sandLevel + amount) } : tile
+    tile.id === tileId ? { ...tile, sandLevel } : tile
   );
-  const sandRemoved = amount < 0 ? Math.abs(amount) : 0;
-  const newSandPile = Math.max(0, state.sandPile + sandRemoved);
-  return { ...state, tiles: newTiles, sandPile: newSandPile };
+  // Sand taken off a tile goes back to the pile; sand added comes out of it.
+  return { ...state, tiles: newTiles, sandPile: state.sandPile - (sandLevel - target.sandLevel) };
 }
 
 function excavateTile(state, { tileId, treasure }) {
@@ -374,6 +394,34 @@ function excavateTile(state, { tileId, treasure }) {
     });
   }
   return next;
+}
+
+// Manual corrections, for when the table's real board and the app disagree.
+function adjustActions(state, { amount }) {
+  const actionsLeft = Math.max(-8, Math.min(12, state.actionsLeft + amount));
+  return actionsLeft === state.actionsLeft ? state : { ...state, actionsLeft };
+}
+
+function adjustStormLevel(state, { delta }) {
+  const stormLevel = Math.max(1, Math.min(20, state.stormLevel + delta));
+  if (stormLevel === state.stormLevel) return state;
+  return { ...state, stormLevel, cardsToDraw: getCardsToDraw(stormLevel, state.noOfPlayers) };
+}
+
+function adjustSandPile(state, { delta }) {
+  const sandPile = Math.max(0, Math.min(99, state.sandPile + delta));
+  return sandPile === state.sandPile ? state : { ...state, sandPile };
+}
+
+function restoreEquipment(state, { equipmentId }) {
+  const item = state.equipment.find(eq => eq.id === equipmentId);
+  if (!item || !item.used) return state;
+  return {
+    ...state,
+    equipment: state.equipment.map(eq =>
+      eq.id === equipmentId ? { ...eq, used: false, active: false } : eq
+    ),
+  };
 }
 
 function peekTile(state, {tileId, terraScopeIndex}) {
