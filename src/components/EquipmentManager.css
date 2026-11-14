@@ -22,11 +22,24 @@
   border-bottom: 0;
 }
 
-.equipment-manager td:last-child {
+.equipment-type {
   display: flex;
-  gap: var(--space-2xs);
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.equipment-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3xs);
+  min-width: 0;
+}
+
+.equipment-actions > * + * {
+  margin-left: var(--space-2xs);
 }
 
 .equipment-manager select {
-  max-width: 9rem;
+  max-width: 100%;
 }

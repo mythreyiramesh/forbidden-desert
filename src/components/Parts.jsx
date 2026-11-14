@@ -7,7 +7,7 @@ import './Parts.css';
 
 const Mark = ({ found }) => (
   <>
-    {found ? <CheckIcon /> : <DashIcon />}
+    {found ? <span className="found-mark"><CheckIcon /></span> : <DashIcon />}
     <span className="visually-hidden">{found ? 'Yes' : 'No'}</span>
   </>
 );

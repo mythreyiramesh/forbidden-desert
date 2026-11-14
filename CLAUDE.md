@@ -20,4 +20,4 @@ A React (Vite) stand-in for the Forbidden Desert board game, used for screenshar
 - **Player `id` is not the array index.** `players[]` is in file order (e.g. Explorer id 2 at index 0); `orderedPlayerIndices` holds array indices, while water, shield and move actions take ids.
 - **Board** is a 5x5 grid (positions 0–24); `tiles[i].id` is the board position, `desertID` points into `desertTiles.json` (not sorted by id: always `.find()`). Storm movement swaps tiles, so players/parts follow positions via tile id.
 - **Components** (`src/components/*.jsx`) are thin views that dispatch single actions; keep multi-step rules (e.g. move + shield + win check) inside the reducer. Drag-and-drop uses react-dnd (HTML5 backend).
-- **Static data** in `src/*.json`; tile art in `public/tile_images/<desertID>.png`, referenced via `import.meta.env.BASE_URL`.
+- **Static data** in `src/*.json`; tile faces are SVG drawn in `components/TileFace.jsx` from the theme tokens, keyed by `desertID`.

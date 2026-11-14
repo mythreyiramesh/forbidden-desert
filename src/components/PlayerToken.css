@@ -1,16 +1,29 @@
 .player-token {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   margin: var(--space-3xs);
-  border: var(--rule-bar) solid var(--color-paper);
-  border-radius: 50%;
-  box-shadow: 0 0 0 var(--rule-hair) var(--color-ink);
+  filter: drop-shadow(2px 2px 0 var(--color-ink));
+}
+
+.player-token svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.token-shape {
+  fill: var(--token-bg);
+  stroke: var(--color-ink);
+  stroke-width: 2;
+  stroke-linejoin: miter;
+}
+
+.player-token text {
+  fill: var(--token-ink);
+  font-family: var(--font-body);
+  font-size: 14px;
   font-weight: 500;
-  background: var(--token-bg);
-  color: var(--token-ink);
 }
 
 .player-token.explorer { --token-bg: var(--token-explorer); --token-ink: var(--token-explorer-ink); }
@@ -22,7 +35,7 @@
 
 /* Tokens standing on a tile are smaller so a full table still leaves room for the tile's actions. */
 .tile .player-token {
-  width: 24px;
-  height: 24px;
-  font-size: var(--text-xs);
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(1px 1px 0 var(--color-ink));
 }

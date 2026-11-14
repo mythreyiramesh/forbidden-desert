@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGameState } from '../contexts/GameStateProvider';
+import EquipmentToken from './EquipmentToken';
 import './EquipmentManager.css';
 
 function EquipmentManager() {
@@ -30,16 +31,18 @@ return (
         <table>
           <thead>
             <tr>
-              <th>Type</th>
-              <th>Carried by</th>
+              <th>Item and carrier</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {availableEquipment.map(item => (
               <tr key={item.id}>
-                <td>{item.type}</td>
                 <td>
+                  <div className="equipment-type">
+                  <EquipmentToken type={item.type} active={!!item.active} />
+                  <div className="equipment-info">
+                  <span>{item.type}</span>
                   <select
                     aria-label={`Carried by (${item.type})`}
                     value={item.playerId ?? ''}
@@ -56,8 +59,10 @@ return (
                       );
                     })}
                   </select>
+                  </div>
+                  </div>
                 </td>
-                <td>
+                <td className="equipment-actions">
                   {item.playerId != null && !state.terrascopeInUse && !item.active && (
                     <button onClick={() => tryEquipment(item.id)}>Use</button>
                   )}

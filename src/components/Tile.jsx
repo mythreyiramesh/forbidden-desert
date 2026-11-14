@@ -4,7 +4,8 @@ import { useDrop } from 'react-dnd';
 import { useGameState } from '../contexts/GameStateProvider';
 import PlayerToken from './PlayerToken';
 import PartToken from './PartToken';
-import { WaterIcon, StormIcon } from './Icons';
+import TileFace from './TileFace';
+import { StormIcon } from './Icons';
 import './Tile.css';
 import desertTiles from '../desertTiles.json';
 
@@ -36,7 +37,6 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
         ? desertTiles.find(tile => tile.id === desertID)
         : null;
 
-  const imagePath = `${import.meta.env.BASE_URL}tile_images/${desertID}.png`;
   const removeSand = () => {
     if (sandLevel > 0) {
       dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: -1 } });
@@ -71,13 +71,14 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
       className={[
         'tile', type,
         excavated && 'excavated',
+        !excavated && treasureFull?.type === 'water' && 'has-water',
         isOver && 'drag-over',
         state.terrascopeInUse && excavated && state.peekedTileIds.includes(null) && 'terrascope-active',
         state.peekedTileIds.includes(id) && 'peeked',
         sandLevel > 1 && 'blocked',
       ].filter(Boolean).join(' ')}
-      style={excavated ? { backgroundImage: `url(${imagePath})` } : {}}
     >
+      {excavated && type !== 'storm' && <TileFace desertID={desertID} />}
       {partsOnTile.length > 0 && (
         <div className="parts-on-tile">
           {partsOnTile.map(part => (
@@ -110,7 +111,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
               (playersOnTile.length > 0 && sandLevel === 0) && <button onClick={excavateTile} className="excavate-button">Excavate</button>
             )
           ) : null}
-          {!excavated && treasureFull.type === 'water' && <div className="water-icon" role="img" aria-label="Water"><WaterIcon /></div>}
+          {!excavated && treasureFull.type === 'water' && <span className="visually-hidden">Water</span>}
           {/* {/\*for testing purposes since image directory is incorrect*\/} */}
           {/* { excavated && tileDescription ? ( */}
           {/*   <div className="tile-description">{tileDescription}</div> */}

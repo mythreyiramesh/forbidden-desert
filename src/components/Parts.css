@@ -32,6 +32,23 @@
   color: var(--color-muted);
 }
 
-.parts td.found svg {
-  color: var(--color-success);
+.parts td.found .found-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-lg);
+  height: var(--space-lg);
+  margin-inline: auto;
+  background: var(--color-success);
+  color: var(--color-paper);
+  border: var(--rule-bar) solid var(--color-ink);
+  border-radius: var(--radius-card);
+  box-shadow: 2px 2px 0 var(--color-ink);
+}
+
+.parts td.found .found-mark svg {
+  width: var(--space-md);
+  height: var(--space-md);
+  color: inherit;
+  stroke-width: 3.500;
 }

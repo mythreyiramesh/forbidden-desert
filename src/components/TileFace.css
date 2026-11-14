@@ -1,0 +1,33 @@
+.tile-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.f-ink { fill: var(--color-ink); }
+.f-ink2 { fill: var(--color-ink-2); }
+.f-paper { fill: var(--color-paper); }
+.f-paper3 { fill: var(--color-paper-3); }
+.f-accent { fill: var(--color-accent); }
+.f-water { fill: var(--color-water); }
+.f-part-engine { fill: var(--part-engine); }
+.f-part-propeller { fill: var(--part-propeller); }
+.f-part-crystal { fill: var(--part-crystal); }
+.f-part-steering { fill: var(--part-steering); }
+
+.s-paper,
+.s-ink2 {
+  fill: none;
+  stroke-width: 3;
+}
+
+.s-paper { stroke: var(--color-paper); }
+.s-ink2 { stroke: var(--color-ink-2); }
+.dashed { stroke-dasharray: 5 5; }
+
+/* Clue arrows and part marks: paper on every part colour but the light crystal. */
+.tf-fg { fill: var(--color-paper); }
+.tf-fg-ring { fill: none; stroke: var(--color-paper); stroke-width: 6; }
+.on-light .tf-fg { fill: var(--color-ink); }
+.on-light .tf-fg-ring { stroke: var(--color-ink); }
