@@ -12,7 +12,6 @@ function StormDeck() {
 
   const revealCards = () => {
     const noOfCardsToReveal = Math.min(state.cardsToDraw, state.stormDeck.length);
-    console.log(noOfCardsToReveal);
     dispatch({ type: 'REVEAL_STORM_CARDS', payload: {noOfCards: noOfCardsToReveal} });
   };
 

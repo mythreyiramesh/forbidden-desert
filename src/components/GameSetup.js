@@ -34,11 +34,10 @@ const GameSetup = () => {
   const { isFrozen, gameStarted } = state;
 
   const handleStartGame = () => {
-    const crashId = state.tiles.find(tile =>
-      tile.desertID && desertTiles[tile.desertID - 1].type === 'crash'
-    )?.id ?? null;
+    const typeOf = (tile) => desertTiles.find(t => t.id === tile.desertID)?.type;
+    const crashId = state.tiles.find(tile => tile.desertID && typeOf(tile) === 'crash')?.id ?? null;
     const tunnelIds = state.tiles.reduce((acc, tile) => {
-      if (tile.desertID && desertTiles[tile.desertID - 1].type === 'tunnel') {
+      if (tile.desertID && typeOf(tile) === 'tunnel') {
         acc.push(tile.id);
       }
       return acc;

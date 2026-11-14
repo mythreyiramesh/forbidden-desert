@@ -11,7 +11,6 @@ function EquipmentManager() {
 
   const tryEquipment = (equipmentId) => {
     dispatch({ type: 'USE_EQUIPMENT', payload: { equipmentId } });
-    console.log(state.solarShieldTiles);
   };
 
   const deactivateShield = (equipmentId) => {
@@ -42,7 +41,8 @@ return (
                 <td>{item.type}</td>
                 <td>
                   <select
-                    value={item.playerId || ''}
+                    value={item.playerId ?? ''}
+                    disabled={!!item.active}
                     onChange={(e) => assignEquipment(item.id, e.target.value)}
                   >
                     <option value="">Unassigned</option>
@@ -57,14 +57,12 @@ return (
                   </select>
                 </td>
                 <td>
-                  <button
-                    onClick={() => tryEquipment(item.id)}
-                    style={{
-                      display: item.playerId && (!state.terrascopeInUse && !item.active)  ? 'inline-block' : 'none'
-                    }}
-                  >
-                    Use
-                  </button>
+                  {item.playerId != null && !state.terrascopeInUse && !item.active && (
+                    <button onClick={() => tryEquipment(item.id)}>Use</button>
+                  )}
+                  {state.terrascopeInUse === item.id && (
+                    <button onClick={() => dispatch({ type: 'CANCEL_TERRASCOPE' })}>Cancel</button>
+                  )}
                   <button
                     onClick={() => deactivateShield(item.id)}
                     style={{

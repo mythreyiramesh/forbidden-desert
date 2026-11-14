@@ -9,7 +9,7 @@ const GameStateContext = createContext();
 const randomStartPosition = getRandomInt(0, 24);
 const decidedNoOfPlayers = 6;
 
-const initialState = {
+export const initialState = {
   isFrozen: false,
   gameStarted: false,
   noOfPlayers: decidedNoOfPlayers,
@@ -77,10 +77,15 @@ const initialState = {
 };
 
 
-function gameStateReducer(state, action) {
+export function gameStateReducer(state, action) {
   // Prevent setup changes if the game is frozen
   if ((state.isFrozen && state.gameStarted) && ['SET_PLAYER_COUNT', 'SET_STORM_LEVEL', 'SET_ORDERED_PLAYER_INDICES',
                         'ADD_ORDERED_PLAYER_INDEX', 'REMOVE_ORDERED_PLAYER_INDEX', 'SET_TILE_POSITIONS'].includes(action.type)) {
+    return state;
+  }
+
+  // Once the game has ended, nothing else may change the outcome
+  if (state.gameOver) {
     return state;
   }
 
@@ -97,8 +102,6 @@ function gameStateReducer(state, action) {
       return removeOrderedPlayerIndex(state, action.payload);
     case 'SET_TILE_POSITIONS':
       return setTilePositions(state, action.payload);
-    case 'MOVE_TILE':
-      return moveTile(state, action.payload);
     case 'MOVE_PLAYER':
       return movePlayer(state, action.payload);
     case 'ADJUST_WATER':
@@ -117,12 +120,12 @@ function gameStateReducer(state, action) {
       return excavateTile(state, action.payload);
     case 'PEEK_TILE':
       return peekTile(state, action.payload);
+    case 'CANCEL_TERRASCOPE':
+      return cancelTerrascope(state);
     case 'PLACE_PART':
       return placePart(state, action.payload);
     case 'PICK_UP_PART':
       return pickUpPart(state, action.payload)
-    case 'MOVE_STORM':
-      return moveStorm(state, action.payload);
     case 'ASSIGN_EQUIPMENT':
       return handleAssignEquipment(state, action.payload);
     case 'USE_EQUIPMENT':
@@ -234,22 +237,15 @@ function setTilePositions(state, {crashID, tunnelIDs}) {
   };
 }
 
-function moveTile(state, { from, to }) {
-  // Don't allow moving the storm tile
-  if (state.tiles[from].type === 'storm' || state.tiles[to].type === 'storm') {
-    return state;
-  }
-
-  const newTiles = [...state.tiles];
-  [newTiles[from], newTiles[to]] = [newTiles[to], newTiles[from]];
-  return { ...state, tiles: newTiles };
-}
-
 function movePlayer(state, { playerId, newPosition }) {
-  const newPlayers = state.players.map(player =>
+  const mover = state.players.find(player => player.id === playerId);
+  if (!mover) return state;
+  let moved = updateShield(state, { playerId, oldPosition: mover.position, newPosition });
+  const newPlayers = moved.players.map(player =>
     player.id === playerId ? { ...player, position: newPosition } : player
   );
-  return { ...state, players: newPlayers };
+  moved = { ...moved, players: newPlayers };
+  return checkWinCondition(moved);
 }
 
 function adjustWater(state, { playerId, amount }) {
@@ -263,17 +259,21 @@ function adjustWater(state, { playerId, amount }) {
   const anyoneThirsty = state.orderedPlayerIndices
                              .map(index => newPlayers[index])
                              .some((player) => player.water === 0);
-  return { ...state, players: newPlayers, gameOver: anyoneThirsty ? true : false, gameResult: anyoneThirsty ? 'loss' : null };
+  if (anyoneThirsty) {
+    return { ...state, players: newPlayers, gameOver: true, gameResult: 'loss' };
+  }
+  return { ...state, players: newPlayers };
 }
 
 function drawStormCard(state) {
   if (state.stormDeck.length === 0) {
-    // Reshuffle discard pile into deck
-    return {
+    if (state.stormDiscard.length === 0) return state;
+    // Reshuffle discard pile into deck, then draw from it
+    return drawStormCard({
       ...state,
       stormDeck: shuffleArray([...state.stormDiscard]),
       stormDiscard: [],
-    };
+    });
   }
 
   const [drawnCard, ...remainingDeck] = state.stormDeck;
@@ -351,8 +351,8 @@ function moveStorm(state, moves, direction) {
       break;
     }
   }
-  if ((state.sandPile - sandAdded) <= 0) {
-    // Game over condition - storm has overtaken the desert
+  if ((state.sandPile - sandAdded) < 0) {
+    // Game over: a sand marker was needed but the supply is empty
     return { ...state,
              gameOver: true,
              gameResult: 'loss',
@@ -416,6 +416,8 @@ function finishRevealing(state) {
 
 
 function adjustSand(state, { tileId, amount }) {
+  const target = state.tiles.find(tile => tile.id === tileId);
+  if (!target || (amount < 0 && target.sandLevel === 0)) return state;
   const newTiles = state.tiles.map(tile =>
     tile.id === tileId ? { ...tile, sandLevel: Math.max(0, tile.sandLevel + amount) } : tile
   );
@@ -425,39 +427,29 @@ function adjustSand(state, { tileId, amount }) {
 }
 
 function excavateTile(state, { tileId, treasure }) {
+  const target = state.tiles.find(tile => tile.id === tileId);
+  if (!target || target.excavated || !treasure) return state;
+
   const newTiles = state.tiles.map(tile =>
     tile.id === tileId ? { ...tile, excavated: true } : tile
   );
-  let updatedParts = state.parts;
-  let updatedExcavatedTunnelTiles = state.excavatedTunnelTiles;
-  if (treasure.type === 'gear' || treasure.type === 'tunnel') {
-    if (state.assignedEquipmentCount < state.equipmentIds.length) {
-      if (treasure.type === 'tunnel') {
-        updatedExcavatedTunnelTiles = [...state.excavatedTunnelTiles, tileId];
-      }
-      return {
-        ...state,
-        tiles: newTiles,
-        assignedEquipmentCount: state.assignedEquipmentCount + 1,
-        excavatedTunnelTiles: updatedExcavatedTunnelTiles,
-      };
-    }
+  let next = { ...state, tiles: newTiles };
+
+  if (treasure.type === 'tunnel') {
+    next.excavatedTunnelTiles = [...state.excavatedTunnelTiles, tileId];
+  }
+  if ((treasure.type === 'gear' || treasure.type === 'tunnel') &&
+      state.assignedEquipmentCount < state.equipmentIds.length) {
+    next.assignedEquipmentCount = state.assignedEquipmentCount + 1;
   } else if (treasure.type === 'clue') {
-    updatedParts = state.parts.map(part => {
-      if (treasure.direction === 'horizontal' && treasure.part === part.type) {
-        return { ...part, horizontalClue: true };
-      } else if (treasure.direction === 'vertical' && treasure.part === part.type) {
-        return { ...part, verticalClue: true };
-      }
+    next.parts = state.parts.map(part => {
+      if (treasure.part !== part.type) return part;
+      if (treasure.direction === 'horizontal') return { ...part, horizontalClue: true };
+      if (treasure.direction === 'vertical') return { ...part, verticalClue: true };
       return part;
     });
   }
-  return {
-    ...state,
-    tiles: newTiles,
-    parts: updatedParts,
-    excavatedTunnelTiles: updatedExcavatedTunnelTiles,
-  };
+  return next;
 }
 
 function peekTile(state, {tileId, terraScopeIndex}) {
@@ -469,6 +461,16 @@ function peekTile(state, {tileId, terraScopeIndex}) {
     equipment: state.equipment.map(eq =>
       eq.id === state.terrascopeInUse ? { ...eq, used: true } : eq
     ),
+    terrascopeInUse: null,
+  };
+}
+
+function cancelTerrascope(state) {
+  if (!state.terrascopeInUse) return state;
+  const idx = state.peekedTileIds.lastIndexOf(null);
+  return {
+    ...state,
+    peekedTileIds: idx === -1 ? state.peekedTileIds : state.peekedTileIds.filter((_, i) => i !== idx),
     terrascopeInUse: null,
   };
 }
@@ -490,7 +492,7 @@ function pickUpPart(state, { partId }) {
     }
     return part;
   });
-  return { ...state, parts: pickedUpParts };
+  return checkWinCondition({ ...state, parts: pickedUpParts });
 }
 
 
@@ -498,13 +500,16 @@ function handleAssignEquipment(state, { equipmentId, playerId }) {
   return {
         ...state,
         equipment: state.equipment.map(eq =>
-          eq.id === equipmentId ? { ...eq, playerId, used: false } : eq
+          eq.id === equipmentId && !eq.active
+            ? { ...eq, playerId: playerId === '' || playerId == null ? null : Number(playerId), used: false }
+            : eq
         )
       };
 }
 
 function handleUseEquipment(state, { equipmentId }) {
   const equipment = state.equipment.find(eq => eq.id === equipmentId);
+  if (!equipment) return state;
 
   if (equipment.type === 'Terrascope') {
     return {
@@ -513,7 +518,10 @@ function handleUseEquipment(state, { equipmentId }) {
       terrascopeInUse: equipmentId,
     };
   } else if (equipment.type === 'Solar Shield') {
-    const eqPlayer = state.players.find(player => player.id === +equipment.playerId);
+    const eqPlayer = equipment.playerId == null
+      ? null
+      : state.players.find(player => player.id === Number(equipment.playerId));
+    if (!eqPlayer) return state;
     const activeTile = eqPlayer.position;
     return {
       ...state,
@@ -534,7 +542,7 @@ function handleUseEquipment(state, { equipmentId }) {
 
 function updateShield(state, { playerId, oldPosition, newPosition }) {
   const solarShieldWithPlayer = state.equipment.filter(
-    (eq) => Number(eq.playerId) === playerId && eq.type === 'Solar Shield' && eq.active
+    (eq) => eq.playerId != null && Number(eq.playerId) === playerId && eq.type === 'Solar Shield' && eq.active
   );
 
   if (solarShieldWithPlayer.length > 0) {
@@ -553,8 +561,10 @@ function updateShield(state, { playerId, oldPosition, newPosition }) {
 
 function makeTileUnshielded(state, { equipmentId }) {
   const equipment = state.equipment.find(eq => eq.id === equipmentId);
-  const playerWithThisEquipment = state.players.find(
-    (player) => Number(equipment.playerId) === player.id );
+  const playerWithThisEquipment = equipment && equipment.playerId != null
+    ? state.players.find(player => Number(equipment.playerId) === player.id)
+    : null;
+  if (!playerWithThisEquipment) return state;
   // Create a new solarShieldTiles array without the player's position
   const newSolarShieldTiles = state.solarShieldTiles.filter(
     (tile) => tile !== playerWithThisEquipment.position

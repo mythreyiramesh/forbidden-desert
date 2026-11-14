@@ -11,17 +11,13 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
   const { dispatch, state } = useGameState();
   const [{ isOver }, drop] = useDrop({
     accept: ['PLAYER', 'PART'],
-    canDrop: (item, monitor) => {
+    canDrop: () => {
       // Prevent dropping on storm tiles
       return type !== 'storm';
     },
     drop: (item) => {
       if (item.type === 'PLAYER') {
-        if (state.solarShieldActive) {
-          dispatch({ type: 'UPDATE_SHIELD', payload: { playerId: item.id, oldPosition: item.position, newPosition: id } });
-        }
         dispatch({ type: 'MOVE_PLAYER', payload: { playerId: item.id, newPosition: id } });
-        dispatch({ type: 'CHECK_WIN_CONDITION' });
       } else if (item.type === 'PART') {
         dispatch({ type: 'PLACE_PART', payload: { partId: item.id, tileId: id } });
       }
@@ -39,7 +35,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
         ? desertTiles.find(tile => tile.id === desertID)
         : null;
 
-  const imagePath = `./tile_images/${desertID}.png`;
+  const imagePath = `${process.env.PUBLIC_URL}/tile_images/${desertID}.png`;
   const removeSand = () => {
     if (sandLevel > 0) {
       dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: -1 } });
@@ -57,7 +53,6 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
 
   const handlePickUp = (partId) => {
     dispatch({ type: 'PICK_UP_PART', payload: { partId } });
-    dispatch({ type: 'CHECK_WIN_CONDITION' });
   };
 
   let playersOnTile;
@@ -102,7 +97,7 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
             ) : state.peekedTileIds.includes(id) ? (
               <>
                 <div className="tile-description">{tileDescription}</div>
-                {playersOnTile.length > 0 && <button onClick={excavateTile} className="excavate-button">Excavate</button>}
+                {(playersOnTile.length > 0 && sandLevel === 0) && <button onClick={excavateTile} className="excavate-button">Excavate</button>}
               </>
             ) : (
               (playersOnTile.length > 0 && sandLevel === 0) && <button onClick={excavateTile} className="excavate-button">Excavate</button>
