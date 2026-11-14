@@ -1,41 +1,28 @@
-/* src/components/PlayerToken.css */
 .player-token {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  color: white;
-  cursor: move;
-  margin: 2px;
-  border: 2px solid #F4A460; /* Added sand-colored border */
+  width: 32px;
+  height: 32px;
+  margin: var(--space-3xs);
+  border: var(--rule-bar) solid var(--color-paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--rule-hair) var(--color-ink);
+  font-weight: 500;
+  background: var(--token-bg);
+  color: var(--token-ink);
 }
 
-.player-token.waterCarrier {
-  background-color: darkblue;
-  color:lightblue;
-}
-.player-token.meteorologist {
-  background-color: firebrick;
-  color:gold;
-}
-.player-token.climber {
-  background-color: black;
-  color:yellow;
-}
-.player-token.archeologist {
-  background-color: blueviolet;
-  color: cornsilk;
-}
-.player-token.navigator {
-  background-color: greenyellow;
-  color: seagreen;
-}
-.player-token.explorer {
-  background-color: seagreen;
-  color:greenyellow;
-}
+.player-token.explorer { --token-bg: var(--token-explorer); --token-ink: var(--token-explorer-ink); }
+.player-token.waterCarrier { --token-bg: var(--token-water-carrier); --token-ink: var(--token-water-carrier-ink); }
+.player-token.climber { --token-bg: var(--token-climber); --token-ink: var(--token-climber-ink); }
+.player-token.archeologist { --token-bg: var(--token-archeologist); --token-ink: var(--token-archeologist-ink); }
+.player-token.navigator { --token-bg: var(--token-navigator); --token-ink: var(--token-navigator-ink); }
+.player-token.meteorologist { --token-bg: var(--token-meteorologist); --token-ink: var(--token-meteorologist-ink); }
 
-/* Add more player types as needed */
+/* Tokens standing on a tile are smaller so a full table still leaves room for the tile's actions. */
+.tile .player-token {
+  width: 24px;
+  height: 24px;
+  font-size: var(--text-xs);
+}

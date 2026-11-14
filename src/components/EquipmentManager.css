@@ -1,15 +1,4 @@
-/* .equipment-manager { */
-/*   background-color: #f0f0f0; */
-/*   border-radius: 8px; */
-/*   padding: 16px; */
-/*   margin-bottom: 16px; */
-/* } */
-
-.equipment-manager h2 {
-  /* color: #333; */
-  /* margin-bottom: 16px; */
-}
-
+/* Hallmark · shape: app screen · theme: Carnival · the full stamp and the tokens live in ../index.css and ../tokens.css */
 .equipment-manager table {
   width: 100%;
   border-collapse: collapse;
@@ -17,37 +6,27 @@
 
 .equipment-manager th,
 .equipment-manager td {
-  padding: 8px;
+  padding: var(--space-xs) var(--space-2xs);
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: var(--rule-hair) solid var(--color-muted);
+  vertical-align: middle;
 }
 
-/* .equipment-manager th { */
-/*   background-color: #e0e0e0; */
-/*   font-weight: bold; */
-/* } */
+.equipment-manager th {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-muted);
+}
 
-/* .equipment-manager select, */
-/* .equipment-manager button { */
-/*   padding: 4px 8px; */
-/*   border-radius: 4px; */
-/*   border: 1px solid #ccc; */
-/*   background-color: #fff; */
-/*   cursor: pointer; */
-/* } */
+.equipment-manager tr:last-child td {
+  border-bottom: 0;
+}
 
-/* .equipment-manager button { */
-/*   background-color: #4CAF50; */
-/*   color: white; */
-/*   border: none; */
-/* } */
+.equipment-manager td:last-child {
+  display: flex;
+  gap: var(--space-2xs);
+}
 
-/* .equipment-manager button:hover { */
-/*   background-color: #45a049; */
-/* } */
-
-/* .equipment-manager select:focus, */
-/* .equipment-manager button:focus { */
-/*   outline: none; */
-/*   box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); */
-/* } */
+.equipment-manager select {
+  max-width: 9rem;
+}

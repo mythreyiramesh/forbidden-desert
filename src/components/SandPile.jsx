@@ -7,9 +7,10 @@ function SandPile() {
   const { state } = useGameState();
 
   return (
-    <div className="sand-pile">
-      <h3>Sand Pile</h3>
-      <div>Remaining: {state.sandPile}</div>
+    <div className="stat">
+      <h3>Sand pile</h3>
+      <span className="stat-figure num">{state.sandPile}</span>
+      <span className="stat-note">markers left</span>
     </div>
   );
 }

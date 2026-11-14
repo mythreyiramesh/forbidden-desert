@@ -1,4 +1,33 @@
-/* src/components/SandPile.css */
-.sand-pile {
-  margin-bottom: 10px;
+/* Status figures: a label, one number, one line of context. */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+}
+
+.stat h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-muted);
+}
+
+.stat-figure {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--display-weight);
+  line-height: 1;
+}
+
+.stats .stat + .stat {
+  padding-left: var(--space-md);
+  border-left: var(--rule-bar) solid var(--color-ink);
 }

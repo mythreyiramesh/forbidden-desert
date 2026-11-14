@@ -12,13 +12,11 @@ const TurnTracker = () => {
   };
 
   return (
-    <div className="turn-tracker">
-      <h3>Current Turn:</h3>
-      <p>Player: {players[orderedPlayerIndices[currentPlayer]].name}</p>
-      <p>Drawn Cards: {cardsDrawnInTurn}</p>
-          <button onClick={nextTurn}>
-            Next Turn
-          </button>
+    <div className="panel turn-tracker">
+      <h3>Current turn</h3>
+      <p className="turn-player">{players[orderedPlayerIndices[currentPlayer]].name}</p>
+      <p className="stat-note">Cards drawn: <span className="num">{cardsDrawnInTurn}</span></p>
+      <button className="primary" onClick={nextTurn}>Next turn</button>
     </div>
   );
 };

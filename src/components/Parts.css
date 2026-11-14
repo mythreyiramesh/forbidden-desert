@@ -1,64 +1,37 @@
-/* src/components/Players.css */
 .parts table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
 }
 
 .parts th,
 .parts td {
-  padding: 0.5rem;
+  padding: var(--space-xs) var(--space-2xs);
   text-align: center;
-  border: 1px solid #ccc;
+  border-bottom: var(--rule-hair) solid var(--color-muted);
 }
 
 .parts th {
-  background-color: #f0f0f0;
-  font-weight: bold;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-muted);
 }
 
+.parts th:first-child,
 .parts td:first-child {
-  font-weight: bold;
+  text-align: left;
 }
 
-.parts td:not(:first-child) {
-  font-size: 1.2rem;
+.parts tr:last-child td {
+  border-bottom: 0;
 }
 
-.parts td:nth-child(2),
-.parts td:nth-child(3),
-.parts td:nth-child(4),
-.parts td:nth-child(5) {
-  width: 20%;
+.parts td svg {
+  width: var(--space-md);
+  height: var(--space-md);
+  margin-inline: auto;
+  color: var(--color-muted);
 }
 
-.parts td:nth-child(2)::after,
-.parts td:nth-child(3)::after,
-.parts td:nth-child(4)::after,
-.parts td:nth-child(5)::after {
-  display: inline-block;
-  width: 1.2rem;
-  height: 1.2rem;
-  line-height: 1.2rem;
-  border-radius: 50%;
-  margin-left: 0.5rem;
-  font-size: 1rem;
-  color: white;
+.parts td.found svg {
+  color: var(--color-success);
 }
-
-.parts td:nth-child(2).found::after,
-.parts td:nth-child(3).found::after,
-.parts td:nth-child(4).found::after,
-.parts td:nth-child(5).found::after {
-  content: '✓';
-  background-color: #4caf50;
-}
-
-.parts td:nth-child(2):not(.found)::after,
-.parts td:nth-child(3):not(.found)::after,
-.parts td:nth-child(4):not(.found)::after,
-.parts td:nth-child(5):not(.found)::after {
-  content: '✗';
-  background-color: #f44336;
-}
-

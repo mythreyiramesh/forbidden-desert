@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 import { useGameState } from '../contexts/GameStateProvider';
 import PlayerToken from './PlayerToken';
 import desertTiles from '../desertTiles.json';
+import './GameSetup.css';
 
 const PlayerSlot = ({ index, playerIndex, movePlayer }) => {
   const { state } = useGameState();
@@ -15,15 +16,7 @@ const PlayerSlot = ({ index, playerIndex, movePlayer }) => {
   });
 
   return (
-    <div ref={drop} style={{ width: '100px', height: '50px', border: '1px dashed black',
-                             /* display: 'inline-block', */
-                             margin: '5px',
-                             opacity: isFrozen ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
-                             pointerEvents: isFrozen ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
-                             display: 'flex',
-                             justifyContent: 'center',
-                             alignItems: 'center',
-                           }}>
+    <div ref={drop} className={`player-slot ${isFrozen ? 'is-frozen' : ''}`}>
       {playerIndex !== undefined && <PlayerToken player={state.players[playerIndex]} />}
     </div>
   );
@@ -83,29 +76,30 @@ const GameSetup = () => {
   };
 
   return (
-    <div>
-      <h3>Game Setup </h3>
-      <div>
-        <label>Number of Players: </label>
-        <select value={state.noOfPlayers} onChange={handlePlayerCountChange} disabled={isFrozen}>
+    <div className="panel setup">
+      <h3>Game setup</h3>
+      <div className="field">
+        <label htmlFor="player-count">Number of players</label>
+        <select id="player-count" value={state.noOfPlayers} onChange={handlePlayerCountChange} disabled={isFrozen}>
           {[1, 2, 3, 4, 5, 6].map(num => (
             <option key={num} value={num}>{num}</option>
           ))}
         </select>
       </div>
-      <div>
-        <label>Difficulty Level: </label>
-        <select value={state.stormLevel} onChange={handleDifficultyChange} disabled={isFrozen}>
+      <div className="field">
+        <label htmlFor="difficulty">Difficulty level</label>
+        <select id="difficulty" value={state.stormLevel} onChange={handleDifficultyChange} disabled={isFrozen}>
           <option value={1}>Novice</option>
           <option value={2}>Normal</option>
           <option value={3}>Intermediate</option>
           <option value={4}>Expert</option>
         </select>
       </div>
-      <div>
+      <div className="field">
         <h4>Select players:</h4>
+        <div className="player-picks">
         {state.players.map((player, index) => (
-          <label key={player.id} style={{ display: 'inline-block', margin: '5px' }}>
+          <label key={player.id} className="player-pick" title={player.name}>
             <input
               type="checkbox"
               checked={state.orderedPlayerIndices.includes(index)}
@@ -114,28 +108,32 @@ const GameSetup = () => {
                 (state.orderedPlayerIndices.length >= state.noOfPlayers && !state.orderedPlayerIndices.includes(index)) || isFrozen
               }
             />
-            <div style={{opacity: isFrozen ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
-                         pointerEvents: isFrozen ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
-                        }}>
-            <PlayerToken player={player} />
+            <div className={isFrozen ? 'is-frozen' : ''}>
+              <PlayerToken player={player} />
             </div>
           </label>
         ))}
+        </div>
       </div>
-      <div>
-        <h5>Drag and drop to reorder selected players:</h5>
+      <div className="field">
+        <h4>Play order</h4>
+        <p className="stat-note">Drag to reorder the selected players.</p>
+        <div className="player-slots">
         {state.orderedPlayerIndices.map((playerIndex, index) => (
           <PlayerSlot key={index} index={index} playerIndex={playerIndex} movePlayer={movePlayer} />
         ))}
+        </div>
       </div>
-      {isFrozen ? (
-        <button onClick={handleUnfreeze} disabled={gameStarted}>Unfreeze Setup</button>
-      ) : (
-        <button onClick={handleFreeze}>Freeze Setup</button>
-      )}
-      <button onClick={handleStartGame} disabled={!isFrozen || gameStarted}>
-        Start Game
-      </button>
+      <div className="setup-actions">
+        {isFrozen ? (
+          <button onClick={handleUnfreeze} disabled={gameStarted}>Unfreeze setup</button>
+        ) : (
+          <button onClick={handleFreeze}>Freeze setup</button>
+        )}
+        <button className="primary" onClick={handleStartGame} disabled={!isFrozen || gameStarted}>
+          Start game
+        </button>
+      </div>
     </div>
   );
 };

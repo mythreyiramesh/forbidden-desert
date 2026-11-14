@@ -1,13 +1,10 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* Hallmark · shape: app screen · genre: editorial · theme: Carnival (deal 1/3, seed cooperative-desert-board-game-36ee·526e56b3·2026-11-14·r0) · redesign: full
+ * nav: top bar with the title and undo / new game · signature: the board, five by five, the storm tile at its centre · states: setup, playing, game over, empty equipment, terrascope peeking · carnival: pressroom
+ * axes: light/display-heavy/chromatic-amber · posture: full-palette · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E3 S4 R4 V4 · weakest: E, the tile faces are still plain sand with no illustration of their own; the 24 tile artworks carry the board once excavated */
+@import url("./tokens.css");
+@import url("./base.css");
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  min-height: 100dvh;
 }

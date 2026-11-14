@@ -24,14 +24,14 @@ function EquipmentManager() {
     .filter(item => !item.used);  // Filter out used equipment
 
 return (
- <div className="equipment-manager">
-      <h3>Equipment (Available: {availableEquipment.length})</h3>
+ <div className="panel equipment-manager">
+      <h3>Equipment (Available: <span className="num">{availableEquipment.length}</span>)</h3>
       {availableEquipment.length > 0 ? (
         <table>
           <thead>
             <tr>
               <th>Type</th>
-              <th>Carried By</th>
+              <th>Carried by</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -41,6 +41,7 @@ return (
                 <td>{item.type}</td>
                 <td>
                   <select
+                    aria-label={`Carried by (${item.type})`}
                     value={item.playerId ?? ''}
                     disabled={!!item.active}
                     onChange={(e) => assignEquipment(item.id, e.target.value)}
@@ -77,7 +78,7 @@ return (
           </tbody>
         </table>
       ) : (
-        <p>No equipment available. Excavate gear tiles to reveal equipment.</p>
+        <p className="stat-note">No equipment yet. Excavate gear tiles to find some.</p>
       )}
     </div>
   );

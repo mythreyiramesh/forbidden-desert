@@ -1,0 +1,30 @@
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.2rem; --text-xl: 1.44rem; --text-2xl: 1.728rem; --text-3xl: 2.074rem;
+  --text-display-s: 1.44rem; --text-display: 1.728rem; --text-section: 1.2rem; --text-title: 1rem; --text-lead: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(89% 0.025 65); --color-paper-2: oklch(85% 0.030 65); --color-paper-3: oklch(79% 0.035 65);
+  --color-ink: oklch(16% 0.020 60); --color-ink-2: oklch(26% 0.020 60); --color-muted: oklch(42% 0.030 60);
+  --color-rule: oklch(34% 0.10 240); --color-accent: oklch(78% 0.18 75); --color-accent-2: oklch(34% 0.10 240);
+  --color-accent-ink: oklch(16% 0.020 60); --color-focus: oklch(34% 0.10 240);
+  --color-scrim: oklch(16% 0.020 60 / 0.72);
+  --color-sand: var(--color-accent); --color-water: var(--color-accent-2);
+  --token-explorer: oklch(52% 0.11 160); --token-explorer-ink: oklch(90% 0.20 125);
+  --token-water-carrier: oklch(30% 0.16 265); --token-water-carrier-ink: oklch(85% 0.06 230);
+  --token-climber: oklch(20% 0.02 90); --token-climber-ink: oklch(92% 0.18 100);
+  --token-archeologist: oklch(48% 0.25 295); --token-archeologist-ink: oklch(97% 0.03 95);
+  --token-navigator: oklch(88% 0.22 125); --token-navigator-ink: oklch(40% 0.11 160);
+  --token-meteorologist: oklch(42% 0.17 25); --token-meteorologist-ink: oklch(87% 0.17 90);
+  --part-engine: oklch(45% 0.02 60); --part-propeller: oklch(55% 0.26 340);
+  --part-crystal: oklch(72% 0.17 60); --part-steering: oklch(30% 0.12 20);
+  --tile-size: 150px;
+  --font-display: "Big Shoulders Display", Impact, sans-serif; --font-body: "Golos Text", system-ui, sans-serif;
+  --font-outlier: var(--font-body);
+  --radius-card: 2px; --radius-pill: 2px; --rule-hair: 1px; --rule-bar: 2px; --shadow-card: 4px 4px 0 var(--color-ink);
+  --tracking-display: 0.015em; --display-weight: 800;
+}

@@ -1,14 +1,13 @@
-/* src/components/GameBoard.css */
-/* .game-board { */
-/*   display: grid; */
-/*   grid-template-columns: repeat(5, 100px); */
-/*   grid-template-rows: repeat(5, 100px); */
-/*   gap: 5px; */
-/* } */
-/* src/components/GameBoard.css */
+/* The board: a five by five well, sized so it fits the window without scrolling. */
 .game-board {
   display: grid;
-  grid-template-columns: repeat(5, 150px);
-  grid-template-rows: repeat(5, 150px);
-  gap: 5px;
+  grid-template-columns: repeat(5, var(--tile-size));
+  grid-template-rows: repeat(5, var(--tile-size));
+  gap: var(--space-2xs);
+  width: max-content;
+  padding: var(--space-xs);
+  background: var(--color-paper-3);
+  border: var(--rule-bar) solid var(--color-ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
 }

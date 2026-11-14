@@ -11,29 +11,33 @@ function Players() {
     dispatch({ type: 'ADJUST_WATER', payload: { playerId, amount } });
   };
 
+  if (state.orderedPlayerIndices.length === 0) return null;
+
   return (
-<div className="players">
-  {/* <h2>Players</h2> */}
+<div className="panel players">
+  <h3>Water</h3>
   <div className="player-container">
     {state.orderedPlayerIndices.map((index) => {
       const player = state.players[index];
       return (
         <div
           key={player.id}
-          className="player"
-          style={{
-            opacity: !state.gameStarted ? 0.5 : 1, // Reduce opacity to visually indicate disabled state
-            pointerEvents: !state.gameStarted ? 'none' : 'auto', // Disable pointer events to make the slot non-interactive
-          }}
+          className={`player ${state.gameStarted ? '' : 'is-idle'}`}
         >
           <div className="player-icon-container">
             <PlayerToken player={player} />
           </div>
           <div className="player-controls">
-            <span>{player.water}/{player.maxWater}</span>
+            <span className="player-name">{player.name}</span>
+            <div className="water-pips" role="img" aria-label={`${player.water} of ${player.maxWater} water`}>
+              {Array.from({ length: player.maxWater }, (_, i) => (
+                <span key={i} className={i < player.water ? 'pip full' : 'pip'} />
+              ))}
+            </div>
+            <span className="water-count num">{player.water}/{player.maxWater}</span>
             <div className="buttons">
-              <button onClick={() => adjustWater(player.id, -1)}>-</button>
-              <button onClick={() => adjustWater(player.id, 1)}>+</button>
+              <button className="step" onClick={() => adjustWater(player.id, -1)} aria-label={`${player.name} loses water`}>−</button>
+              <button className="step" onClick={() => adjustWater(player.id, 1)} aria-label={`${player.name} gains water`}>+</button>
             </div>
           </div>
         </div>

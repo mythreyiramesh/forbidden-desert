@@ -4,24 +4,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--color-scrim);
   pointer-events: none;
-  z-index: 1000;
+  z-index: var(--z-modal);
 }
 
 .game-over-animation {
   pointer-events: auto;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 2rem;
-  border-radius: 10px;
+  padding: var(--space-xl);
+  max-width: min(28rem, calc(100vw - var(--space-xl)));
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: var(--rule-bar) solid var(--color-ink);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
 .game-over-animation h2 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  max-width: none;
+  margin-bottom: var(--space-sm);
+  font-size: var(--text-3xl);
+  text-wrap: balance;
+  text-transform: uppercase;
 }
 
 .game-over-animation p {
-  font-size: 1.5rem;
+  margin-inline: auto;
+  margin-bottom: var(--space-md);
+}
+
+.game-over-hint {
+  margin: var(--space-sm) auto 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
 }

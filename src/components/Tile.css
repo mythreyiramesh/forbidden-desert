@@ -1,172 +1,149 @@
-/* src/components/Tile.css */
 .tile {
-  width: 150px;
-  height: 150px;
-  border: 1px solid #000;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  cursor: move;
-  user-select: none; /* Prevent text selection during drag */
-  position: relative;
-  min-height: 150px; /* Adjust as needed */
+  width: var(--tile-size);
+  height: var(--tile-size);
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--color-paper-2);
+  background-image: repeating-linear-gradient(135deg, transparent 0 7px, color-mix(in oklab, var(--color-ink) 7%, transparent) 7px 8px);
+  border: var(--rule-bar) solid var(--color-ink-2);
+  border-radius: var(--radius-card);
+  transition: background-color var(--dur-micro) var(--ease-out), opacity var(--dur-short) var(--ease-out);
 }
 
-.sand-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5px;
-  /* background-color: #F4A460; */
-  border-radius: 4px;
-}
-.sand-level-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.sand-level-container {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.remove-sand {
-  padding: 0.5rem 0.7rem;
-  background-color: #F4A460;
-  /* color: white; */
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.remove-sand:hover {
-  background-color: #E49450;
-}
-
-.tile.dragging {
-  opacity: 0.5;
-}
-
-.drag-over {
-  background-color: rgba(0, 255, 0, 0.2); /* Green highlight when dragging over */
-  z-index: 20;
-}
-
-.sand-level-container {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 5px;
-}
-
-/* .sand-level { */
-/*   font-size: 24px; */
-/*   font-weight: bold; */
-/* } */
-
-.tile.storm {
-  background-color: #f0f0f0;
-}
-
-.storm-icon {
-  font-size: 40px;
-  margin-top: 5px;
-}
-
-.player-tokens {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-
-.tile .parts-on-tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-
-.tile .parts-on-tile .part {
-  display: flex;
-  align-items: center;
-  margin-right: 0.5rem;
-}
-
-.tile .parts-on-tile .pickup-button {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 0.5rem;
-}
-.tile.blocked::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(210, 180, 140, 0.5); /* Translucent sand color */
-  z-index: 1;
-  pointer-events: none; /* Allow interaction with the tile underneath */
-}
-
-.tile .parts-on-tile .pickup-button:hover {
-  background-color: #45a049;
-}
-
-.tile.terrascope-active:not(.peeked) {
-  opacity: 0.25;
-}
-
-.tile.peeked:not(.excavated) {
-  background-color: rgba(220, 160, 160, 0.5); /* Maroon highlight when peeked */
-}
-
-.peek-button {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.8rem;
-  background-color: pink;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 0.5rem;
-}
-.water-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2em; /* Increased size for visibility */
-  z-index: 10; /* Ensure it's above other elements */
-  color: #00f; /* Blue color for better visibility */
-  text-shadow: 1px 1px 2px white, -1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white; /* Add a white outline */
-}
-
-/* .water-icon { */
-/*   position: absolute; */
-/*   top: 50%; */
-/*   left: 50%; */
-/*   transform: translate(-50%, -50%); */
-/*   font-size: 1.5em; /\* Adjust size as needed *\/ */
-/*   z-index: 1; /\* Ensure it's above other elements but below players *\/ */
-/* } */
 .tile.excavated {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* /\* Ensure other elements are visible on top of the background image *\/ */
-/* .tile > * { */
-/*   position: relative; */
-/*   z-index: 1; */
-/* } */
+.tile.storm {
+  justify-content: center;
+  background-color: var(--color-accent-2);
+  background-image: none;
+  color: var(--color-paper);
+}
+
+.storm-icon svg {
+  width: calc(var(--tile-size) * 0.4);
+  height: calc(var(--tile-size) * 0.4);
+}
+
+.drag-over {
+  background-color: color-mix(in oklab, var(--color-accent) 45%, var(--color-paper-2));
+  outline: var(--rule-bar) solid var(--color-accent-2);
+  outline-offset: calc(var(--rule-bar) * -1);
+  z-index: var(--z-raised);
+}
+
+/* Sand: an amber marker with the level, top left; two or more blocks the tile. */
+.sand-controls {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  z-index: var(--z-raised);
+}
+
+.remove-sand {
+  min-width: 32px;
+  padding: var(--space-3xs) var(--space-xs);
+  background: var(--color-sand);
+  box-shadow: 2px 2px 0 var(--color-ink);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.remove-sand:disabled {
+  background: var(--color-paper-3);
+  color: var(--color-ink-2);
+  border-color: var(--color-ink-2);
+  cursor: not-allowed;
+}
+
+.tile.blocked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in oklab, var(--color-sand) 38%, transparent);
+  pointer-events: none;
+}
+
+.water-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: var(--z-base);
+  color: var(--color-water);
+  transform: translate(-50%, -50%);
+}
+
+.water-icon svg {
+  width: calc(var(--tile-size) * 0.3);
+  height: calc(var(--tile-size) * 0.3);
+}
+
+.tile > div:not(.sand-controls):not(.parts-on-tile):not(.player-tokens):not(.water-icon):not(.storm-icon) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2xs);
+  margin-top: var(--space-xl);
+  position: relative;
+  z-index: var(--z-raised);
+}
+
+.tile-description {
+  padding: var(--space-3xs) var(--space-2xs);
+  background: var(--color-paper);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.excavate-button,
+.peek-button {
+  font-size: var(--text-sm);
+  box-shadow: 2px 2px 0 var(--color-ink);
+}
+
+.player-tokens {
+  position: absolute;
+  bottom: var(--space-2xs);
+  left: var(--space-2xs);
+  right: var(--space-2xs);
+  display: flex;
+  flex-wrap: wrap;
+  z-index: var(--z-raised);
+}
+
+.tile .parts-on-tile {
+  position: relative;
+  z-index: var(--z-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-xs);
+}
+
+.tile .parts-on-tile .part {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.tile .parts-on-tile .pickup-button {
+  font-size: var(--text-sm);
+}
+
+.tile.terrascope-active:not(.peeked) {
+  opacity: 0.35;
+}
+
+.tile.peeked:not(.excavated) {
+  background-color: color-mix(in oklab, var(--color-accent-2) 22%, var(--color-paper-2));
+  border-color: var(--color-accent-2);
+}

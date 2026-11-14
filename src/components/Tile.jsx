@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 import { useGameState } from '../contexts/GameStateProvider';
 import PlayerToken from './PlayerToken';
 import PartToken from './PartToken';
+import { WaterIcon, StormIcon } from './Icons';
 import './Tile.css';
 import desertTiles from '../desertTiles.json';
 
@@ -67,9 +68,14 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
   return (
     <div
       ref={drop}
-      className={`tile ${type} ${excavated ? 'excavated' : ''} ${isOver ? 'drag-over' : ''}
-${state.terrascopeInUse && excavated && state.peekedTileIds.includes(null) ? 'terrascope-active' : ''}
-${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' : ''}`}
+      className={[
+        'tile', type,
+        excavated && 'excavated',
+        isOver && 'drag-over',
+        state.terrascopeInUse && excavated && state.peekedTileIds.includes(null) && 'terrascope-active',
+        state.peekedTileIds.includes(id) && 'peeked',
+        sandLevel > 1 && 'blocked',
+      ].filter(Boolean).join(' ')}
       style={excavated ? { backgroundImage: `url(${imagePath})` } : {}}
     >
       {partsOnTile.length > 0 && (
@@ -77,7 +83,7 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
           {partsOnTile.map(part => (
             <div key={part.id} className="part">
               <PartToken part={part} />
-              {(playersOnTile.length > 0 && excavated) && <button className="pickup-button" onClick={() => handlePickUp(part.id)}>✓</button>}
+              {(playersOnTile.length > 0 && excavated) && <button className="pickup-button" onClick={() => handlePickUp(part.id)}>Pick up</button>}
             </div>
           ))}
         </div>
@@ -87,7 +93,8 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
           <div className="sand-controls">
             <div className="sand-level-container">
               {sandLevel > 0 && (
-                <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}> {sandLevel}</button>
+                <button onClick={removeSand} className="remove-sand" disabled={!state.gameStarted}
+                  aria-label={`Remove sand (level ${sandLevel})`} title="Remove sand">{sandLevel}</button>
               )}
             </div>
           </div>
@@ -103,14 +110,14 @@ ${state.peekedTileIds.includes(id) ? 'peeked' : ''} ${sandLevel > 1 ? 'blocked' 
               (playersOnTile.length > 0 && sandLevel === 0) && <button onClick={excavateTile} className="excavate-button">Excavate</button>
             )
           ) : null}
-          {!excavated && treasureFull.type === 'water' && <div className="water-icon">💧</div>}
+          {!excavated && treasureFull.type === 'water' && <div className="water-icon" role="img" aria-label="Water"><WaterIcon /></div>}
           {/* {/\*for testing purposes since image directory is incorrect*\/} */}
           {/* { excavated && tileDescription ? ( */}
           {/*   <div className="tile-description">{tileDescription}</div> */}
           {/* ) : null} */}
         </div>
       )}
-      {type === 'storm' && <div className="storm-icon">🌪️</div>}
+      {type === 'storm' && <div className="storm-icon" role="img" aria-label="The storm"><StormIcon /></div>}
       <div className="player-tokens">
         {playersOnTile.map(player => (
           <PlayerToken key={player.id} player={player} />

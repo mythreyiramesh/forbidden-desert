@@ -8,10 +8,10 @@ const SandMeter = () => {
   const { stormLevel, cardsToDraw } = state;
 
   return (
-    <div className="sand-meter">
-      <h3>Storm Meter</h3>
-      <p>Storm Level: {stormLevel}</p>
-      <p>Draw {cardsToDraw} cards.</p>
+    <div className="stat">
+      <h3>Storm meter</h3>
+      <span className="stat-figure num">{stormLevel}</span>
+      <span className="stat-note">draw {cardsToDraw} cards</span>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-/* src/components/SandMeter.css */
-.sand-meter {
-  margin-bottom: 10px;
+/* Storm meter: shares the .stat figure styles in SandPile.css. */
+.stat .stat-note {
+  text-wrap: balance;
 }

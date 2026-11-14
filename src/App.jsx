@@ -27,26 +27,33 @@ const GameContent = () => {
 
   return (
     <div className="App">
+      <header className="app-bar">
+        <h1>Forbidden Desert</h1>
+        <div className="toolbar">
+          <button onClick={() => dispatch({ type: 'UNDO' })} disabled={!canUndo}>Undo</button>
+          <button onClick={newGame}>New Game</button>
+        </div>
+      </header>
       <div className="grid-container">
-        <div className="setup-column">
+        <aside className="setup-column">
           {!state.gameStarted && <GameSetup />}
-          {state.gameStarted && <SandPile />}
-          {state.gameStarted && <SandMeter />}
+          {state.gameStarted && (
+            <div className="panel stats">
+              <SandPile />
+              <SandMeter />
+            </div>
+          )}
           {state.gameStarted && <TurnTracker />}
           {state.gameStarted && <StormDeck />}
-        </div>
-        <div className="game-column">
-          <div className="toolbar">
-            <button onClick={() => dispatch({ type: 'UNDO' })} disabled={!canUndo}>Undo</button>
-            <button onClick={newGame}>New Game</button>
-          </div>
+        </aside>
+        <main className="game-column">
           <GameBoard />
-        </div>
-        <div className="parts-column">
+        </main>
+        <aside className="parts-column">
           <Players />
           <Parts />
           <EquipmentManager />
-        </div>
+        </aside>
       </div>
       {state.gameOver && <GameOverAnimation result={state.gameResult} onNewGame={newGame} />}
     </div>

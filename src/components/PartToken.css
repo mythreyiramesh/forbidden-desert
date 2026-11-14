@@ -1,27 +1,22 @@
-/* src/components/PlayerToken.css */
 .part-token {
-  width: 30px;
-  height: 30px;
-  border-radius: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  color: white;
-  cursor: move;
-  margin: 2px;
-  border: 2px solid #F4A460; /* Added sand-colored border */
+  width: 32px;
+  height: 32px;
+  margin: var(--space-3xs);
+  border: var(--rule-bar) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  color: var(--color-paper);
+  background: var(--part-bg);
 }
 
-.part-token.engine {
-  background-color: gray;
+.part-token.draggable {
+  box-shadow: 2px 2px 0 var(--color-ink);
 }
-.part-token.propeller {
-  background-color: magenta;
-}
-.part-token.crystal {
-  background-color: orange;
-}
-.part-token.steering {
-  background-color: maroon;
-}
+
+.part-token.engine { --part-bg: var(--part-engine); }
+.part-token.propeller { --part-bg: var(--part-propeller); }
+.part-token.crystal { --part-bg: var(--part-crystal); color: var(--color-ink); }
+.part-token.steering { --part-bg: var(--part-steering); }
