@@ -7,7 +7,7 @@
 .last-card {
   margin-top: var(--space-md);
   padding-left: var(--space-sm);
-  border-left: var(--rule-bar) solid var(--color-accent-2);
+  border-left: var(--rule-bar) solid var(--color-storm);
   font-size: var(--text-lg);
   line-height: 1.3;
 }

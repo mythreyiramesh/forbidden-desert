@@ -43,6 +43,7 @@ function PlayerToken({ player }) {
       }}
     >
       <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <g className="token-halo">{SHAPES[player.type] ?? SHAPES.explorer}</g>
         <g className="token-shape">{SHAPES[player.type] ?? SHAPES.explorer}</g>
         <text x="16" y={LETTER_Y[player.type] ?? 16} textAnchor="middle" dominantBaseline="central">
           {player.type.charAt(0).toUpperCase()}

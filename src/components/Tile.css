@@ -27,8 +27,8 @@
 
 .tile.storm {
   justify-content: center;
-  background-color: var(--color-accent-2);
-  background-image: none;
+  background-color: var(--color-storm);
+  background-image: repeating-linear-gradient(0deg, transparent 0 9px, color-mix(in oklab, var(--color-storm-2) 70%, transparent) 9px 12px);
   color: var(--color-paper);
 }
 

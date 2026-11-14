@@ -14,6 +14,7 @@
   --color-accent-ink: oklch(16% 0.020 60); --color-focus: oklch(34% 0.10 240);
   --color-scrim: oklch(16% 0.020 60 / 0.72);
   --color-sand: var(--color-accent); --color-water: var(--color-accent-2);
+  --color-storm: oklch(46% 0.10 55); --color-storm-2: oklch(40% 0.10 50);
   --token-explorer: oklch(52% 0.11 160); --token-explorer-ink: oklch(90% 0.20 125);
   --token-water-carrier: oklch(30% 0.16 265); --token-water-carrier-ink: oklch(85% 0.06 230);
   --token-climber: oklch(20% 0.02 90); --token-climber-ink: oklch(92% 0.18 100);

@@ -33,6 +33,19 @@
 .player-token.navigator { --token-bg: var(--token-navigator); --token-ink: var(--token-navigator-ink); }
 .player-token.meteorologist { --token-bg: var(--token-meteorologist); --token-ink: var(--token-meteorologist-ink); }
 
+/* On a tile, a paper halo around the shape keeps the token readable on any face. */
+.token-halo {
+  display: none;
+}
+
+.tile .token-halo {
+  display: inline;
+  fill: var(--color-paper);
+  stroke: var(--color-paper);
+  stroke-width: 7;
+  stroke-linejoin: round;
+}
+
 /* Tokens standing on a tile are smaller so a full table still leaves room for the tile's actions. */
 .tile .player-token {
   width: 28px;

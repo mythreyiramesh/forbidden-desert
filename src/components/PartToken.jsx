@@ -4,7 +4,16 @@ import { useDrag } from 'react-dnd';
 import './PartToken.css';
 
 
-function PartToken({ part, onDrop }) {
+// The same marks that sit at the centre of the clue tiles.
+const OUTLINES = {
+  engine: <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" />,
+  propeller: <path d="M13 3h6v10h10v6H19v10h-6V19H3v-6h10z" />,
+  crystal: <polygon points="16,2 29,16 16,30 3,16" />,
+  steering: <circle cx="16" cy="16" r="13" />,
+};
+const PART_NAMES = { engine: 'Engine', propeller: 'Propeller', crystal: 'Crystal', steering: 'Steering' };
+
+function PartToken({ part }) {
   const canPlacePart = part.horizontalClue && part.verticalClue && !part.placed;
   const [{ isDragging }, drag] = useDrag({
     type: 'PART',
@@ -19,12 +28,19 @@ function PartToken({ part, onDrop }) {
     <div
       ref={canPlacePart ? drag : null} // Only apply the drag ref if the player is in order
       className={`part-token ${part.type} ${canPlacePart ? 'draggable' : 'non-draggable'}`}
+      role="img"
+      aria-label={PART_NAMES[part.type] ?? part.type}
+      title={PART_NAMES[part.type] ?? part.type}
       style={{
         opacity: isDragging ? 0.5 : 1,
         cursor: canPlacePart ? 'move' : 'not-allowed'
       }}
     >
-      {part.type.charAt(0).toUpperCase()}
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <g className="token-halo">{OUTLINES[part.type] ?? OUTLINES.engine}</g>
+        <g className="token-shape">{OUTLINES[part.type] ?? OUTLINES.engine}</g>
+        {part.type === 'steering' && <circle className="token-hole" cx="16" cy="16" r="5" />}
+      </svg>
     </div>
   );
 }
