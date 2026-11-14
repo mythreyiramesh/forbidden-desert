@@ -3,6 +3,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  /* Faces are a backdrop: faded into the paper so tokens and buttons stand out. */
+  opacity: var(--face-strength, 0.5);
 }
 
 .f-ink { fill: var(--color-ink); }
