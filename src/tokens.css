@@ -15,14 +15,15 @@
   --color-scrim: oklch(16% 0.020 60 / 0.72);
   --color-sand: var(--color-accent); --color-water: var(--color-accent-2);
   --color-storm: oklch(46% 0.10 55); --color-storm-2: oklch(40% 0.10 50);
-  --token-explorer: oklch(52% 0.11 160); --token-explorer-ink: oklch(90% 0.20 125);
-  --token-water-carrier: oklch(30% 0.16 265); --token-water-carrier-ink: oklch(85% 0.06 230);
-  --token-climber: oklch(20% 0.02 90); --token-climber-ink: oklch(92% 0.18 100);
-  --token-archeologist: oklch(48% 0.25 295); --token-archeologist-ink: oklch(97% 0.03 95);
-  --token-navigator: oklch(88% 0.22 125); --token-navigator-ink: oklch(40% 0.11 160);
-  --token-meteorologist: oklch(42% 0.17 25); --token-meteorologist-ink: oklch(87% 0.17 90);
-  --part-engine: oklch(45% 0.02 60); --part-propeller: oklch(55% 0.26 340);
-  --part-crystal: oklch(72% 0.17 60); --part-steering: oklch(30% 0.12 20);
+  /* Game palette. Roles: amber = sand, slate blue = water, rust = storm, green = done.
+     Players are light enamel tones (ink lettering); parts are deep jewel tones (paper marks).
+     Each tier shares one lightness and chroma, so only the hue tells them apart, and no part hue repeats a player hue. */
+  --token-ink: var(--color-ink);
+  --token-explorer: oklch(72% 0.12 130); --token-water-carrier: oklch(72% 0.10 235);
+  --token-climber: oklch(64% 0.03 70); --token-archeologist: oklch(70% 0.13 35);
+  --token-navigator: oklch(74% 0.11 295); --token-meteorologist: oklch(86% 0.11 95);
+  --part-engine: oklch(38% 0.02 60); --part-propeller: oklch(42% 0.13 5);
+  --part-crystal: oklch(46% 0.09 195); --part-steering: oklch(36% 0.10 320);
   --tile-size: 150px;
   --font-display: "Big Shoulders Display", Impact, sans-serif; --font-body: "Golos Text", system-ui, sans-serif;
   --font-outlier: var(--font-body);

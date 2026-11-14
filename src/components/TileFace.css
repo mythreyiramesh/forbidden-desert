@@ -26,8 +26,6 @@
 .s-ink2 { stroke: var(--color-ink-2); }
 .dashed { stroke-dasharray: 5 5; }
 
-/* Clue arrows and part marks: paper on every part colour but the light crystal. */
+/* Clue arrows and part marks are paper on every part colour. */
 .tf-fg { fill: var(--color-paper); }
 .tf-fg-ring { fill: none; stroke: var(--color-paper); stroke-width: 6; }
-.on-light .tf-fg { fill: var(--color-ink); }
-.on-light .tf-fg-ring { stroke: var(--color-ink); }

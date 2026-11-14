@@ -111,7 +111,7 @@ export default function TileFace({ desertID }) {
   return (
     <>
       <svg
-        className={`tile-face ${tile.part === 'crystal' ? 'on-light' : ''}`}
+        className="tile-face"
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid slice"
         aria-hidden="true"
