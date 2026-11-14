@@ -4,44 +4,27 @@
   "homepage": "https://mythreyiramesh.github.io/forbidden-desert",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "react-spring": "^9.7.4",
-    "web-vitals": "^2.1.4"
+    "react-spring": "^9.7.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "deploy": "gh-pages -d dist",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "gh-pages": "^6.1.1"
-  }
+    "@vitejs/plugin-react": "^6.3.0",
+    "gh-pages": "^6.1.1",
+    "vite": "^8.3.8",
+    "vitest": "^4.1.12"
+  },
+  "type": "module"
 }

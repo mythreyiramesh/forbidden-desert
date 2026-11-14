@@ -14,7 +14,7 @@
   grid-gap: 10px;
 }
 
-.top-row {
+.toolbar {
   grid-column: 1 / 4;
   display: flex;
   justify-content: center;

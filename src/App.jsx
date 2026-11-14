@@ -17,7 +17,13 @@ import './App.css';
 
 // Create a wrapper component to use the game state hook
 const GameContent = () => {
-  const { state } = useGameState(); // Assuming these are in your game state
+  const { state, dispatch, canUndo } = useGameState();
+
+  const newGame = () => {
+    if (state.gameStarted && !state.gameOver &&
+        !window.confirm('Abandon the current game and start a new one?')) return;
+    dispatch({ type: 'NEW_GAME' });
+  };
 
   return (
     <div className="App">
@@ -30,7 +36,9 @@ const GameContent = () => {
           {state.gameStarted && <StormDeck />}
         </div>
         <div className="game-column">
-          <div className="top-row">
+          <div className="toolbar">
+            <button onClick={() => dispatch({ type: 'UNDO' })} disabled={!canUndo}>Undo</button>
+            <button onClick={newGame}>New Game</button>
           </div>
           <GameBoard />
         </div>
@@ -40,7 +48,7 @@ const GameContent = () => {
           <EquipmentManager />
         </div>
       </div>
-      {state.gameOver && <GameOverAnimation result={state.gameResult} />}
+      {state.gameOver && <GameOverAnimation result={state.gameResult} onNewGame={newGame} />}
     </div>
   );
 };

@@ -1,81 +1,5 @@
-// src/contexts/GameStateProvider.js
-import React, { createContext, useContext, useReducer } from 'react';
-import stormCardsData from '../stormCards.json';
-import initialEquipment from '../equipmentDeck.json';
-import playerInfo from '../playerInfoData.json';
-import partInfo from '../partInfoData.json';
-
-const GameStateContext = createContext();
-const randomStartPosition = getRandomInt(0, 24);
-const decidedNoOfPlayers = 6;
-
-export const initialState = {
-  isFrozen: false,
-  gameStarted: false,
-  noOfPlayers: decidedNoOfPlayers,
-  gameOver: false,
-  gameResult: null,
-  tiles: (() => {
-    // Create and shuffle desertIDs
-    const desertIDs = Array.from({ length: 24 }, (_, i) => i + 1);
-    for (let i = desertIDs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [desertIDs[i], desertIDs[j]] = [desertIDs[j], desertIDs[i]];
-    }
-
-    let desertIDIndex = 0;
-
-    return Array(25).fill(null).map((_, index) => {
-      const baseTile = {
-        id: index,
-        type: index === 12 ? 'storm' : 'normal', // Center tile (index 12) is the storm
-        sandLevel: 0,
-        excavated: false,
-      };
-
-      const indicesToModify = [2, 6, 8, 10, 14, 16, 18, 22];
-      const sandLevelToSet = 1; // You can adjust this value as needed
-
-      if (indicesToModify.includes(index)) {
-        baseTile.sandLevel = sandLevelToSet;
-      }
-
-      // Add desertID only to normal tiles
-      if (baseTile.type === 'normal') {
-        baseTile.desertID = desertIDs[desertIDIndex++];
-      }
-      return baseTile;
-    });
-  })(),
-  crashTilePosition: null,
-  tunnelTilePositions: [],
-  excavatedTunnelTiles: [],
-  players: playerInfo.map(player => ({
-    ...player,
-    position: randomStartPosition,
-    water: player.maxWater,
-  })),
-  orderedPlayerIndices: [],
-  currentPlayer: null,
-  cardsDrawnInTurn: null,
-  parts: partInfo,
-  stormLevel: 1,
-  cardsToDraw: getCardsToDraw(1,decidedNoOfPlayers),
-  sandPile: 40,
-  stormPosition: 12, // We can keep this for easier tracking
-  stormDeck: shuffleArray([...stormCardsData.stormCards]), // coming from the JSON
-  stormDiscard: [],
-  lastDrawnCard: null,
-  revealedCards: [],
-  equipmentIds: shuffleArray(initialEquipment.map(eq => eq.id)),
-  equipment: initialEquipment,
-  assignedEquipmentCount: 0,
-  peekedTileIds: [],
-  terrascopeInUse: null,
-  solarShieldActive: false,
-  solarShieldTiles: [],
-};
-
+// src/game/reducer.js
+import { shuffleArray, getCardsToDraw } from './rules';
 
 export function gameStateReducer(state, action) {
   // Prevent setup changes if the game is frozen
@@ -584,57 +508,6 @@ function deactivateShield(state, { equipmentId }) {
     solarShieldActive: state.solarShieldTiles.length >= 1 ? true : false,
   };
 }
-// Utility functions
-
-function shuffleArray(array) {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-}
-
-export function getRandomInt(min, max) {
-  let randomNumber;
-  do {
-    randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-  } while (randomNumber === 12); // since storm starts at position 12
-  return randomNumber;
-}
-
-function getCardsToDraw(stormLevel, noOfPlayers) {
-  if (noOfPlayers <= 2) {
-    if (stormLevel >= 14) return 7;
-    if (stormLevel >= 12) return 6;
-    if (stormLevel >= 9) return 5;
-    if (stormLevel >= 5) return 4;
-    if (stormLevel >= 2) return 3;
-    return 2;
-  } else if (noOfPlayers === 3) {
-    if (stormLevel >= 15) return 7;
-    if (stormLevel >= 13) return 6;
-    if (stormLevel >= 10) return 5;
-    if (stormLevel >= 6) return 4;
-    if (stormLevel >= 2) return 3;
-    return 2;
-  } else if (noOfPlayers === 4) {
-    if (stormLevel >= 15) return 7;
-    if (stormLevel >= 13) return 6;
-    if (stormLevel >= 10) return 5;
-    if (stormLevel >= 6) return 4;
-    if (stormLevel >= 2) return 3;
-    return 2;
-  } else {
-    if (stormLevel >= 16) return 7;
-    if (stormLevel >= 14) return 6;
-    if (stormLevel >= 11) return 5;
-    if (stormLevel >= 7) return 4;
-    if (stormLevel >= 2) return 3;
-    return 2;
-  }
-}
-
 function checkWinCondition (state) {
   const { players, orderedPlayerIndices, crashTilePosition } = state;
   const allPlayersOnCrashTile = orderedPlayerIndices.length > 0 &&
@@ -653,23 +526,3 @@ function checkWinCondition (state) {
 
   return state;
 };
-
-export function GameStateProvider({ children }) {
-  const [state, dispatch] = useReducer(gameStateReducer, initialState);
-
-  return (
-    <GameStateContext.Provider value={{ state, dispatch }}>
-      {children}
-    </GameStateContext.Provider>
-  );
-}
-
-export function useGameState() {
-  const context = useContext(GameStateContext);
-  if (context === undefined) {
-    throw new Error('useGameState must be used within a GameStateProvider');
-  }
-  return context;
-}
-
-export default GameStateProvider;  // Add this line to export as default

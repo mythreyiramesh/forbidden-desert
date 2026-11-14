@@ -35,7 +35,7 @@ function Tile({ id, type, sandLevel, excavated, desertID }) {
         ? desertTiles.find(tile => tile.id === desertID)
         : null;
 
-  const imagePath = `${process.env.PUBLIC_URL}/tile_images/${desertID}.png`;
+  const imagePath = `${import.meta.env.BASE_URL}tile_images/${desertID}.png`;
   const removeSand = () => {
     if (sandLevel > 0) {
       dispatch({ type: 'ADJUST_SAND', payload: { tileId: id, amount: -1 } });
